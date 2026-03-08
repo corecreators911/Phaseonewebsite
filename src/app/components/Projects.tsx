@@ -5,7 +5,7 @@ import { cn } from "../../lib/utils";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+// ScrollTrigger is registered once globally in App.tsx
 
 const PROJECTS = [
   {

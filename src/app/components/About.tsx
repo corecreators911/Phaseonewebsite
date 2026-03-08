@@ -115,20 +115,13 @@ export const About = () => {
             value: target,
             duration: 2,
             ease: "power2.out",
+            onUpdate: () => {
+              (el as HTMLElement).innerText = Math.round(obj.value).toString();
+            },
             scrollTrigger: {
               trigger: el,
               start: "top 85%",
-              toggleActions: "play none none reverse",
-              onEnter: () => {
-                gsap.to(obj, {
-                  value: target,
-                  duration: 2,
-                  ease: "power2.out",
-                  onUpdate: () => {
-                    (el as HTMLElement).innerText = Math.round(obj.value).toString();
-                  },
-                });
-              },
+              toggleActions: "play none none none",
               onLeaveBack: () => {
                 obj.value = 0;
                 (el as HTMLElement).innerText = "0";

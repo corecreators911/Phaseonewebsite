@@ -69,6 +69,7 @@ export const Departments = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -99,9 +100,10 @@ export const Departments = () => {
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
-    
-    // Refresh ScrollTrigger after a slight delay to allow accordion animation
-    setTimeout(() => {
+
+    // Debounce ScrollTrigger refresh — cancel any pending refresh first
+    if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+    refreshTimerRef.current = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 500);
   };

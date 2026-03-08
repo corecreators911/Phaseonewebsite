@@ -14,32 +14,25 @@ export const CustomCursor = () => {
     const ringInner = ring.firstElementChild as HTMLElement;
     if (!dotInner || !ringInner) return;
 
-    const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    const mouse = { x: pos.x, y: pos.y };
-    const speed = 0.12;
-    let rafId: number;
+    const startX = window.innerWidth / 2;
+    const startY = window.innerHeight / 2;
 
-    gsap.set(dot, { x: pos.x, y: pos.y });
-    gsap.set(ring, { x: pos.x, y: pos.y });
+    gsap.set(dot, { x: startX, y: startY });
+    gsap.set(ring, { x: startX, y: startY });
 
+    // quickTo for both elements — dot snaps fast, ring lags for lerp feel
     const xToDot = gsap.quickTo(dot, "x", { duration: 0.08, ease: "power3" });
     const yToDot = gsap.quickTo(dot, "y", { duration: 0.08, ease: "power3" });
+    const xToRing = gsap.quickTo(ring, "x", { duration: 0.55, ease: "power3" });
+    const yToRing = gsap.quickTo(ring, "y", { duration: 0.55, ease: "power3" });
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
       xToDot(e.clientX);
       yToDot(e.clientY);
+      xToRing(e.clientX);
+      yToRing(e.clientY);
     };
 
-    const tick = () => {
-      pos.x += (mouse.x - pos.x) * speed;
-      pos.y += (mouse.y - pos.y) * speed;
-      gsap.set(ring, { x: pos.x, y: pos.y });
-      rafId = requestAnimationFrame(tick);
-    };
-
-    // Hover in: dot turns white, ring border turns crimson — no size change
     const handleMouseEnter = () => {
       gsap.to(dotInner, {
         backgroundColor: "#ffffff",
@@ -55,7 +48,6 @@ export const CustomCursor = () => {
       });
     };
 
-    // Hover out: back to default red dot + faint white ring
     const handleMouseLeave = () => {
       gsap.to(dotInner, {
         backgroundColor: "#8C0B0C",
@@ -71,8 +63,7 @@ export const CustomCursor = () => {
       });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    rafId = requestAnimationFrame(tick);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     const setupListeners = () => {
       const els = document.querySelectorAll("a, button, [data-cursor-hover], select");
@@ -91,7 +82,6 @@ export const CustomCursor = () => {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(rafId);
       observer.disconnect();
       const els = document.querySelectorAll("a, button, [data-cursor-hover], select");
       els.forEach((el) => {
@@ -103,7 +93,6 @@ export const CustomCursor = () => {
 
   return (
     <>
-      {/* Dot — snaps instantly to pointer */}
       <div
         ref={dotRef}
         className="fixed top-0 left-0 z-[10000] pointer-events-none hidden md:block"
@@ -115,7 +104,6 @@ export const CustomCursor = () => {
         />
       </div>
 
-      {/* Follower ring — lags behind with lerp */}
       <div
         ref={ringRef}
         className="fixed top-0 left-0 z-[9999] pointer-events-none hidden md:block"

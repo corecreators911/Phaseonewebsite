@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowRight, ArrowUpRight, CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 type FormInputs = {

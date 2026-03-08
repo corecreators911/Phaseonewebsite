@@ -123,10 +123,21 @@ export const Showreel = () => {
 
         btn.addEventListener("mousemove", handleMouseMove);
         btn.addEventListener("mouseleave", handleMouseLeave);
+
+        // Store refs for cleanup — ctx.revert() only handles GSAP tweens
+        (btn as any)._mmHandler = handleMouseMove;
+        (btn as any)._mlHandler = handleMouseLeave;
       }
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      const btn = playBtnRef.current;
+      if (btn) {
+        if ((btn as any)._mmHandler) btn.removeEventListener("mousemove", (btn as any)._mmHandler);
+        if ((btn as any)._mlHandler) btn.removeEventListener("mouseleave", (btn as any)._mlHandler);
+      }
+    };
   }, []);
 
   return (

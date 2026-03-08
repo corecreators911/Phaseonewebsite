@@ -19,6 +19,9 @@ import { SectionDivider } from "./components/SectionDivider";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Hoisted outside component — stable reference, not re-created on each render
+const lenisEasing = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+
 export default function App() {
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +30,7 @@ export default function App() {
 
     const lenis = new Lenis({
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      easing: lenisEasing,
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
@@ -45,12 +48,12 @@ export default function App() {
     gsap.ticker.add(updateLenis);
     gsap.ticker.lagSmoothing(0);
 
-    // Refresh ScrollTrigger after a short delay to ensure layout is ready
-    setTimeout(() => {
+    const refreshId = setTimeout(() => {
       ScrollTrigger.refresh();
     }, 100);
 
     return () => {
+      clearTimeout(refreshId);
       lenis.destroy();
       gsap.ticker.remove(updateLenis);
     };
