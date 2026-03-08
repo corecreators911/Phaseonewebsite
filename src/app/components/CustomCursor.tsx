@@ -14,16 +14,15 @@ export const CustomCursor = () => {
     const mouse = { x: 0, y: 0 };
     const speed = 0.15;
 
+    const xTo = gsap.quickTo(cursor, "x", { duration: 0.1, ease: "power3" });
+    const yTo = gsap.quickTo(cursor, "y", { duration: 0.1, ease: "power3" });
+
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
 
-      gsap.to(cursor, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.1,
-        ease: "none",
-      });
+      xTo(e.clientX);
+      yTo(e.clientY);
     };
 
     const tick = () => {

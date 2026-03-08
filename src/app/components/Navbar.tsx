@@ -4,7 +4,7 @@ import { cn } from "../../lib/utils";
 import logoImg from "figma:asset/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
 import { motion, AnimatePresence } from "motion/react";
 
-const NAV_ITEMS = ["Home", "Showreel", "Services", "Projects", "About", "Contact"];
+const NAV_ITEMS = ["Home", "Showreel", "Departments", "Projects", "About", "Contact"];
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -45,14 +45,20 @@ export const Navbar = () => {
             className="hidden md:flex items-center p-1.5 rounded-full border border-white/10 bg-black/40 backdrop-blur-lg shadow-inner relative z-50 transition-all duration-500 hover:border-white/20"
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            {NAV_ITEMS.map((item, i) => (
+            {NAV_ITEMS.map((item, i) => {
+              const isContact = item === "Contact";
+              
+              return (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
                 onMouseEnter={() => setHoveredIndex(i)}
-                className="relative px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-400 transition-colors duration-300 hover:text-white"
+                className={cn(
+                  "relative px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] transition-colors duration-300",
+                  isContact ? "text-white bg-[#8C0B0C]/20 border border-[#8C0B0C]/50 rounded-full shadow-[0_0_15px_rgba(140,11,12,0.3)] hover:bg-[#8C0B0C]/40 hover:shadow-[0_0_20px_rgba(140,11,12,0.5)]" : "text-neutral-400 hover:text-white"
+                )}
               >
-                {hoveredIndex === i && (
+                {!isContact && hoveredIndex === i && (
                   <motion.div
                     layoutId="nav-pill"
                     className="absolute inset-0 z-0 rounded-full border border-[#8C0B0C]/40 bg-gradient-to-r from-[#8C0B0C]/30 via-[#8C0B0C]/10 to-transparent shadow-[0_0_20px_rgba(140,11,12,0.4)]"
@@ -61,17 +67,9 @@ export const Navbar = () => {
                 )}
                 <span className="relative z-10 mix-blend-plus-lighter">{item}</span>
               </a>
-            ))}
+              );
+            })}
           </nav>
-
-          <div className="hidden md:flex items-center gap-4 z-50">
-            <a 
-              href="#contact"
-              className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-500 hover:border-[#8C0B0C]/60 hover:bg-[#8C0B0C]/10 hover:shadow-[0_0_20px_rgba(140,11,12,0.4)]"
-            >
-              <div className="h-2 w-2 rounded-full bg-white group-hover:bg-[#8C0B0C] transition-colors shadow-[0_0_10px_rgba(255,255,255,0.8)] group-hover:shadow-[0_0_10px_rgba(140,11,12,0.8)]" />
-            </a>
-          </div>
 
           <button
             className="md:hidden relative z-[160] flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/50 backdrop-blur-md text-white transition-all hover:border-[#8C0B0C]/50 hover:bg-[#8C0B0C]/10"

@@ -9,7 +9,7 @@ import { Hero } from "./components/Hero";
 import { FilmGrain } from "./components/FilmGrain";
 import { Footer } from "./components/Footer";
 import { Showreel } from "./components/Showreel";
-import { Services } from "./components/Services";
+import { Departments } from "./components/Departments";
 import { Projects } from "./components/Projects";
 import { About } from "./components/About";
 import { Contact } from "./components/Contact";
@@ -70,7 +70,7 @@ export default function App() {
             <Hero />
             <Showreel />
             <SectionDivider />
-            <Services />
+            <Departments />
             <SectionDivider />
             <Projects />
             <SectionDivider />

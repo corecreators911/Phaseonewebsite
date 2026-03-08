@@ -14,6 +14,15 @@ export const Showreel = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Pin the section
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top top",
+        end: "+=150%", // Scroll for 1.5x screen height while pinned
+        pin: true,
+        pinSpacing: true,
+      });
+
       // Cinematic scale-up reveal
       gsap.fromTo(
         videoRef.current,
@@ -27,7 +36,7 @@ export const Showreel = () => {
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top bottom",
-            end: "40% center",
+            end: "top top",
             scrub: 1.5,
           },
         }
@@ -46,7 +55,7 @@ export const Showreel = () => {
             ease: "power3.out",
             scrollTrigger: {
               trigger: containerRef.current,
-              start: "30% center",
+              start: "top 20%",
               toggleActions: "play none none reverse",
             },
           }
@@ -84,8 +93,8 @@ export const Showreel = () => {
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "70% center",
-          end: "bottom top",
+          start: "top -50%",
+          end: "top -150%",
           scrub: 1,
         },
       });
@@ -116,9 +125,9 @@ export const Showreel = () => {
     <section
       id="showreel"
       ref={containerRef}
-      className="relative w-full h-[250vh] bg-black scroll-mt-24"
+      className="relative w-full h-screen bg-black scroll-mt-24"
     >
-      <div className="sticky top-0 w-full h-screen flex items-center justify-center overflow-hidden">
+      <div className="w-full h-full flex items-center justify-center overflow-hidden">
         <div
           ref={videoRef}
           className="relative w-full h-full overflow-hidden will-change-transform bg-black"
