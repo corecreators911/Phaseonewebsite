@@ -11,11 +11,16 @@ export const ShaderBackground = () => {
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     camera.position.z = 1;
 
-    // antialias removed — no benefit for a fullscreen quad shader
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    mountRef.current.appendChild(renderer.domElement);
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      mountRef.current.appendChild(renderer.domElement);
+    } catch (e) {
+      console.warn("WebGL not supported, skipping shader background");
+      return;
+    }
 
     const uniforms = {
       uTime: { value: 0 },

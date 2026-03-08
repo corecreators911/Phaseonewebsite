@@ -141,7 +141,7 @@ export const About = () => {
     <section
       id="about"
       ref={containerRef}
-      className="relative w-full bg-black pt-4 pb-12 md:pt-6 md:pb-16 px-6 overflow-hidden scroll-mt-24"
+      className="relative w-full bg-black py-12 md:py-16 px-6 overflow-hidden scroll-mt-24"
     >
       {/* Background subtle elements */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none">

@@ -112,7 +112,7 @@ export const Projects = () => {
     <section
       id="projects"
       ref={containerRef}
-      className="relative w-full bg-black pt-12 pb-4 md:pt-20 md:pb-8 px-6 scroll-mt-24"
+      className="relative w-full bg-black py-12 md:py-16 px-6 scroll-mt-24"
     >
       {/* Subtle dot-grid texture */}
       <div

@@ -19,8 +19,7 @@ import { SectionDivider } from "./components/SectionDivider";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Hoisted outside component — stable reference, not re-created on each render
-const lenisEasing = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+// Removed lenisEasing
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -28,16 +27,7 @@ export default function App() {
   useEffect(() => {
     if (loading) return;
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: lenisEasing,
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
-    });
+    const lenis = new Lenis();
 
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -71,6 +61,7 @@ export default function App() {
           <Navbar />
           <main>
             <Hero />
+            <SectionDivider />
             <Showreel />
             <SectionDivider />
             <Departments />

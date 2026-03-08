@@ -8,11 +8,11 @@ import { Marquee } from "./Marquee";
 const NAV_COLS = [
   {
     title: "Navigation",
-    links: ["Home", "Showreel", "Services", "Projects", "About", "Contact"],
+    links: ["Home", "Showreel", "Departments", "Projects", "About", "Contact"],
   },
   {
-    title: "Services",
-    links: ["Visual Effects", "CGI & 3D", "Compositing", "Motion Design", "Simulation", "Virtual Production"],
+    title: "Departments",
+    links: ["VFX", "CFX", "Animation", "Lighting", "Production", "Administration"],
   },
   {
     title: "Studio",

@@ -158,7 +158,7 @@ export const Showreel = () => {
     <section
       id="showreel"
       ref={containerRef}
-      className="relative w-full h-screen bg-black scroll-mt-24"
+      className="relative w-full h-screen bg-black scroll-mt-24 mt-12 mb-12 md:mt-16 md:mb-16"
     >
       <div className="w-full h-full flex items-center justify-center overflow-hidden">
         <div

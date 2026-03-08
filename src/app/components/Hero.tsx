@@ -41,7 +41,7 @@ export const Hero = () => {
     <section
       id="home"
       ref={containerRef}
-      className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-black"
+      className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-black mb-12 md:mb-16"
     >
       {/* Dynamic Background */}
       <ShaderBackground />
