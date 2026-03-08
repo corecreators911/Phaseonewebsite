@@ -2,101 +2,83 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 export const CustomCursor = () => {
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const followerRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const cursor = cursorRef.current;
-    const follower = followerRef.current;
-    if (!cursor || !follower) return;
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
 
-    const pos = { x: 0, y: 0 };
-    const mouse = { x: 0, y: 0 };
-    const speed = 0.15;
+    const dotInner = dot.firstElementChild as HTMLElement;
+    const ringInner = ring.firstElementChild as HTMLElement;
+    if (!dotInner || !ringInner) return;
 
-    const xTo = gsap.quickTo(cursor, "x", { duration: 0.1, ease: "power3" });
-    const yTo = gsap.quickTo(cursor, "y", { duration: 0.1, ease: "power3" });
+    const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const mouse = { x: pos.x, y: pos.y };
+    const speed = 0.12;
+    let rafId: number;
+
+    gsap.set(dot, { x: pos.x, y: pos.y });
+    gsap.set(ring, { x: pos.x, y: pos.y });
+
+    const xToDot = gsap.quickTo(dot, "x", { duration: 0.08, ease: "power3" });
+    const yToDot = gsap.quickTo(dot, "y", { duration: 0.08, ease: "power3" });
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
-
-      xTo(e.clientX);
-      yTo(e.clientY);
+      xToDot(e.clientX);
+      yToDot(e.clientY);
     };
 
     const tick = () => {
       pos.x += (mouse.x - pos.x) * speed;
       pos.y += (mouse.y - pos.y) * speed;
+      gsap.set(ring, { x: pos.x, y: pos.y });
+      rafId = requestAnimationFrame(tick);
+    };
 
-      gsap.set(follower, {
-        x: pos.x,
-        y: pos.y,
+    // Hover in: dot turns white, ring border turns crimson — no size change
+    const handleMouseEnter = () => {
+      gsap.to(dotInner, {
+        backgroundColor: "#ffffff",
+        boxShadow: "0 0 10px rgba(255,255,255,0.5)",
+        duration: 0.25,
+        ease: "power2.out",
       });
-
-      requestAnimationFrame(tick);
+      gsap.to(ringInner, {
+        borderColor: "rgba(140,11,12,0.7)",
+        backgroundColor: "rgba(140,11,12,0.06)",
+        duration: 0.25,
+        ease: "power2.out",
+      });
     };
 
-    // Scale up on interactive elements
-    const handleMouseEnter = (e: Event) => {
-      const target = e.currentTarget as HTMLElement;
-      const isProject = target.hasAttribute("data-cursor-project");
-      
-      if (isProject) {
-        gsap.to(follower, { 
-          scale: 4.5, 
-          opacity: 0.9, 
-          backgroundColor: "#8C0B0C",
-          borderColor: "transparent",
-          duration: 0.4, 
-          ease: "power3.out" 
-        });
-        gsap.to(cursor, { scale: 0.5, opacity: 0, duration: 0.4, ease: "power3.out" });
-        
-        const text = target.getAttribute("data-cursor-text") || "VIEW";
-        const label = document.createElement("div");
-        label.className = "cursor-label absolute inset-0 flex items-center justify-center text-[10px] font-black tracking-tighter text-white uppercase";
-        label.innerText = text;
-        follower.appendChild(label);
-        gsap.fromTo(label, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, delay: 0.1 });
-      } else {
-        // Normal interactive elements like buttons
-        gsap.to(follower, { 
-          scale: 1.5, 
-          opacity: 1, 
-          backgroundColor: "rgba(140, 11, 12, 0.2)",
-          borderColor: "rgba(140, 11, 12, 0.8)",
-          duration: 0.4, 
-          ease: "power3.out" 
-        });
-        gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" });
-      }
-    };
-
+    // Hover out: back to default red dot + faint white ring
     const handleMouseLeave = () => {
-      gsap.to(follower, { 
-        scale: 1, 
-        opacity: 0.3, 
-        backgroundColor: "transparent",
-        borderColor: "rgba(255, 255, 255, 0.2)",
-        duration: 0.4, 
-        ease: "power3.out" 
+      gsap.to(dotInner, {
+        backgroundColor: "#8C0B0C",
+        boxShadow: "0 0 10px rgba(140,11,12,0.8)",
+        duration: 0.25,
+        ease: "power2.out",
       });
-      gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" });
-      
-      const labels = follower.querySelectorAll(".cursor-label");
-      labels.forEach(l => {
-        gsap.to(l, { opacity: 0, scale: 0.5, duration: 0.2, onComplete: () => l.remove() });
+      gsap.to(ringInner, {
+        borderColor: "rgba(255,255,255,0.2)",
+        backgroundColor: "transparent",
+        duration: 0.25,
+        ease: "power2.out",
       });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
 
-    // Listen for interactive elements
     const setupListeners = () => {
-      const interactiveEls = document.querySelectorAll("a, button, [data-cursor-hover], [data-cursor-project]");
-      interactiveEls.forEach((el) => {
+      const els = document.querySelectorAll("a, button, [data-cursor-hover], select");
+      els.forEach((el) => {
+        el.removeEventListener("mouseenter", handleMouseEnter);
+        el.removeEventListener("mouseleave", handleMouseLeave);
         el.addEventListener("mouseenter", handleMouseEnter);
         el.addEventListener("mouseleave", handleMouseLeave);
       });
@@ -104,18 +86,15 @@ export const CustomCursor = () => {
 
     setupListeners();
 
-    // Re-observe for dynamically added elements
-    const observer = new MutationObserver(() => {
-      setupListeners();
-    });
-
+    const observer = new MutationObserver(setupListeners);
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(rafId);
       observer.disconnect();
-      const interactiveEls = document.querySelectorAll("a, button, [data-cursor-hover], [data-cursor-project]");
-      interactiveEls.forEach((el) => {
+      const els = document.querySelectorAll("a, button, [data-cursor-hover], select");
+      els.forEach((el) => {
         el.removeEventListener("mouseenter", handleMouseEnter);
         el.removeEventListener("mouseleave", handleMouseLeave);
       });
@@ -124,21 +103,25 @@ export const CustomCursor = () => {
 
   return (
     <>
-      {/* Dot cursor */}
+      {/* Dot — snaps instantly to pointer */}
       <div
-        ref={cursorRef}
+        ref={dotRef}
         className="fixed top-0 left-0 z-[10000] pointer-events-none hidden md:block"
         style={{ transform: "translate(-50%, -50%)" }}
       >
-        <div className="h-2 w-2 rounded-full bg-[#8C0B0C] shadow-[0_0_10px_rgba(140,11,12,0.8)]" />
+        <div
+          className="h-[7px] w-[7px] rounded-full bg-[#8C0B0C]"
+          style={{ boxShadow: "0 0 10px rgba(140,11,12,0.8)" }}
+        />
       </div>
-      {/* Follower ring */}
+
+      {/* Follower ring — lags behind with lerp */}
       <div
-        ref={followerRef}
+        ref={ringRef}
         className="fixed top-0 left-0 z-[9999] pointer-events-none hidden md:block"
         style={{ transform: "translate(-50%, -50%)" }}
       >
-        <div className="h-10 w-10 rounded-full border border-white/20 opacity-30 mix-blend-difference" />
+        <div className="h-9 w-9 rounded-full border border-white/20" />
       </div>
     </>
   );

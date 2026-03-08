@@ -5,42 +5,52 @@ import { cn } from "../../lib/utils";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const PROJECTS = [
   {
     id: "01",
-    title: "Project\nAlpha",
+    title: "Project Alpha",
     category: "CGI & Animation",
-    image: "https://images.unsplash.com/photo-1755963969538-00dfa22a7c0b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwZnV0dXJpc3RpYyUyMGNpdHlzY2FwZSUyMGNpbmVtYXRpY3xlbnwxfHx8fDE3NzI5NTQ2NzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1710348891996-a78568aa3623?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBkYXJrJTIwc2NpLWZpJTIwdmZ4JTIwcHJvZHVjdGlvbnxlbnwxfHx8fDE3NzI5NjgwOTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
     client: "Netflix",
     year: "2025",
     awards: "VES Award Winner",
+    size: "large", // col-span-7
   },
   {
     id: "02",
-    title: "Neon\nEchoes",
+    title: "Neon Echoes",
     category: "Environment Design",
-    image: "https://images.unsplash.com/photo-1604069843247-cf22574f237e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzY2ktZmklMjBkYXJrJTIwY29ycmlkb3IlMjBjaW5lbWF0aWN8ZW58MXx8fHwxNzcyOTU0NzkwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1645780404253-e9c1e46d1450?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxuZW9uJTIwbm9pciUyMGNpdHklMjBuaWdodCUyMGNpbmVtYXRpY3xlbnwxfHx8fDE3NzI5NjgwOTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
     client: "Warner Bros",
     year: "2025",
     awards: "BAFTA Nominated",
+    size: "small", // col-span-5
   },
   {
     id: "03",
-    title: "Abyssal\nPlain",
+    title: "Abyssal Plain",
     category: "Simulation & VFX",
-    image: "https://images.unsplash.com/photo-1728391180319-42d0b114e010?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1bmRlcndhdGVyJTIwZGFyayUyMGNpbmVtYXRpYyUyMGRlZXAlMjBvY2VhbnxlbnwxfHx8fDE3NzI5NTQ3ODl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1682957205538-7ba9957b01a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZWVwJTIwb2NlYW4lMjBkYXJrJTIwdW5kZXJ3YXRlciUyMGNpbmVtYXRpY3xlbnwxfHx8fDE3NzI5NjgwOTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
     client: "Sony Pictures",
     year: "2024",
     awards: "Academy Award Shortlist",
+    size: "small", // col-span-5
   },
   {
     id: "04",
-    title: "Star\nDust",
+    title: "Star Dust",
     category: "Virtual Production",
-    image: "https://images.unsplash.com/photo-1538430564773-c50dbabcec87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGRhcmslMjByZWQlMjBzbW9rZSUyMGF0bW9zcGhlcmljfGVufDF8fHx8MTc3Mjk1NDY3MXww&ixlib=rb-4.1.0&q=80&w=1080",
+    image:
+      "https://images.unsplash.com/photo-1719820390502-e0823fcc739d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwY29zbW9zJTIwZ2FsYXh5JTIwc3BhY2UlMjBjaW5lbWF0aWMlMjBtb29keXxlbnwxfHx8fDE3NzI5NjgwOTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
     client: "A24",
     year: "2024",
     awards: "Cannes Selection",
+    size: "large", // col-span-7
   },
 ];
 
@@ -52,12 +62,12 @@ export const Projects = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Heading char animation
+      // Heading character animation
       if (headingRef.current) {
         const chars = headingRef.current.querySelectorAll(".char-reveal");
         gsap.fromTo(
           chars,
-          { y: "100%", opacity: 0 },
+          { y: "110%", opacity: 0 },
           {
             y: "0%",
             opacity: 1,
@@ -73,46 +83,25 @@ export const Projects = () => {
         );
       }
 
-      // Cards stagger with parallax
+      // Cards stagger entrance
       cardsRef.current.forEach((card, i) => {
         if (!card) return;
-
-        const image = card.querySelector(".project-image");
-
         gsap.fromTo(
           card,
-          { opacity: 0, y: 120, scale: 0.95 },
+          { opacity: 0, y: 60 },
           {
             opacity: 1,
             y: 0,
-            scale: 1,
-            duration: 1.4,
+            duration: 1.2,
+            delay: i * 0.1,
             ease: "power3.out",
             scrollTrigger: {
               trigger: card,
-              start: "top 90%",
+              start: "top 88%",
               toggleActions: "play none none reverse",
             },
           }
         );
-
-        // Parallax on image
-        if (image) {
-          gsap.fromTo(
-            image,
-            { y: "-15%" },
-            {
-              y: "15%",
-              ease: "none",
-              scrollTrigger: {
-                trigger: card,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1,
-              },
-            }
-          );
-        }
       });
     }, containerRef);
 
@@ -123,14 +112,21 @@ export const Projects = () => {
     <section
       id="projects"
       ref={containerRef}
-      className="relative w-full bg-neutral-950 py-12 md:py-16 px-6 overflow-hidden scroll-mt-24"
+      className="relative w-full bg-black pt-12 pb-4 md:pt-20 md:pb-8 px-6 scroll-mt-24"
     >
-      {/* Subtle background texture */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} />
+      {/* Subtle dot-grid texture */}
+      <div
+        className="absolute inset-0 opacity-[0.025] pointer-events-none"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.8) 1px, transparent 0)",
+          backgroundSize: "36px 36px",
+        }}
+      />
 
       <div className="container mx-auto max-w-7xl relative z-10">
-        {/* Header */}
-        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
+        {/* ── Header ── */}
+        <div className="mb-16 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
             <div className="flex items-center gap-4 mb-6">
               <div className="h-[1px] w-12 bg-[#8C0B0C]" />
@@ -139,11 +135,14 @@ export const Projects = () => {
               </span>
             </div>
             <div ref={headingRef} className="overflow-hidden">
-              <h2 className="flex flex-wrap">
+              <h2 className="flex flex-wrap gap-y-0">
                 {"SELECTED WORKS".split("").map((char, i) => (
                   <span
                     key={i}
-                    className={`char-reveal inline-block text-[10vw] md:text-[6vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-700 uppercase ${char === " " ? "w-[0.3em]" : ""}`}
+                    className={cn(
+                      "char-reveal inline-block text-[10vw] md:text-[5.5vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-600 uppercase",
+                      char === " " ? "w-[0.28em]" : ""
+                    )}
                   >
                     {char === " " ? "\u00A0" : char}
                   </span>
@@ -152,101 +151,144 @@ export const Projects = () => {
             </div>
           </div>
           <button
-            className="group flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 hover:text-white transition-colors"
+            className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 hover:text-white transition-colors duration-300"
             data-cursor-hover
           >
             <span>View Full Archive</span>
-            <div className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#8C0B0C]/50 group-hover:bg-[#8C0B0C]/10 transition-all duration-500">
+            <div className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#8C0B0C]/60 group-hover:bg-[#8C0B0C]/10 transition-all duration-500">
               <ExternalLink className="w-3 h-3" />
             </div>
           </button>
         </div>
 
-        {/* Projects Grid - Asymmetric */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+        {/* ── Projects Grid ── */}
+        {/*
+          Layout:
+            Row 1 → [Project 0: 7 cols] [Project 1: 5 cols]
+            Row 2 → [Project 2: 5 cols] [Project 3: 7 cols]
+          Both rows same height — no vertical offset, no aspect-ratio tricks.
+        */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
           {PROJECTS.map((project, idx) => {
+            const isLarge = project.size === "large";
+            const colClass = isLarge ? "md:col-span-7" : "md:col-span-5";
             const isHovered = hoveredIndex === idx;
-            const isAnotherHovered = hoveredIndex !== null && hoveredIndex !== idx;
-
-            // Alternate between wide and narrow
-            const isWide = idx % 3 === 0;
-            const colSpan = isWide ? "md:col-span-7" : "md:col-span-5";
-            // Offset even items
-            const offsetClass = idx === 1 || idx === 3 ? "md:mt-16" : "";
+            const isOtherHovered = hoveredIndex !== null && !isHovered;
 
             return (
               <div
                 key={project.id}
                 ref={(el) => (cardsRef.current[idx] = el)}
                 className={cn(
-                  colSpan,
-                  offsetClass,
-                  "group relative overflow-hidden rounded-xl bg-neutral-900 cursor-none transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]",
-                  isAnotherHovered
-                    ? "opacity-30 blur-[2px] scale-[0.99]"
-                    : "opacity-100 blur-none scale-100"
+                  colClass,
+                  "group relative rounded-xl overflow-hidden bg-neutral-900",
+                  // Unified card height — tall on desktop
+                  "h-[340px] sm:h-[400px] md:h-[480px]",
+                  // Subtle dim on sibling hover
+                  "transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]",
+                  isOtherHovered
+                    ? "opacity-40 scale-[0.985]"
+                    : "opacity-100 scale-100"
                 )}
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                data-cursor-project
-                data-cursor-text="VIEW"
+                data-cursor-hover
               >
-                {/* Image container with parallax */}
-                <div className="relative aspect-[16/10] md:aspect-[16/11] overflow-hidden">
+                {/* ── Image ── fills card, subtle scale on hover */}
+                <div className="absolute inset-0 w-full h-full overflow-hidden">
                   <ImageWithFallback
                     src={project.image}
                     alt={project.title}
-                    className="project-image absolute inset-[-15%] w-[130%] h-[130%] object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-105"
+                    className="w-full h-full object-cover scale-[1.04] group-hover:scale-[1.09] transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)]"
                   />
+                </div>
 
-                  {/* Gradient overlays */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-700" />
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(140,11,12,0.4)_0%,transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                {/* ── Gradient overlays ── */}
+                {/* Base darkening gradient from bottom */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/10 transition-opacity duration-700" />
+                {/* Hover: crimson bloom from bottom-left */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(140,11,12,0.45)_0%,transparent_55%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                {/* Inner border */}
+                <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.05] group-hover:ring-[#8C0B0C]/25 rounded-xl transition-colors duration-700" />
 
-                  {/* Ring border */}
-                  <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.06] group-hover:ring-[#8C0B0C]/30 transition-colors duration-700 rounded-xl" />
-
-                  {/* Top bar - ID + Awards */}
-                  <div className="absolute top-0 left-0 right-0 p-6 md:p-8 flex justify-between items-start">
-                    <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
-                      {project.id} / {project.year}
+                {/* ── Top row: ID / Year + Award ── */}
+                <div className="absolute top-0 left-0 right-0 px-6 md:px-7 pt-6 flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-white/40 uppercase tracking-[0.28em] opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1 group-hover:translate-y-0">
+                    {project.id} — {project.year}
+                  </span>
+                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-75 -translate-y-1 group-hover:translate-y-0">
+                    <div className="h-[5px] w-[5px] rounded-full bg-[#8C0B0C]" />
+                    <span className="text-[9px] font-mono text-[#8C0B0C] uppercase tracking-[0.2em]">
+                      {project.awards}
                     </span>
-                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 delay-100">
-                      <div className="h-1 w-1 rounded-full bg-[#8C0B0C]" />
-                      <span className="text-[9px] font-mono text-[#8C0B0C] uppercase tracking-[0.2em]">
-                        {project.awards}
+                  </div>
+                </div>
+
+                {/* ── Bottom content ── */}
+                <div className="absolute bottom-0 left-0 right-0 px-6 md:px-7 pb-6 md:pb-7">
+                  {/* Client row + VIEW arrow */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-white/50 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                      {project.client}
+                    </span>
+
+                    {/* VIEW arrow badge — replaces the bloated cursor effect */}
+                    <div
+                      className={cn(
+                        "flex items-center gap-2 rounded-full border px-3 py-1.5 transition-all duration-500",
+                        "border-white/10 bg-white/5 opacity-0 translate-y-2",
+                        "group-hover:opacity-100 group-hover:translate-y-0 group-hover:border-[#8C0B0C]/50 group-hover:bg-[#8C0B0C]/15"
+                      )}
+                    >
+                      <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-white/80">
+                        View
                       </span>
+                      <ArrowUpRight className="w-3 h-3 text-white/80" />
                     </div>
                   </div>
 
-                  {/* Bottom content */}
-                  <div className="absolute bottom-0 left-0 w-full p-6 md:p-8">
-                    {/* Client + arrow */}
-                    <div className="mb-3 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-3 group-hover:translate-y-0">
-                      <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-400">
-                        {project.client}
-                      </span>
-                      <div className="h-8 w-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:bg-[#8C0B0C] transition-colors duration-500">
-                        <ArrowUpRight className="text-white w-4 h-4" />
-                      </div>
-                    </div>
+                  {/* Project title */}
+                  <h3
+                    className={cn(
+                      "font-black uppercase tracking-tighter text-white leading-[0.92] transition-transform duration-700",
+                      "translate-y-1 group-hover:translate-y-0",
+                      isLarge
+                        ? "text-[clamp(2rem,4vw,3.5rem)]"
+                        : "text-[clamp(1.6rem,3.2vw,2.8rem)]"
+                    )}
+                  >
+                    {project.title}
+                  </h3>
 
-                    {/* Title */}
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter text-white leading-[0.9] whitespace-pre-line transition-transform duration-700 translate-y-2 group-hover:translate-y-0">
-                      {project.title}
-                    </h3>
-
-                    {/* Category */}
-                    <div className="mt-3 overflow-hidden">
-                      <p className="text-[10px] md:text-xs font-mono tracking-[0.15em] uppercase text-white/60 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-150 translate-y-4 group-hover:translate-y-0">
-                        {project.category}
-                      </p>
-                    </div>
-                  </div>
+                  {/* Category */}
+                  <p className="mt-2.5 text-[10px] md:text-[11px] font-mono tracking-[0.14em] uppercase text-white/45 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100 translate-y-3 group-hover:translate-y-0">
+                    {project.category}
+                  </p>
                 </div>
               </div>
             );
           })}
+        </div>
+
+        {/* ── Bottom counter ── */}
+        <div className="mt-6 md:mt-8 flex items-center justify-between">
+          <p className="text-[10px] font-mono text-neutral-600 uppercase tracking-[0.25em]">
+            Showing 04 of 28 projects
+          </p>
+          <div className="h-[1px] flex-1 mx-8 bg-gradient-to-r from-neutral-800 to-transparent" />
+          <div className="flex gap-1.5">
+            {PROJECTS.map((_, i) => (
+              <div
+                key={i}
+                className={cn(
+                  "h-[2px] rounded-full transition-all duration-300",
+                  hoveredIndex === i
+                    ? "w-6 bg-[#8C0B0C]"
+                    : "w-2 bg-neutral-700"
+                )}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

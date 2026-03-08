@@ -72,11 +72,12 @@ export const About = () => {
         const img = imageRef.current.querySelector("img");
         gsap.fromTo(
           imageRef.current,
-          { clipPath: "inset(100% 0 0 0)" },
+          { opacity: 0, y: 40 },
           {
-            clipPath: "inset(0% 0 0 0)",
-            duration: 1.5,
-            ease: "power4.out",
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: "power3.out",
             scrollTrigger: {
               trigger: imageRef.current,
               start: "top 85%",
@@ -88,11 +89,11 @@ export const About = () => {
         if (img) {
           gsap.fromTo(
             img,
-            { scale: 1.3 },
+            { scale: 1.08 },
             {
               scale: 1,
-              duration: 1.5,
-              ease: "power4.out",
+              duration: 1.2,
+              ease: "power3.out",
               scrollTrigger: {
                 trigger: imageRef.current,
                 start: "top 85%",
@@ -148,7 +149,7 @@ export const About = () => {
     <section
       id="about"
       ref={containerRef}
-      className="relative w-full bg-black py-12 md:py-16 px-6 overflow-hidden scroll-mt-24"
+      className="relative w-full bg-black pt-4 pb-12 md:pt-6 md:pb-16 px-6 overflow-hidden scroll-mt-24"
     >
       {/* Background subtle elements */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none">

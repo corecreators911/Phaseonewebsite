@@ -33,15 +33,15 @@ export const Footer = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Big text reveal from bottom
+      // Big text reveal — fade + small lift (not y:"100%" which creates blank space)
       if (bigTextRef.current) {
         const chars = bigTextRef.current.querySelectorAll(".footer-char");
         gsap.fromTo(
           chars,
-          { y: "100%", opacity: 0 },
+          { opacity: 0, y: 30 },
           {
-            y: "0%",
             opacity: 1,
+            y: 0,
             duration: 1.4,
             stagger: 0.03,
             ease: "power4.out",
@@ -163,8 +163,11 @@ export const Footer = () => {
       </div>
 
       {/* Giant text at bottom */}
-      <div ref={bigTextRef} className="overflow-hidden border-t border-white/[0.04] pt-8 pb-4">
-        <div className="container mx-auto max-w-7xl px-6">
+      <div ref={bigTextRef} className="border-t border-[#8C0B0C]/20 pt-8 pb-4 relative overflow-hidden">
+        {/* Subtle glow behind the text */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-1/2 bg-[#8C0B0C]/10 blur-[100px] pointer-events-none rounded-full" />
+        
+        <div className="container mx-auto max-w-7xl px-6 relative z-10">
           <div className="flex flex-wrap justify-center">
             {"PHASE ONE".split("").map((char, i) => (
               <span
@@ -173,8 +176,11 @@ export const Footer = () => {
                   char === " " ? "w-[0.2em]" : ""
                 }`}
                 style={{
-                  WebkitTextStroke: "1px rgba(255,255,255,0.04)",
+                  backgroundImage: "linear-gradient(180deg, #333333 0%, #050505 100%)",
+                  WebkitBackgroundClip: "text",
                   color: "transparent",
+                  WebkitTextStroke: "1px rgba(140, 11, 12, 0.8)",
+                  textShadow: "0 10px 40px rgba(140, 11, 12, 0.4)"
                 }}
               >
                 {char === " " ? "\u00A0" : char}

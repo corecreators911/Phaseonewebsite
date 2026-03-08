@@ -33,25 +33,19 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({ className = "" }
   }, []);
 
   return (
-    <div className={`w-full px-6 py-2 ${className}`}>
-      <div className="container mx-auto max-w-7xl relative">
-        {/* HUD detail left */}
-        <div className="absolute left-0 -top-4 flex flex-col gap-1 opacity-20">
-          <div className="h-1 w-1 bg-white rounded-full" />
-          <div className="h-1 w-1 bg-[#8C0B0C] rounded-full" />
-        </div>
-        
+    <div className={`w-full px-6 py-3 ${className}`}>
+      <div className="container mx-auto max-w-7xl relative flex items-center gap-3">
+        {/* HUD dot left */}
+        <div className="h-[3px] w-[3px] rounded-full bg-[#8C0B0C] opacity-40 flex-shrink-0" />
+
         <div
           ref={lineRef}
-          className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#8C0B0C]/40 to-transparent origin-center shadow-[0_0_15px_rgba(140,11,12,0.2)]"
+          className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#8C0B0C]/35 to-transparent origin-center shadow-[0_0_12px_rgba(140,11,12,0.15)]"
           style={{ transform: "scaleX(0)" }}
         />
 
-        {/* HUD detail right */}
-        <div className="absolute right-0 -top-4 flex flex-col items-end gap-1 opacity-20">
-          <div className="h-1 w-1 bg-white rounded-full" />
-          <div className="h-1 w-1 bg-white/40 rounded-full" />
-        </div>
+        {/* HUD dot right */}
+        <div className="h-[3px] w-[3px] rounded-full bg-white/20 opacity-40 flex-shrink-0" />
       </div>
     </div>
   );
