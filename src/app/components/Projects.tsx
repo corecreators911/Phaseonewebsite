@@ -123,7 +123,7 @@ export const Projects = () => {
     <section
       id="projects"
       ref={containerRef}
-      className="relative w-full bg-neutral-950 py-16 md:py-24 px-6 overflow-hidden scroll-mt-24"
+      className="relative w-full bg-neutral-950 py-12 md:py-16 px-6 overflow-hidden scroll-mt-24"
     >
       {/* Subtle background texture */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} />

@@ -120,7 +120,7 @@ export const Contact = () => {
     <section
       id="contact"
       ref={containerRef}
-      className="relative w-full bg-black py-16 md:py-24 px-6 overflow-hidden scroll-mt-24"
+      className="relative w-full bg-black py-12 md:py-16 px-6 overflow-hidden scroll-mt-24"
     >
       {/* Background accent */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(140,11,12,0.08)_0%,transparent_60%)] pointer-events-none" />

@@ -42,23 +42,34 @@ export const CustomCursor = () => {
       const target = e.currentTarget as HTMLElement;
       const isProject = target.hasAttribute("data-cursor-project");
       
-      gsap.to(follower, { 
-        scale: isProject ? 4.5 : 2.5, 
-        opacity: isProject ? 0.9 : 0.15, 
-        backgroundColor: isProject ? "#8C0B0C" : "transparent",
-        borderColor: isProject ? "transparent" : "rgba(255, 255, 255, 0.2)",
-        duration: 0.4, 
-        ease: "power3.out" 
-      });
-      gsap.to(cursor, { scale: 0.5, opacity: 0, duration: 0.4, ease: "power3.out" });
-      
       if (isProject) {
+        gsap.to(follower, { 
+          scale: 4.5, 
+          opacity: 0.9, 
+          backgroundColor: "#8C0B0C",
+          borderColor: "transparent",
+          duration: 0.4, 
+          ease: "power3.out" 
+        });
+        gsap.to(cursor, { scale: 0.5, opacity: 0, duration: 0.4, ease: "power3.out" });
+        
         const text = target.getAttribute("data-cursor-text") || "VIEW";
         const label = document.createElement("div");
         label.className = "cursor-label absolute inset-0 flex items-center justify-center text-[10px] font-black tracking-tighter text-white uppercase";
         label.innerText = text;
         follower.appendChild(label);
         gsap.fromTo(label, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, delay: 0.1 });
+      } else {
+        // Normal interactive elements like buttons
+        gsap.to(follower, { 
+          scale: 1.5, 
+          opacity: 1, 
+          backgroundColor: "rgba(140, 11, 12, 0.2)",
+          borderColor: "rgba(140, 11, 12, 0.8)",
+          duration: 0.4, 
+          ease: "power3.out" 
+        });
+        gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" });
       }
     };
 

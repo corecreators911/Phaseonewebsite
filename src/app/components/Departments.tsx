@@ -110,7 +110,7 @@ export const Departments = () => {
     <section
       id="departments"
       ref={containerRef}
-      className="relative w-full bg-black py-16 md:py-24 px-6 scroll-mt-24 overflow-hidden"
+      className="relative w-full bg-black py-12 md:py-16 px-6 scroll-mt-24 overflow-hidden"
     >
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Section label */}

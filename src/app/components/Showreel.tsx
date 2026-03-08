@@ -14,16 +14,7 @@ export const Showreel = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Pin the section
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top top",
-        end: "+=150%", // Scroll for 1.5x screen height while pinned
-        pin: true,
-        pinSpacing: true,
-      });
-
-      // Cinematic scale-up reveal
+      // Scale up when scrolling into view
       gsap.fromTo(
         videoRef.current,
         { scale: 0.5, borderRadius: "60px", opacity: 0, filter: "brightness(0)" },
@@ -37,10 +28,42 @@ export const Showreel = () => {
             trigger: containerRef.current,
             start: "top bottom",
             end: "top top",
-            scrub: 1.5,
+            scrub: true,
           },
         }
       );
+
+      // Pin and scale down timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "+=100%",
+          pin: true,
+          pinSpacing: true,
+          scrub: true,
+        }
+      });
+
+      // Stay full size for the first half of the pin
+      tl.to(videoRef.current, {
+        scale: 1,
+        borderRadius: "0px",
+        opacity: 1,
+        filter: "brightness(1)",
+        duration: 1,
+        ease: "none"
+      });
+
+      // Scale down during the second half of the pin
+      tl.to(videoRef.current, {
+        scale: 0.85,
+        borderRadius: "40px",
+        opacity: 0.3,
+        filter: "brightness(0.3)",
+        duration: 1,
+        ease: "none"
+      });
 
       // Frame corners animate in
       if (frameRef.current) {
@@ -83,21 +106,6 @@ export const Showreel = () => {
           }
         );
       }
-
-      // Scale down on exit
-      gsap.to(videoRef.current, {
-        scale: 0.85,
-        borderRadius: "40px",
-        opacity: 0.3,
-        filter: "brightness(0.3)",
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top -50%",
-          end: "top -150%",
-          scrub: 1,
-        },
-      });
 
       // Magnetic play button
       const btn = playBtnRef.current;
