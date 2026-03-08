@@ -1,24 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 type FormInputs = {
   name: string;
   email: string;
-  company: string;
-  budget: string;
-  details: string;
+  message: string;
 };
-
-const BUDGET_OPTIONS = [
-  "< $50K",
-  "$50K – $150K",
-  "$150K – $500K",
-  "$500K+",
-];
 
 export const Contact = () => {
   const {
@@ -29,7 +19,6 @@ export const Contact = () => {
   } = useForm<FormInputs>();
 
   const [isSuccess, setIsSuccess] = useState(false);
-  const [selectedBudget, setSelectedBudget] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const formContainerRef = useRef<HTMLDivElement>(null);
@@ -85,31 +74,47 @@ export const Contact = () => {
         );
       }
 
-      // Magnetic button
+      // Magnetic button — cache rect on mouseenter, invalidate on resize
       const btn = buttonRef.current;
       if (btn) {
+        let btnRect = btn.getBoundingClientRect();
+
+        const handleBtnEnter = () => {
+          btnRect = btn.getBoundingClientRect();
+        };
         const handleMouseMove = (e: MouseEvent) => {
-          const { left, top, width, height } = btn.getBoundingClientRect();
-          const x = (e.clientX - left - width / 2) * 0.35;
-          const y = (e.clientY - top - height / 2) * 0.35;
+          const x = (e.clientX - btnRect.left - btnRect.width / 2) * 0.35;
+          const y = (e.clientY - btnRect.top - btnRect.height / 2) * 0.35;
           gsap.to(btn, { x, y, duration: 0.6, ease: "power3.out" });
         };
-
         const handleMouseLeave = () => {
           gsap.to(btn, { x: 0, y: 0, duration: 1, ease: "elastic.out(1, 0.3)" });
         };
+        const handleResize = () => {
+          btnRect = btn.getBoundingClientRect();
+        };
 
+        btn.addEventListener("mouseenter", handleBtnEnter);
         btn.addEventListener("mousemove", handleMouseMove);
         btn.addEventListener("mouseleave", handleMouseLeave);
+        window.addEventListener("resize", handleResize, { passive: true });
 
-        return () => {
-          btn.removeEventListener("mousemove", handleMouseMove);
-          btn.removeEventListener("mouseleave", handleMouseLeave);
-        };
+        (btn as any)._handlers = { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize };
       }
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      const btn = buttonRef.current;
+      if (btn && (btn as any)._handlers) {
+        const { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize } = (btn as any)._handlers;
+        btn.removeEventListener("mouseenter", handleBtnEnter);
+        btn.removeEventListener("mousemove", handleMouseMove);
+        btn.removeEventListener("mouseleave", handleMouseLeave);
+        window.removeEventListener("resize", handleResize);
+        delete (btn as any)._handlers;
+      }
+    };
   }, []);
 
   const onSubmit = async (data: FormInputs) => {
@@ -139,7 +144,7 @@ export const Contact = () => {
         </div>
 
         {/* Big heading */}
-        <div ref={headingRef} className="overflow-hidden mb-16 md:mb-20">
+        <div ref={headingRef} className="overflow-hidden mb-12 md:mb-16">
           <h2 className="flex flex-wrap">
             {"LET'S CREATE".split("").map((char, i) => (
               <span
@@ -249,7 +254,7 @@ export const Contact = () => {
                     Transmission Sent
                   </h3>
                   <p className="text-sm text-neutral-500 max-w-sm">
-                    Our team will review your inquiry and respond within 24 hours.
+                    We've received your message and will get back to you within 24 hours.
                   </p>
                 </div>
               ) : (
@@ -278,7 +283,7 @@ export const Contact = () => {
                         {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                         type="email"
                         className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors"
-                        placeholder="john@studio.com"
+                        placeholder="john@example.com"
                       />
                       {errors.email && (
                         <span className="absolute right-0 bottom-3 text-[10px] text-[#8C0B0C]">Valid email required</span>
@@ -286,55 +291,18 @@ export const Contact = () => {
                     </div>
                   </div>
 
-                  {/* Row 2 - Company */}
+                  {/* Message */}
                   <div className="relative group">
                     <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-600 mb-3 group-focus-within:text-[#8C0B0C] transition-colors">
-                      Company / Studio
-                    </label>
-                    <input
-                      {...register("company")}
-                      type="text"
-                      className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors"
-                      placeholder="Your studio or production company"
-                    />
-                  </div>
-
-                  {/* Budget selection */}
-                  <div>
-                    <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-600 mb-4">
-                      Project Budget
-                    </label>
-                    <div className="flex flex-wrap gap-3">
-                      {BUDGET_OPTIONS.map((budget) => (
-                        <button
-                          key={budget}
-                          type="button"
-                          onClick={() => setSelectedBudget(budget)}
-                          className={cn(
-                            "px-5 py-2.5 rounded-full border text-[11px] font-mono uppercase tracking-[0.15em] transition-all duration-300",
-                            selectedBudget === budget
-                              ? "border-[#8C0B0C] bg-[#8C0B0C]/10 text-white shadow-[0_0_15px_rgba(140,11,12,0.2)]"
-                              : "border-white/10 text-neutral-500 hover:border-white/20 hover:text-neutral-300"
-                          )}
-                        >
-                          {budget}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Details */}
-                  <div className="relative group">
-                    <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-600 mb-3 group-focus-within:text-[#8C0B0C] transition-colors">
-                      Project Details
+                      Message
                     </label>
                     <textarea
-                      {...register("details", { required: true })}
-                      rows={4}
+                      {...register("message", { required: true })}
+                      rows={6}
                       className="w-full resize-none bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors"
-                      placeholder="Tell us about your project, timeline, and vision..."
+                      placeholder="Tell us what's on your mind..."
                     />
-                    {errors.details && (
+                    {errors.message && (
                       <span className="absolute right-0 bottom-3 text-[10px] text-[#8C0B0C]">Required</span>
                     )}
                   </div>

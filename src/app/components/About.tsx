@@ -46,25 +46,24 @@ export const About = () => {
         );
       }
 
-      // Word-by-word text reveal with opacity scrub
+      // Word-by-word text reveal with opacity scrub — single ScrollTrigger instead of one per word
       if (textRef.current) {
         const words = textRef.current.querySelectorAll(".word");
-        words.forEach((word, i) => {
-          gsap.fromTo(
-            word,
-            { opacity: 0.15 },
-            {
-              opacity: 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: word,
-                start: "top 80%",
-                end: "top 50%",
-                scrub: 1,
-              },
-            }
-          );
-        });
+        gsap.fromTo(
+          words,
+          { opacity: 0.15 },
+          {
+            opacity: 1,
+            ease: "none",
+            stagger: { each: 0.3, from: "start" },
+            scrollTrigger: {
+              trigger: textRef.current,
+              start: "top 80%",
+              end: "bottom 60%",
+              scrub: 1,
+            },
+          }
+        );
       }
 
       // Image parallax + reveal

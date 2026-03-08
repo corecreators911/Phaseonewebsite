@@ -5,23 +5,29 @@ import { ArrowDownRight } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { motion } from "motion/react";
 
+const CRAFTING_CHARS = "CRAFTING".split("");
+const LINE2_CHARS = "THE UNREAL".split("");
+
 export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const title1Ref = useRef<HTMLHeadingElement>(null);
-  const title2Ref = useRef<HTMLHeadingElement>(null);
-  const textWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.5 }); // Delay for preloader
-
-      tl.fromTo(
-        [title1Ref.current, title2Ref.current],
-        { y: "120%", rotation: 5, opacity: 0 },
-        { y: "0%", rotation: 0, opacity: 1, duration: 1.6, stagger: 0.15, ease: "power4.out" }
+      // Character-by-character stagger reveal — line 1 flows into line 2 seamlessly
+      gsap.fromTo(
+        ".hero-char",
+        { y: "115%", opacity: 0 },
+        {
+          y: "0%",
+          opacity: 1,
+          duration: 1.5,
+          stagger: 0.042,
+          ease: "power4.out",
+          delay: 0.5,
+        }
       );
     }, containerRef);
-    
+
     return () => ctx.revert();
   }, []);
 
@@ -32,10 +38,14 @@ export const Hero = () => {
   ];
 
   return (
-    <section id="home" className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-black" ref={containerRef}>
+    <section
+      id="home"
+      ref={containerRef}
+      className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-black"
+    >
       {/* Dynamic Background */}
       <ShaderBackground />
-      
+
       {/* Subtle Grain Overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay z-0" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')" }} />
 
@@ -48,7 +58,7 @@ export const Hero = () => {
       </div>
 
       {/* Floating HUD / Overlay UI */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1.5 }}
@@ -72,7 +82,7 @@ export const Hero = () => {
 
         {/* Bottom UI */}
         <div className="flex flex-col md:flex-row justify-between items-center md:items-end w-full px-[2%] md:px-[5%] pb-8 gap-10 md:gap-0 pointer-events-auto">
-          
+
           {/* Avatar Cluster & Trust Layer */}
           <div className="flex items-center gap-5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full p-2 pr-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-colors hover:border-white/20 hover:bg-white/10">
             <div className="flex -space-x-3">
@@ -92,7 +102,7 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Minimal Play / Scroll Indicator */}
+          {/* Scroll Indicator */}
           <a href="#showreel" className="group flex flex-col md:flex-row items-center gap-4 cursor-pointer">
             <span className="text-[10px] md:text-[11px] font-mono text-neutral-400 uppercase tracking-[0.2em] group-hover:text-white transition-colors duration-300">
               Scroll to explore
@@ -104,38 +114,69 @@ export const Hero = () => {
         </div>
       </motion.div>
 
-      {/* Main Cinematic Text Layer */}
-      <div ref={textWrapRef} className="relative z-10 flex flex-col items-center justify-center w-full px-4 mix-blend-plus-lighter pointer-events-none">
-        
-        {/* Layer 1: Outlined Thin Type */}
-        <div className="overflow-hidden mb-[-3vw] md:mb-[-4vw]">
-          <h1 
-            ref={title1Ref} 
-            className="text-[16vw] md:text-[12vw] font-black leading-none tracking-tighter text-transparent opacity-0 transform-gpu"
-            style={{ WebkitTextStroke: "1px rgba(255,255,255,0.4)" }}
-          >
-            CRAFTING
-          </h1>
+      {/* Main Cinematic Text — character-by-character curtain reveal */}
+      <div className="relative z-10 flex flex-col items-center w-full px-4 mix-blend-plus-lighter pointer-events-none select-none">
+
+        {/* Line 1: CRAFTING — outlined ghost type */}
+        <div className="flex text-[15vw] md:text-[11.5vw] font-black tracking-tighter">
+          {CRAFTING_CHARS.map((char, i) => (
+            <span key={i} className="overflow-hidden inline-block" style={{ lineHeight: 0.92 }}>
+              <span
+                className="hero-char inline-block transform-gpu text-transparent"
+                style={{
+                  WebkitTextStroke: "1px rgba(255,255,255,0.38)",
+                  lineHeight: 0.92,
+                  opacity: 0,
+                }}
+              >
+                {char}
+              </span>
+            </span>
+          ))}
         </div>
 
-        {/* Layer 2: Bold Solid Type with Accent */}
-        <div className="overflow-hidden flex items-baseline z-10">
-          <h1 
-            ref={title2Ref} 
-            className="text-[16vw] md:text-[12vw] font-black leading-none tracking-tighter text-white opacity-0 transform-gpu drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
-          >
-            THE UNREAL<span className="text-[#8C0B0C] drop-shadow-[0_0_40px_rgba(140,11,12,0.8)]">.</span>
-          </h1>
+        {/* Line 2: THE UNREAL. — solid white + red accent dot */}
+        <div className="flex text-[15vw] md:text-[11.5vw] font-black tracking-tighter">
+          {LINE2_CHARS.map((char, i) => {
+            if (char === " ") {
+              return (
+                <span
+                  key={i}
+                  className="inline-block"
+                  style={{ width: "0.18em", lineHeight: 0.92 }}
+                />
+              );
+            }
+            return (
+              <span key={i} className="overflow-hidden inline-block" style={{ lineHeight: 0.92 }}>
+                <span
+                  className="hero-char inline-block transform-gpu text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
+                  style={{ lineHeight: 0.92, opacity: 0 }}
+                >
+                  {char}
+                </span>
+              </span>
+            );
+          })}
+          {/* Crimson dot */}
+          <span className="overflow-hidden inline-block" style={{ lineHeight: 0.92 }}>
+            <span
+              className="hero-char inline-block transform-gpu text-[#8C0B0C] drop-shadow-[0_0_40px_rgba(140,11,12,0.8)]"
+              style={{ lineHeight: 0.92, opacity: 0 }}
+            >
+              .
+            </span>
+          </span>
         </div>
-
       </div>
 
-      {/* Center Floating Badge */}
-      <motion.div 
+      {/* "Visual Effects & Motion" badge — reliably below text, never overlapping */}
+      <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ delay: 2.2, duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-        className="absolute top-[40%] md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:mt-[10vw] z-20 pointer-events-none"
+        className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none"
+        style={{ top: "calc(50% + 14vw)" }}
       >
         <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 shadow-2xl">
           <div className="h-1.5 w-1.5 rounded-full bg-[#8C0B0C] animate-pulse shadow-[0_0_10px_rgba(140,11,12,1)]" />
@@ -144,7 +185,7 @@ export const Hero = () => {
           </p>
         </div>
       </motion.div>
-      
+
     </section>
   );
 };

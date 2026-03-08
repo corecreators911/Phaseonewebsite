@@ -124,7 +124,7 @@ export const Departments = () => {
         </div>
 
         {/* Heading with char reveal */}
-        <div ref={headingRef} className="mb-16 md:mb-24 overflow-hidden">
+        <div ref={headingRef} className="mb-8 md:mb-12 overflow-hidden">
           <h2 className="flex flex-wrap">
             {"DEPARTMENTS".split("").map((char, i) => (
               <span

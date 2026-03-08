@@ -77,10 +77,19 @@ export const CustomCursor = () => {
 
     setupListeners();
 
-    const observer = new MutationObserver(setupListeners);
+    // Debounce MutationObserver — accordion opens / form state changes trigger DOM mutations;
+    // without debounce this re-queries and rebinds on every single mutation.
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    const debouncedSetup = () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(setupListeners, 200);
+    };
+
+    const observer = new MutationObserver(debouncedSetup);
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
+      clearTimeout(debounceTimer);
       window.removeEventListener("mousemove", handleMouseMove);
       observer.disconnect();
       const els = document.querySelectorAll("a, button, [data-cursor-hover], select");

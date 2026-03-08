@@ -110,10 +110,15 @@ export const Showreel = () => {
       // Magnetic play button
       const btn = playBtnRef.current;
       if (btn) {
+        // Cache rect on mouseenter — avoids getBoundingClientRect() reflow on every mousemove
+        let btnRect = btn.getBoundingClientRect();
+
+        const handleBtnEnter = () => {
+          btnRect = btn.getBoundingClientRect();
+        };
         const handleMouseMove = (e: MouseEvent) => {
-          const { left, top, width, height } = btn.getBoundingClientRect();
-          const x = (e.clientX - left - width / 2) * 0.4;
-          const y = (e.clientY - top - height / 2) * 0.4;
+          const x = (e.clientX - btnRect.left - btnRect.width / 2) * 0.4;
+          const y = (e.clientY - btnRect.top - btnRect.height / 2) * 0.4;
           gsap.to(btn, { x, y, duration: 0.6, ease: "power3.out" });
         };
 
@@ -121,21 +126,30 @@ export const Showreel = () => {
           gsap.to(btn, { x: 0, y: 0, duration: 1, ease: "elastic.out(1, 0.3)" });
         };
 
+        const handleResize = () => {
+          btnRect = btn.getBoundingClientRect();
+        };
+
+        btn.addEventListener("mouseenter", handleBtnEnter);
         btn.addEventListener("mousemove", handleMouseMove);
         btn.addEventListener("mouseleave", handleMouseLeave);
+        window.addEventListener("resize", handleResize, { passive: true });
 
         // Store refs for cleanup — ctx.revert() only handles GSAP tweens
-        (btn as any)._mmHandler = handleMouseMove;
-        (btn as any)._mlHandler = handleMouseLeave;
+        (btn as any)._handlers = { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize };
       }
     }, containerRef);
 
     return () => {
       ctx.revert();
       const btn = playBtnRef.current;
-      if (btn) {
-        if ((btn as any)._mmHandler) btn.removeEventListener("mousemove", (btn as any)._mmHandler);
-        if ((btn as any)._mlHandler) btn.removeEventListener("mouseleave", (btn as any)._mlHandler);
+      if (btn && (btn as any)._handlers) {
+        const { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize } = (btn as any)._handlers;
+        btn.removeEventListener("mouseenter", handleBtnEnter);
+        btn.removeEventListener("mousemove", handleMouseMove);
+        btn.removeEventListener("mouseleave", handleMouseLeave);
+        window.removeEventListener("resize", handleResize);
+        delete (btn as any)._handlers;
       }
     };
   }, []);
