@@ -1,0 +1,291 @@
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Marquee } from "./Marquee";
+
+const STATS = [
+  { value: 150, suffix: "+", label: "Projects Delivered" },
+  { value: 32, suffix: "", label: "Awards Won" },
+  { value: 80, suffix: "+", label: "Artists Worldwide" },
+  { value: 8, suffix: "", label: "Years of Excellence" },
+];
+
+const CLIENTS = [
+  "Netflix", "Warner Bros", "Sony Pictures", "A24", "Disney", "Apple TV+",
+  "HBO", "Paramount", "Universal", "Amazon Studios", "Lionsgate", "BBC"
+];
+
+export const About = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Heading reveal
+      if (headingRef.current) {
+        const chars = headingRef.current.querySelectorAll(".char-reveal");
+        gsap.fromTo(
+          chars,
+          { y: "100%", opacity: 0 },
+          {
+            y: "0%",
+            opacity: 1,
+            duration: 1.2,
+            stagger: 0.03,
+            ease: "power4.out",
+            scrollTrigger: {
+              trigger: headingRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+
+      // Word-by-word text reveal with opacity scrub
+      if (textRef.current) {
+        const words = textRef.current.querySelectorAll(".word");
+        words.forEach((word, i) => {
+          gsap.fromTo(
+            word,
+            { opacity: 0.15 },
+            {
+              opacity: 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: word,
+                start: "top 80%",
+                end: "top 50%",
+                scrub: 1,
+              },
+            }
+          );
+        });
+      }
+
+      // Image parallax + reveal
+      if (imageRef.current) {
+        const img = imageRef.current.querySelector("img");
+        gsap.fromTo(
+          imageRef.current,
+          { clipPath: "inset(100% 0 0 0)" },
+          {
+            clipPath: "inset(0% 0 0 0)",
+            duration: 1.5,
+            ease: "power4.out",
+            scrollTrigger: {
+              trigger: imageRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+
+        if (img) {
+          gsap.fromTo(
+            img,
+            { scale: 1.3 },
+            {
+              scale: 1,
+              duration: 1.5,
+              ease: "power4.out",
+              scrollTrigger: {
+                trigger: imageRef.current,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+      }
+
+      // Stats counter animation
+      if (statsRef.current) {
+        const statEls = statsRef.current.querySelectorAll(".stat-value");
+        statEls.forEach((el, i) => {
+          const target = STATS[i].value;
+          const obj = { value: 0 };
+
+          gsap.to(obj, {
+            value: target,
+            duration: 2,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+              onEnter: () => {
+                gsap.to(obj, {
+                  value: target,
+                  duration: 2,
+                  ease: "power2.out",
+                  onUpdate: () => {
+                    (el as HTMLElement).innerText = Math.round(obj.value).toString();
+                  },
+                });
+              },
+              onLeaveBack: () => {
+                obj.value = 0;
+                (el as HTMLElement).innerText = "0";
+              },
+            },
+          });
+        });
+      }
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const paragraphText =
+    "We are a collective of digital artists, technologists, and filmmakers dedicated to pushing the boundaries of visual storytelling. From concept to final frame, we craft immersive worlds and impossible realities for the world's most demanding creators. Every pixel, every frame, every render — engineered to perfection.";
+
+  return (
+    <section
+      id="about"
+      ref={containerRef}
+      className="relative w-full bg-black py-16 md:py-24 px-6 overflow-hidden scroll-mt-24"
+    >
+      {/* Background subtle elements */}
+      <div className="absolute inset-0 opacity-[0.015] pointer-events-none">
+        <div className="absolute top-0 left-[50%] w-[1px] h-full bg-white" />
+      </div>
+
+      <div className="container mx-auto max-w-7xl">
+        {/* Section label */}
+        <div className="flex items-center gap-4 mb-6">
+          <div className="h-[1px] w-12 bg-[#8C0B0C]" />
+          <span className="text-[10px] md:text-[11px] font-mono text-[#8C0B0C] uppercase tracking-[0.3em]">
+            About Us
+          </span>
+        </div>
+
+        {/* Heading */}
+        <div ref={headingRef} className="overflow-hidden mb-16 md:mb-24">
+          <h2 className="flex flex-wrap">
+            {"PHASE ONE".split("").map((char, i) => (
+              <span
+                key={i}
+                className={`char-reveal inline-block text-[14vw] md:text-[10vw] font-black leading-none tracking-tighter uppercase ${
+                  char === " " ? "w-[0.3em]" : ""
+                }`}
+                style={{
+                  WebkitTextStroke: "1px rgba(255,255,255,0.15)",
+                  color: "transparent",
+                }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </h2>
+        </div>
+
+        {/* Main content grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start">
+          {/* Image column */}
+          <div className="md:col-span-5 order-2 md:order-1">
+            <div
+              ref={imageRef}
+              className="relative group overflow-hidden rounded-xl"
+            >
+              <div className="aspect-[3/4] overflow-hidden">
+                <ImageWithFallback
+                  src="https://images.unsplash.com/photo-1698533188601-2432adf826f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBkYXJrJTIwc3R1ZGlvJTIwdGVhbSUyMGNyZWF0aXZlfGVufDF8fHx8MTc3Mjk1NDY3MXww&ixlib=rb-4.1.0&q=80&w=1080"
+                  alt="Studio"
+                  className="w-full h-full object-cover grayscale contrast-110 brightness-75 transition-all duration-[1.5s] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100"
+                />
+              </div>
+              {/* Overlay frame */}
+              <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.06] group-hover:ring-[#8C0B0C]/20 transition-colors duration-700 rounded-xl" />
+
+              {/* Badge on image */}
+              <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+                <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-4 py-2">
+                  <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-neutral-400">
+                    Est. 2018 — London
+                  </p>
+                </div>
+                <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-4 py-2">
+                  <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-[#8C0B0C]">
+                    LND / LAX / NYC
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Text column */}
+          <div className="md:col-span-7 order-1 md:order-2">
+            {/* Word-by-word text reveal */}
+            <div ref={textRef} className="mb-16">
+              <p className="text-2xl md:text-3xl lg:text-4xl font-medium leading-relaxed tracking-tight flex flex-wrap gap-x-[0.3em]">
+                {paragraphText.split(" ").map((word, i) => (
+                  <span key={i} className="word inline-block text-white">
+                    {word}
+                  </span>
+                ))}
+              </p>
+            </div>
+
+            {/* Animated Stats */}
+            <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-t border-b border-white/[0.06]">
+              {STATS.map((stat, i) => (
+                <div key={stat.label} className="group flex flex-col gap-2">
+                  <div className="flex items-baseline">
+                    <span className="stat-value text-4xl md:text-5xl font-black text-white tracking-tight group-hover:text-[#8C0B0C] transition-colors duration-500">
+                      0
+                    </span>
+                    <span className="text-2xl md:text-3xl font-bold text-[#8C0B0C]">
+                      {stat.suffix}
+                    </span>
+                  </div>
+                  <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Philosophy quote */}
+            <div className="mt-12 flex gap-6">
+              <div className="w-[2px] bg-gradient-to-b from-[#8C0B0C] to-transparent flex-shrink-0" />
+              <blockquote className="text-sm md:text-base text-neutral-500 italic leading-relaxed">
+                "We don't just create visual effects — we architect realities. Every frame is a canvas, every project a universe waiting to be born."
+                <span className="block mt-3 text-[10px] font-mono not-italic uppercase tracking-[0.2em] text-[#8C0B0C]">
+                  — Creative Director
+                </span>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+
+        {/* Client Marquee */}
+        <div className="mt-20 md:mt-28">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="text-[10px] font-mono text-neutral-600 uppercase tracking-[0.3em]">
+              Trusted by industry leaders
+            </span>
+            <div className="flex-1 h-[1px] bg-white/[0.04]" />
+          </div>
+
+          <Marquee speed={30} className="py-6 border-t border-b border-white/[0.04]">
+            <div className="flex items-center gap-16 px-8">
+              {CLIENTS.map((client, i) => (
+                <span
+                  key={`${client}-${i}`}
+                  className="text-2xl md:text-3xl font-bold uppercase tracking-tight text-neutral-800 hover:text-neutral-400 transition-colors duration-500 whitespace-nowrap cursor-default"
+                >
+                  {client}
+                </span>
+              ))}
+            </div>
+          </Marquee>
+        </div>
+      </div>
+    </section>
+  );
+};

@@ -1,0 +1,150 @@
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ShaderBackground } from "./ShaderBackground";
+import { ArrowDownRight } from "lucide-react";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { motion } from "motion/react";
+
+export const Hero = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const title1Ref = useRef<HTMLHeadingElement>(null);
+  const title2Ref = useRef<HTMLHeadingElement>(null);
+  const textWrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ delay: 0.5 }); // Delay for preloader
+
+      tl.fromTo(
+        [title1Ref.current, title2Ref.current],
+        { y: "120%", rotation: 5, opacity: 0 },
+        { y: "0%", rotation: 0, opacity: 1, duration: 1.6, stagger: 0.15, ease: "power4.out" }
+      );
+    }, containerRef);
+    
+    return () => ctx.revert();
+  }, []);
+
+  const avatars = [
+    "https://images.unsplash.com/photo-1770896687186-895de50a4123?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBwb3J0cmFpdCUyMGRhcmslMjBwcm9maWxlfGVufDF8fHx8MTc3Mjk1NDEzOXww&ixlib=rb-4.1.0&q=80&w=1080",
+    "https://images.unsplash.com/photo-1630916079851-de145947bde3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBwb3J0cmFpdCUyMG5lb24lMjByZWR8ZW58MXx8fHwxNzcyOTU0MTQzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "https://images.unsplash.com/photo-1661613795419-8f7506266076?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBmYWNlJTIwZGFyayUyMGRyYW1hdGljfGVufDF8fHx8MTc3Mjk1NDE0N3ww&ixlib=rb-4.1.0&q=80&w=1080"
+  ];
+
+  return (
+    <section id="home" className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-black" ref={containerRef}>
+      {/* Dynamic Background */}
+      <ShaderBackground />
+      
+      {/* Subtle Grain Overlay */}
+      <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay z-0" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')" }} />
+
+      {/* Parallax Grid Lines */}
+      <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]">
+        <div className="absolute left-[10%] top-0 bottom-0 w-[1px] bg-white" />
+        <div className="absolute right-[10%] top-0 bottom-0 w-[1px] bg-white" />
+        <div className="absolute top-[20%] left-0 right-0 h-[1px] bg-white" />
+        <div className="absolute bottom-[20%] left-0 right-0 h-[1px] bg-white" />
+      </div>
+
+      {/* Floating HUD / Overlay UI */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1.5 }}
+        className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between p-6 md:p-12"
+      >
+        {/* Top UI */}
+        <div className="flex justify-between items-start pt-24 md:pt-28 w-full px-[2%] md:px-[5%]">
+          <div className="flex flex-col gap-1.5 overflow-hidden">
+            <span className="text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.3em]">SYS_RENDER_001</span>
+            <span className="text-[9px] md:text-[10px] font-mono text-[#8C0B0C] uppercase tracking-[0.2em]">LND // LAX // NY</span>
+          </div>
+          <div className="flex flex-col items-end gap-1.5">
+            <span className="text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.3em]">EST. 2018</span>
+            <div className="flex gap-1.5 mt-1">
+              <span className="h-1 w-4 bg-[#8C0B0C] rounded-full animate-pulse" />
+              <span className="h-1 w-1 bg-neutral-700 rounded-full" />
+              <span className="h-1 w-1 bg-neutral-700 rounded-full" />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom UI */}
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end w-full px-[2%] md:px-[5%] pb-8 gap-10 md:gap-0 pointer-events-auto">
+          
+          {/* Avatar Cluster & Trust Layer */}
+          <div className="flex items-center gap-5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full p-2 pr-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-colors hover:border-white/20 hover:bg-white/10">
+            <div className="flex -space-x-3">
+              {avatars.map((avatar, i) => (
+                <div key={i} className="h-10 w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/20 shadow-lg relative group cursor-pointer">
+                  <ImageWithFallback src={avatar} alt={`Avatar ${i}`} className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                </div>
+              ))}
+              <div className="h-10 w-10 md:h-12 md:w-12 rounded-full border border-white/20 bg-black/80 flex items-center justify-center relative z-10 shadow-lg">
+                <span className="text-[10px] md:text-xs font-bold text-white tracking-tighter">+2K</span>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-white">Trusted By</span>
+              <span className="text-[9px] md:text-[10px] font-mono text-[#8C0B0C] uppercase tracking-widest mt-0.5">Industry Leaders</span>
+            </div>
+          </div>
+
+          {/* Minimal Play / Scroll Indicator */}
+          <a href="#showreel" className="group flex flex-col md:flex-row items-center gap-4 cursor-pointer">
+            <span className="text-[10px] md:text-[11px] font-mono text-neutral-400 uppercase tracking-[0.2em] group-hover:text-white transition-colors duration-300">
+              Scroll to explore
+            </span>
+            <div className="h-14 w-14 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl flex items-center justify-center group-hover:border-[#8C0B0C]/60 group-hover:bg-[#8C0B0C]/10 group-hover:shadow-[0_0_25px_rgba(140,11,12,0.3)] transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]">
+              <ArrowDownRight className="w-5 h-5 text-neutral-400 group-hover:text-[#8C0B0C] transition-colors duration-300 group-hover:scale-110" />
+            </div>
+          </a>
+        </div>
+      </motion.div>
+
+      {/* Main Cinematic Text Layer */}
+      <div ref={textWrapRef} className="relative z-10 flex flex-col items-center justify-center w-full px-4 mix-blend-plus-lighter pointer-events-none">
+        
+        {/* Layer 1: Outlined Thin Type */}
+        <div className="overflow-hidden mb-[-3vw] md:mb-[-4vw]">
+          <h1 
+            ref={title1Ref} 
+            className="text-[16vw] md:text-[12vw] font-black leading-none tracking-tighter text-transparent opacity-0 transform-gpu"
+            style={{ WebkitTextStroke: "1px rgba(255,255,255,0.4)" }}
+          >
+            CRAFTING
+          </h1>
+        </div>
+
+        {/* Layer 2: Bold Solid Type with Accent */}
+        <div className="overflow-hidden flex items-baseline z-10">
+          <h1 
+            ref={title2Ref} 
+            className="text-[16vw] md:text-[12vw] font-black leading-none tracking-tighter text-white opacity-0 transform-gpu drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
+          >
+            THE UNREAL<span className="text-[#8C0B0C] drop-shadow-[0_0_40px_rgba(140,11,12,0.8)]">.</span>
+          </h1>
+        </div>
+
+      </div>
+
+      {/* Center Floating Badge */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ delay: 2.2, duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+        className="absolute top-[40%] md:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:mt-[10vw] z-20 pointer-events-none"
+      >
+        <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 shadow-2xl">
+          <div className="h-1.5 w-1.5 rounded-full bg-[#8C0B0C] animate-pulse shadow-[0_0_10px_rgba(140,11,12,1)]" />
+          <p className="text-[9px] md:text-[10px] font-mono tracking-[0.25em] text-neutral-300 uppercase">
+            Visual Effects & <span className="text-white font-bold">Motion</span>
+          </p>
+        </div>
+      </motion.div>
+      
+    </section>
+  );
+};
