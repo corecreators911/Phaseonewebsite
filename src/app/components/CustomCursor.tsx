@@ -7,10 +7,9 @@ export const CustomCursor = () => {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
-  // Hide custom cursor entirely for reduced-motion users
-  if (prefersReducedMotion) return null;
-
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     const dot = dotRef.current;
     const ring = ringRef.current;
     if (!dot || !ring) return;
@@ -103,7 +102,10 @@ export const CustomCursor = () => {
         el.removeEventListener("mouseleave", handleMouseLeave);
       });
     };
-  }, []);
+  }, [prefersReducedMotion]);
+
+  // Hide custom cursor entirely for reduced-motion users
+  if (prefersReducedMotion) return null;
 
   return (
     <>
