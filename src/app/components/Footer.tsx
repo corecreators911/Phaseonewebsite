@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUp, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
-import logoImg from "figma:asset/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
+import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
 import { Marquee } from "./Marquee";
 
 const NAV_COLS = [
@@ -21,10 +21,10 @@ const NAV_COLS = [
 ];
 
 const SOCIALS = [
-  { icon: Twitter, label: "Twitter", href: "#" },
-  { icon: Instagram, label: "Instagram", href: "#" },
-  { icon: Linkedin, label: "LinkedIn", href: "#" },
-  { icon: Youtube, label: "YouTube", href: "#" },
+  { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
+  { icon: Instagram, label: "Instagram", href: "https://instagram.com" },
+  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
+  { icon: Youtube, label: "YouTube", href: "https://youtube.com" },
 ];
 
 export const Footer = () => {
@@ -112,6 +112,8 @@ export const Footer = () => {
                 <a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group h-10 w-10 rounded-full border border-white/[0.06] bg-white/[0.02] flex items-center justify-center hover:border-[#8C0B0C]/50 hover:bg-[#8C0B0C]/10 transition-all duration-300"
                   data-cursor-hover
                   aria-label={social.label}
@@ -197,13 +199,13 @@ export const Footer = () => {
             &copy; {new Date().getFullYear()} Phase One VFX. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+            <a href="#privacy" className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
               Privacy Policy
             </a>
-            <a href="#" className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+            <a href="#terms" className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
               Terms of Service
             </a>
-            <a href="#" className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+            <a href="#cookies" className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
               Cookies
             </a>
           </div>

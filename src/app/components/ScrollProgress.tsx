@@ -1,32 +1,55 @@
 import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export const ScrollProgress = () => {
-  const progressRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
+  const hasScrolled = useRef(false);
 
   useEffect(() => {
-    if (!progressRef.current) return;
+    const bar = barRef.current;
+    const container = containerRef.current;
+    if (!bar || !container) return;
 
-    gsap.to(progressRef.current, {
-      scaleY: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: document.body,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.3,
-      },
-    });
+    const update = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+
+      const progress = Math.min(Math.max(scrollTop / docHeight, 0), 1);
+
+      // Only show after user has scrolled at least 1px
+      if (!hasScrolled.current && scrollTop > 1) {
+        hasScrolled.current = true;
+        container.style.opacity = "1";
+      }
+
+      bar.style.height = `${progress * 100}%`;
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (
-    <div className="fixed right-0 top-0 bottom-0 z-[90] w-[2px] pointer-events-none hidden md:block">
+    <div
+      ref={containerRef}
+      className="fixed right-0 top-0 bottom-0 z-[200] w-[2px] pointer-events-none hidden md:block"
+      style={{ opacity: 0 }}
+    >
       <div className="absolute inset-0 bg-white/[0.03]" />
       <div
-        ref={progressRef}
-        className="absolute top-0 left-0 w-full h-full origin-top bg-gradient-to-b from-[#8C0B0C] via-[#8C0B0C] to-[#ff3333] shadow-[0_0_8px_rgba(140,11,12,0.6)]"
-        style={{ transform: "scaleY(0)" }}
+        ref={barRef}
+        className="absolute top-0 left-0 w-full bg-gradient-to-b from-[#8C0B0C] via-[#8C0B0C] to-[#ff3333]"
+        style={{ height: "0%" }}
       />
     </div>
   );

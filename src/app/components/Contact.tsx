@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import gsap from "gsap";
 import { ArrowUpRight, CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "../../lib/utils";
+import { magneticHandlers } from "../../lib/constants";
 
 type FormInputs = {
   name: string;
@@ -99,20 +100,22 @@ export const Contact = () => {
         btn.addEventListener("mouseleave", handleMouseLeave);
         window.addEventListener("resize", handleResize, { passive: true });
 
-        (btn as any)._handlers = { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize };
+        magneticHandlers.set(btn, { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize });
       }
     }, containerRef);
 
     return () => {
       ctx.revert();
       const btn = buttonRef.current;
-      if (btn && (btn as any)._handlers) {
-        const { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize } = (btn as any)._handlers;
-        btn.removeEventListener("mouseenter", handleBtnEnter);
-        btn.removeEventListener("mousemove", handleMouseMove);
-        btn.removeEventListener("mouseleave", handleMouseLeave);
-        window.removeEventListener("resize", handleResize);
-        delete (btn as any)._handlers;
+      if (btn) {
+        const handlers = magneticHandlers.get(btn);
+        if (handlers) {
+          btn.removeEventListener("mouseenter", handlers.handleBtnEnter);
+          btn.removeEventListener("mousemove", handlers.handleMouseMove);
+          btn.removeEventListener("mouseleave", handlers.handleMouseLeave);
+          window.removeEventListener("resize", handlers.handleResize);
+          magneticHandlers.delete(btn);
+        }
       }
     };
   }, []);

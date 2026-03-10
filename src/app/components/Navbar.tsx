@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "../../lib/utils";
-import logoImg from "figma:asset/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
+import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
 import { motion, AnimatePresence } from "motion/react";
 
 const NAV_ITEMS = ["Home", "Showreel", "Departments", "Projects", "About", "Contact"];
@@ -74,6 +74,8 @@ export const Navbar = () => {
           <button
             className="md:hidden relative z-[160] flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/50 backdrop-blur-md text-white transition-all hover:border-[#8C0B0C]/50 hover:bg-[#8C0B0C]/10"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>

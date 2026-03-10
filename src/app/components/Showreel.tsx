@@ -3,11 +3,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Play, Volume2 } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { magneticHandlers } from "../../lib/constants";
 
 export const Showreel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
-  const playBtnRef = useRef<HTMLDivElement>(null);
+  const playBtnRef = useRef<HTMLButtonElement>(null);
   const textRevealRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const [isHoveringPlay, setIsHoveringPlay] = useState(false);
@@ -135,21 +136,22 @@ export const Showreel = () => {
         btn.addEventListener("mouseleave", handleMouseLeave);
         window.addEventListener("resize", handleResize, { passive: true });
 
-        // Store refs for cleanup — ctx.revert() only handles GSAP tweens
-        (btn as any)._handlers = { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize };
+        magneticHandlers.set(btn, { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize });
       }
     }, containerRef);
 
     return () => {
       ctx.revert();
       const btn = playBtnRef.current;
-      if (btn && (btn as any)._handlers) {
-        const { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize } = (btn as any)._handlers;
-        btn.removeEventListener("mouseenter", handleBtnEnter);
-        btn.removeEventListener("mousemove", handleMouseMove);
-        btn.removeEventListener("mouseleave", handleMouseLeave);
-        window.removeEventListener("resize", handleResize);
-        delete (btn as any)._handlers;
+      if (btn) {
+        const handlers = magneticHandlers.get(btn);
+        if (handlers) {
+          btn.removeEventListener("mouseenter", handlers.handleBtnEnter);
+          btn.removeEventListener("mousemove", handlers.handleMouseMove);
+          btn.removeEventListener("mouseleave", handlers.handleMouseLeave);
+          window.removeEventListener("resize", handlers.handleResize);
+          magneticHandlers.delete(btn);
+        }
       }
     };
   }, []);
@@ -192,9 +194,11 @@ export const Showreel = () => {
 
           {/* Magnetic play button */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div
+            <button
               ref={playBtnRef}
-              className="relative cursor-pointer will-change-transform"
+              type="button"
+              aria-label="Play showreel"
+              className="relative cursor-pointer will-change-transform bg-transparent border-none p-0"
               onMouseEnter={() => setIsHoveringPlay(true)}
               onMouseLeave={() => setIsHoveringPlay(false)}
               data-cursor-hover
@@ -226,7 +230,7 @@ export const Showreel = () => {
                   fill="currentColor"
                 />
               </div>
-            </div>
+            </button>
           </div>
 
           {/* HUD info - top left */}

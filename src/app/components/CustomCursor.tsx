@@ -1,9 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 export const CustomCursor = () => {
+  const prefersReducedMotion = useReducedMotion();
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+
+  // Hide custom cursor entirely for reduced-motion users
+  if (prefersReducedMotion) return null;
 
   useEffect(() => {
     const dot = dotRef.current;

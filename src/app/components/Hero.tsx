@@ -86,12 +86,15 @@ export const Hero = () => {
           {/* Avatar Cluster & Trust Layer */}
           <div className="flex items-center gap-5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full p-2 pr-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-colors hover:border-white/20 hover:bg-white/10">
             <div className="flex -space-x-3">
-              {avatars.map((avatar, i) => (
+              {avatars.map((avatar, i) => {
+                const names = ["Team member portrait", "Creative director portrait", "VFX artist portrait"];
+                return (
                 <div key={i} className="h-10 w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/20 shadow-lg relative group cursor-pointer">
-                  <ImageWithFallback src={avatar} alt={`Avatar ${i}`} className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" />
+                  <ImageWithFallback src={avatar} alt={names[i]} className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                 </div>
-              ))}
+                );
+              })}
               <div className="h-10 w-10 md:h-12 md:w-12 rounded-full border border-white/20 bg-black/80 flex items-center justify-center relative z-10 shadow-lg">
                 <span className="text-[10px] md:text-xs font-bold text-white tracking-tighter">+2K</span>
               </div>
@@ -180,8 +183,8 @@ export const Hero = () => {
       >
         <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 shadow-2xl">
           <div className="h-1.5 w-1.5 rounded-full bg-[#8C0B0C] animate-pulse shadow-[0_0_10px_rgba(140,11,12,1)]" />
-          <p className="text-[9px] md:text-[10px] font-mono tracking-[0.25em] text-neutral-300 uppercase">
-            Visual Effects & <span className="text-white font-bold">Motion</span>
+          <p className="text-[9px] md:text-[10px] font-mono tracking-[0.25em] text-white uppercase font-medium">
+            Visual Effects & Motion
           </p>
         </div>
       </motion.div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
-import logoImg from "figma:asset/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
+import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
 
 interface PreloaderProps {
   onComplete: () => void;
@@ -15,6 +15,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const textLinesRef = useRef<HTMLDivElement>(null);
   const overlayTopRef = useRef<HTMLDivElement>(null);
   const overlayBottomRef = useRef<HTMLDivElement>(null);
+  const bottomInfoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tl = gsap.timeline({
@@ -74,6 +75,13 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       );
     }
 
+    // Hide the counter/bottom info immediately when it hits 100
+    tl.to(
+      bottomInfoRef.current,
+      { opacity: 0, y: 10, duration: 0.4, ease: "power2.inOut" },
+      2.5
+    );
+
     // Logo reveal
     tl.to(
       logoRef.current,
@@ -81,10 +89,10 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         opacity: 1,
         scale: 1,
         filter: "blur(0px)",
-        duration: 1,
+        duration: 0.8,
         ease: "expo.out",
       },
-      2.2
+      2.7
     );
 
     // Logo fade + split curtain exit
@@ -92,12 +100,11 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       opacity: 0,
       scale: 1.15,
       filter: "blur(15px)",
-      duration: 0.6,
+      duration: 0.5,
       ease: "power2.in",
-      delay: 0.4,
-    });
+    }, 3.8);
 
-    // Curtain split
+    // Curtain split begins right as the logo is fading out
     tl.to(
       overlayTopRef.current,
       {
@@ -105,7 +112,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         duration: 1,
         ease: "power4.inOut",
       },
-      "-=0.2"
+      3.8
     );
     tl.to(
       overlayBottomRef.current,
@@ -114,7 +121,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         duration: 1,
         ease: "power4.inOut",
       },
-      "<"
+      3.8
     );
 
     // Final container fade
@@ -122,7 +129,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       opacity: 0,
       duration: 0.3,
       ease: "power2.in",
-    });
+    }, 4.4);
   }, [onComplete]);
 
   return (
@@ -156,11 +163,12 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           src={logoImg}
           alt="Phase One Logo"
           className="h-24 md:h-32 object-contain opacity-0 scale-95 drop-shadow-[0_0_30px_rgba(140,11,12,0.5)] blur-sm"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
         />
       </div>
 
       {/* Bottom loading info */}
-      <div className="absolute bottom-12 md:bottom-16 left-0 right-0 px-8 md:px-16 z-30">
+      <div ref={bottomInfoRef} className="absolute bottom-12 md:bottom-16 left-0 right-0 px-8 md:px-16 z-30">
         <div className="max-w-lg mx-auto">
           {/* System text lines */}
           <div ref={textLinesRef} className="flex justify-between items-end mb-4">

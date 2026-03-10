@@ -98,6 +98,13 @@ export const Departments = () => {
     return () => ctx.revert();
   }, []);
 
+  // Clean up refresh timer on unmount
+  useEffect(() => {
+    return () => {
+      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+    };
+  }, []);
+
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
 
@@ -148,14 +155,15 @@ export const Departments = () => {
                 className="group relative border-t border-white/[0.06] last:border-b last:border-white/[0.06]"
               >
                 <button
+                  id={`dept-btn-${dept.id}`}
                   onClick={() => toggleAccordion(index)}
                   className="w-full relative flex items-center justify-between py-8 md:py-10 px-2 md:px-4 text-left transition-all duration-500 hover:bg-white/[0.02]"
+                  aria-expanded={isOpen}
+                  aria-controls={`dept-panel-${dept.id}`}
                 >
                   {/* Left side - number + title */}
-                  <div className="flex items-baseline gap-6 md:gap-10">
-                    <span className={`text-xs md:text-sm font-mono transition-colors duration-500 tabular-nums ${isOpen ? "text-[#8C0B0C]" : "text-neutral-600 group-hover:text-neutral-400"}`}>
-                      {dept.id}
-                    </span>
+                  <div className="flex items-center gap-6 md:gap-10">
+                    <div className={`w-2.5 h-2.5 rotate-45 transition-all duration-500 flex-shrink-0 ${isOpen ? "bg-[#8C0B0C] shadow-[0_0_10px_rgba(140,11,12,0.8)] scale-110" : "border border-neutral-600 group-hover:border-neutral-400"}`} />
                     <h3 className={`text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter uppercase transition-colors duration-500 ${isOpen ? "text-white" : "text-neutral-400 group-hover:text-neutral-300"}`}>
                       {dept.title}
                     </h3>
@@ -169,6 +177,9 @@ export const Departments = () => {
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
+                      id={`dept-panel-${dept.id}`}
+                      role="region"
+                      aria-labelledby={`dept-btn-${dept.id}`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}

@@ -19,4 +19,34 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  // Strip console.log and debugger in production
+  esbuild: {
+    drop: ['debugger'],
+    legalComments: 'none',
+  },
+
+  build: {
+    target: 'es2020',
+    cssTarget: 'chrome80',
+    // Split vendor & app code for better caching
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-gsap': ['gsap'],
+          'vendor-three': ['three'],
+          'vendor-motion': ['motion'],
+        },
+      },
+    },
+    // Use esbuild for minification (built-in, no extra deps)
+    minify: 'esbuild',
+    // Increase chunk size warning limit (Three.js is inherently large)
+    chunkSizeWarningLimit: 500,
+    // Asset inlining threshold for small assets
+    assetsInlineLimit: 4096,
+    // Source maps for debugging (disable in real prod with false)
+    sourcemap: false,
+  },
 })

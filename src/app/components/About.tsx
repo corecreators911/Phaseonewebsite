@@ -121,10 +121,7 @@ export const About = () => {
               trigger: el,
               start: "top 85%",
               toggleActions: "play none none none",
-              onLeaveBack: () => {
-                obj.value = 0;
-                (el as HTMLElement).innerText = "0";
-              },
+              once: true,
             },
           });
         });

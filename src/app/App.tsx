@@ -16,13 +16,16 @@ import { Contact } from "./components/Contact";
 import { CustomCursor } from "./components/CustomCursor";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { SectionDivider } from "./components/SectionDivider";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { useReducedMotion } from "../lib/useReducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
 // Removed lenisEasing
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  const prefersReducedMotion = useReducedMotion();
+  const [loading, setLoading] = useState(() => !prefersReducedMotion);
 
   useEffect(() => {
     if (loading) return;
@@ -51,15 +54,16 @@ export default function App() {
 
   return (
     <div className="bg-black text-white min-h-screen selection:bg-[#8C0B0C] selection:text-white cursor-none md:cursor-none" style={{ fontFamily: "var(--font-family-sans)" }}>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-6 focus:left-6 focus:z-[200] focus:px-6 focus:py-3 focus:bg-black/90 focus:border focus:border-[#8C0B0C]/50 focus:text-white focus:rounded-full focus:text-[11px] focus:font-bold focus:uppercase focus:tracking-[0.2em] focus:shadow-[0_0_15px_rgba(140,11,12,0.3)] focus:outline-none focus:ring-1 focus:ring-[#8C0B0C]/30 focus:backdrop-blur-md transition-all">Skip to content</a>
       <FilmGrain />
       {loading ? (
         <Preloader onComplete={() => setLoading(false)} />
       ) : (
-        <>
+        <ErrorBoundary>
           <CustomCursor />
           <ScrollProgress />
           <Navbar />
-          <main>
+          <main id="main-content">
             <Hero />
             <SectionDivider />
             <Showreel />
@@ -73,7 +77,7 @@ export default function App() {
             <Contact />
           </main>
           <Footer />
-        </>
+        </ErrorBoundary>
       )}
     </div>
   );

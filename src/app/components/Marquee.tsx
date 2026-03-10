@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import gsap from "gsap";
+import { useReducedMotion } from "../../lib/useReducedMotion";
 
 interface MarqueeProps {
   children: React.ReactNode;
@@ -16,10 +17,14 @@ export const Marquee: React.FC<MarqueeProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const inner = innerRef.current;
     if (!inner) return;
+
+    // Show content statically when user prefers reduced motion
+    if (prefersReducedMotion) return;
 
     const contentWidth = inner.scrollWidth / 2;
     const duration = contentWidth / speed;
@@ -36,7 +41,7 @@ export const Marquee: React.FC<MarqueeProps> = ({
     return () => {
       tween.kill();
     };
-  }, [speed, direction]);
+  }, [speed, direction, prefersReducedMotion]);
 
   return (
     <div
