@@ -22,7 +22,7 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({ className = "" }
           ease: "power4.out",
           scrollTrigger: {
             trigger: lineRef.current,
-            start: "top 90%",
+            start: "top 95%",
             toggleActions: "play none none reverse",
           },
         }

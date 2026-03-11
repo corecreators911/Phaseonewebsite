@@ -30,6 +30,16 @@ export default function App() {
   useEffect(() => {
     if (loading) return;
 
+    // Always refresh ScrollTrigger calculations after the preloader exits
+    const refreshId = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+
+    // Skip smooth scrolling for users who prefer reduced motion
+    if (prefersReducedMotion) {
+      return () => clearTimeout(refreshId);
+    }
+
     const lenis = new Lenis();
 
     lenis.on("scroll", ScrollTrigger.update);
@@ -41,16 +51,12 @@ export default function App() {
     gsap.ticker.add(updateLenis);
     gsap.ticker.lagSmoothing(0);
 
-    const refreshId = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 100);
-
     return () => {
       clearTimeout(refreshId);
       lenis.destroy();
       gsap.ticker.remove(updateLenis);
     };
-  }, [loading]);
+  }, [loading, prefersReducedMotion]);
 
   return (
     <div className="bg-black text-white min-h-screen selection:bg-[#8C0B0C] selection:text-white md:cursor-none overflow-x-hidden" style={{ fontFamily: "var(--font-family-sans)" }}>

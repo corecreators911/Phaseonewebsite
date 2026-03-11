@@ -111,7 +111,7 @@ export const CustomCursor = () => {
     <>
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 z-[10000] pointer-events-none hidden md:block"
+        className="fixed top-0 left-0 z-[99999] pointer-events-none hidden md:block"
         style={{ transform: "translate(-50%, -50%)" }}
       >
         <div
@@ -122,7 +122,7 @@ export const CustomCursor = () => {
 
       <div
         ref={ringRef}
-        className="fixed top-0 left-0 z-[9999] pointer-events-none hidden md:block"
+        className="fixed top-0 left-0 z-[99998] pointer-events-none hidden md:block"
         style={{ transform: "translate(-50%, -50%)" }}
       >
         <div className="h-9 w-9 rounded-full border border-white/20" />

@@ -87,7 +87,7 @@ export const Departments = () => {
             ease: "power4.out",
             scrollTrigger: {
               trigger: headingRef.current,
-              start: "top 85%",
+              start: "top 95%",
               toggleActions: "play none none reverse",
             },
           }

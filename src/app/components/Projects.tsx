@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "../../lib/utils";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { PreviewNotice } from "./PreviewNotice";
 
 // ScrollTrigger is registered once globally in App.tsx
 
@@ -56,9 +57,11 @@ const PROJECTS = [
 
 export const Projects = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [previewNotice, setPreviewNotice] = useState<{ title: string; message: string } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const closePreview = useCallback(() => setPreviewNotice(null), []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -76,7 +79,7 @@ export const Projects = () => {
             ease: "power4.out",
             scrollTrigger: {
               trigger: headingRef.current,
-              start: "top 85%",
+              start: "top 95%",
               toggleActions: "play none none reverse",
             },
           }
@@ -93,11 +96,11 @@ export const Projects = () => {
             opacity: 1,
             y: 0,
             duration: 1.2,
-            delay: i * 0.1,
+            delay: window.innerWidth < 768 ? 0 : (i % 2) * 0.15,
             ease: "power3.out",
             scrollTrigger: {
               trigger: card,
-              start: "top 88%",
+              start: "top 95%", // Trigger earlier on mobile so it doesn't feel late
               toggleActions: "play none none reverse",
             },
           }
@@ -153,6 +156,10 @@ export const Projects = () => {
           <button
             className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 hover:text-white transition-colors duration-300"
             data-cursor-hover
+            onClick={() => setPreviewNotice({
+              title: "Coming Soon",
+              message: "The full project archive with case studies and behind-the-scenes content will be available in the final version."
+            })}
           >
             <span>View Full Archive</span>
             <div className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#8C0B0C]/60 group-hover:bg-[#8C0B0C]/10 transition-all duration-500">
@@ -181,7 +188,7 @@ export const Projects = () => {
                 ref={(el) => (cardsRef.current[idx] = el)}
                 className={cn(
                   colClass,
-                  "group relative rounded-xl overflow-hidden bg-neutral-900",
+                  "group relative rounded-xl overflow-hidden bg-neutral-900 cursor-pointer",
                   // Unified card height — responsive
                   "h-[280px] sm:h-[340px] md:h-[480px]",
                   // Subtle dim on sibling hover
@@ -192,6 +199,10 @@ export const Projects = () => {
                 )}
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
+                onClick={() => setPreviewNotice({
+                  title: "Project Preview",
+                  message: `The full case study for ${project.title} will be available in the final version.`
+                })}
                 data-cursor-hover
               >
                 {/* ── Image ── fills card, subtle scale on hover */}
@@ -233,9 +244,16 @@ export const Projects = () => {
                     </span>
 
                     {/* VIEW arrow badge — replaces the bloated cursor effect */}
-                    <div
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPreviewNotice({
+                          title: "Project Preview",
+                          message: `The full case study for ${project.title} will be available in the final version.`
+                        });
+                      }}
                       className={cn(
-                        "flex items-center gap-2 rounded-full border px-3 py-1.5 transition-all duration-500",
+                        "flex items-center gap-2 rounded-full border px-3 py-1.5 transition-all duration-500 cursor-pointer",
                         "border-white/10 bg-white/5 opacity-0 translate-y-2",
                         "group-hover:opacity-100 group-hover:translate-y-0 group-hover:border-[#8C0B0C]/50 group-hover:bg-[#8C0B0C]/15"
                       )}
@@ -244,7 +262,7 @@ export const Projects = () => {
                         View
                       </span>
                       <ArrowUpRight className="w-3 h-3 text-white/80" />
-                    </div>
+                    </button>
                   </div>
 
                   {/* Project title */}
@@ -291,6 +309,13 @@ export const Projects = () => {
           </div>
         </div>
       </div>
+
+      <PreviewNotice
+        isOpen={previewNotice !== null}
+        onClose={closePreview}
+        title={previewNotice?.title || "Coming Soon"}
+        message={previewNotice?.message || "The full project archive with case studies and behind-the-scenes content will be available in the final version."}
+      />
     </section>
   );
 };

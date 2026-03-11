@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import gsap from "gsap";
 import { ArrowUpRight, CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "../../lib/utils";
-import { magneticHandlers } from "../../lib/constants";
 
 type FormInputs = {
   name: string;
@@ -15,7 +14,7 @@ export const Contact = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<FormInputs>();
 
@@ -23,15 +22,6 @@ export const Contact = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const formContainerRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      setIsSuccess(true);
-      reset();
-      setTimeout(() => setIsSuccess(false), 5000);
-    }
-  }, [isSubmitSuccessful, reset]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -49,7 +39,7 @@ export const Contact = () => {
             ease: "power4.out",
             scrollTrigger: {
               trigger: headingRef.current,
-              start: "top 85%",
+              start: "top 95%",
               toggleActions: "play none none reverse",
             },
           }
@@ -68,60 +58,25 @@ export const Contact = () => {
             ease: "power3.out",
             scrollTrigger: {
               trigger: formContainerRef.current,
-              start: "top 90%",
+              start: "top 95%",
               toggleActions: "play none none reverse",
             },
           }
         );
       }
 
-      // Magnetic button — cache rect on mouseenter, invalidate on resize
-      const btn = buttonRef.current;
-      if (btn) {
-        let btnRect = btn.getBoundingClientRect();
-
-        const handleBtnEnter = () => {
-          btnRect = btn.getBoundingClientRect();
-        };
-        const handleMouseMove = (e: MouseEvent) => {
-          const x = (e.clientX - btnRect.left - btnRect.width / 2) * 0.35;
-          const y = (e.clientY - btnRect.top - btnRect.height / 2) * 0.35;
-          gsap.to(btn, { x, y, duration: 0.6, ease: "power3.out" });
-        };
-        const handleMouseLeave = () => {
-          gsap.to(btn, { x: 0, y: 0, duration: 1, ease: "elastic.out(1, 0.3)" });
-        };
-        const handleResize = () => {
-          btnRect = btn.getBoundingClientRect();
-        };
-
-        btn.addEventListener("mouseenter", handleBtnEnter);
-        btn.addEventListener("mousemove", handleMouseMove);
-        btn.addEventListener("mouseleave", handleMouseLeave);
-        window.addEventListener("resize", handleResize, { passive: true });
-
-        magneticHandlers.set(btn, { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize });
-      }
     }, containerRef);
 
     return () => {
       ctx.revert();
-      const btn = buttonRef.current;
-      if (btn) {
-        const handlers = magneticHandlers.get(btn);
-        if (handlers) {
-          btn.removeEventListener("mouseenter", handlers.handleBtnEnter);
-          btn.removeEventListener("mousemove", handlers.handleMouseMove);
-          btn.removeEventListener("mouseleave", handlers.handleMouseLeave);
-          window.removeEventListener("resize", handlers.handleResize);
-          magneticHandlers.delete(btn);
-        }
-      }
     };
   }, []);
 
   const onSubmit = async (_data: FormInputs) => {
-    return new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    reset();
+    setIsSuccess(true);
+    setTimeout(() => setIsSuccess(false), 5000);
   };
 
   return (
@@ -256,7 +211,7 @@ export const Contact = () => {
                     Message Sent
                   </h3>
                   <p className="text-sm text-neutral-500 max-w-sm">
-                    We've received your message and will get back to you within 24 hours.
+                    This is a demo preview — in the final version, your inquiry will be delivered directly to the Phase One team.
                   </p>
                 </div>
               ) : (
@@ -312,10 +267,9 @@ export const Contact = () => {
                   {/* Submit button */}
                   <div className="flex justify-end mt-2 sm:mt-4">
                     <button
-                      ref={buttonRef}
                       type="submit"
                       disabled={isSubmitting}
-                      className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-8 sm:px-12 py-4 sm:py-5 transition-all duration-500 disabled:opacity-50 hover:border-[#8C0B0C] hover:shadow-[0_0_40px_rgba(140,11,12,0.3)] will-change-transform w-full sm:w-auto"
+                      className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-8 sm:px-12 py-4 sm:py-5 transition-all duration-500 disabled:opacity-50 hover:border-[#8C0B0C] hover:shadow-[0_0_40px_rgba(140,11,12,0.3)] w-full sm:w-auto"
                       data-cursor-hover
                     >
                       <span className="relative z-10 flex items-center justify-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition-colors w-full">

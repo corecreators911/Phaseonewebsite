@@ -39,7 +39,7 @@ export const About = () => {
             ease: "power4.out",
             scrollTrigger: {
               trigger: headingRef.current,
-              start: "top 85%",
+              start: "top 95%",
               toggleActions: "play none none reverse",
             },
           }
@@ -58,7 +58,7 @@ export const About = () => {
             stagger: { each: 0.3, from: "start" },
             scrollTrigger: {
               trigger: textRef.current,
-              start: "top 80%",
+              start: "top 95%",
               end: "bottom 60%",
               scrub: 1,
             },
@@ -79,7 +79,7 @@ export const About = () => {
             ease: "power3.out",
             scrollTrigger: {
               trigger: imageRef.current,
-              start: "top 85%",
+              start: "top 95%",
               toggleActions: "play none none reverse",
             },
           }
@@ -95,7 +95,7 @@ export const About = () => {
               ease: "power3.out",
               scrollTrigger: {
                 trigger: imageRef.current,
-                start: "top 85%",
+                start: "top 95%",
                 toggleActions: "play none none reverse",
               },
             }
@@ -119,7 +119,7 @@ export const About = () => {
             },
             scrollTrigger: {
               trigger: el,
-              start: "top 85%",
+              start: "top 95%",
               toggleActions: "play none none none",
               once: true,
             },
@@ -175,9 +175,9 @@ export const About = () => {
         </div>
 
         {/* Main content grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12 md:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-start">
           {/* Image column */}
-          <div className="md:col-span-5 order-2 md:order-1">
+          <div className="lg:col-span-5 order-2 lg:order-1 lg:sticky lg:top-32">
             <div
               ref={imageRef}
               className="relative group overflow-hidden rounded-xl"
@@ -209,7 +209,7 @@ export const About = () => {
           </div>
 
           {/* Text column */}
-          <div className="md:col-span-7 order-1 md:order-2">
+          <div className="lg:col-span-7 order-1 lg:order-2">
             {/* Word-by-word text reveal */}
             <div ref={textRef} className="mb-10 sm:mb-16">
               <p className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-medium leading-relaxed tracking-tight flex flex-wrap gap-x-[0.25em] sm:gap-x-[0.3em]">

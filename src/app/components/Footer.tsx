@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUp, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
 import { Marquee } from "./Marquee";
+import { PreviewNotice } from "./PreviewNotice";
 
 const NAV_COLS = [
   {
@@ -30,6 +31,8 @@ const SOCIALS = [
 export const Footer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const bigTextRef = useRef<HTMLDivElement>(null);
+  const [previewNotice, setPreviewNotice] = useState<{ title: string; message: string } | null>(null);
+  const closePreview = useCallback(() => setPreviewNotice(null), []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -63,6 +66,7 @@ export const Footer = () => {
   };
 
   return (
+    <>
     <footer
       ref={containerRef}
       className="relative w-full bg-[#030303] overflow-hidden"
@@ -85,9 +89,9 @@ export const Footer = () => {
 
       {/* Main footer content */}
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-16 md:py-20">
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-12 gap-8 sm:gap-12 md:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8">
           {/* Brand column */}
-          <div className="col-span-2 sm:col-span-4 md:col-span-4 flex flex-col gap-4 sm:gap-6">
+          <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
             <a href="#home" className="flex items-center gap-3 group" data-cursor-hover>
               <div className="h-12 w-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 transition-colors duration-500">
                 <img src={logoImg} alt="Phase One" className="h-6 w-6 object-contain" />
@@ -112,8 +116,13 @@ export const Footer = () => {
                 <a
                   key={social.label}
                   href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setPreviewNotice({
+                      title: "Coming Soon",
+                      message: "Official social media profiles will be linked in the final version.",
+                    });
+                  }}
                   className="group h-10 w-10 rounded-full border border-white/[0.06] bg-white/[0.02] flex items-center justify-center hover:border-[#8C0B0C]/50 hover:bg-[#8C0B0C]/10 transition-all duration-300"
                   data-cursor-hover
                   aria-label={social.label}
@@ -126,31 +135,49 @@ export const Footer = () => {
 
           {/* Navigation columns */}
           {NAV_COLS.map((col) => (
-            <div key={col.title} className="col-span-1 md:col-span-2">
+            <div key={col.title} className="col-span-1 lg:col-span-2">
               <h4 className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] text-neutral-500 mb-4 sm:mb-6">
                 {col.title}
               </h4>
               <ul className="flex flex-col gap-2 sm:gap-3">
-                {col.links.map((link) => (
+                {col.links.map((link) => {
+                  const isPlaceholder = col.title === "Studio";
+                  return (
                   <li key={link}>
                     <a
-                      href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
+                      href={
+                        col.title === "Departments"
+                          ? "#departments"
+                          : `#${link.toLowerCase().replace(/\s+/g, "-")}`
+                      }
+                      onClick={
+                        isPlaceholder
+                          ? (e) => {
+                              e.preventDefault();
+                              setPreviewNotice({
+                                title: "Coming Soon",
+                                message: `The ${link} page is still being developed and will be available in the final version.`,
+                              });
+                            }
+                          : undefined
+                      }
                       className="text-xs sm:text-sm text-neutral-600 hover:text-white hover:pl-2 transition-all duration-300"
                       data-cursor-hover
                     >
                       {link}
                     </a>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </div>
           ))}
 
           {/* Back to top */}
-          <div className="col-span-1 sm:col-span-1 md:col-span-2 flex md:flex-col items-start sm:items-end md:items-end md:justify-between">
+          <div className="col-span-1 sm:col-span-1 lg:col-span-2 flex flex-col items-start sm:items-end lg:justify-between">
             <button
               onClick={scrollToTop}
-              className="group flex flex-col items-center gap-3 self-start md:self-end"
+              className="group flex flex-col items-center gap-3 self-start sm:self-end"
               data-cursor-hover
             >
               <div className="h-12 w-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#8C0B0C]/50 group-hover:bg-[#8C0B0C]/10 group-hover:-translate-y-1 transition-all duration-500">
@@ -199,18 +226,26 @@ export const Footer = () => {
             &copy; {new Date().getFullYear()} Phase One VFX. All rights reserved.
           </p>
           <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
-            <a href="#privacy" className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+            <a href="#privacy" onClick={(e) => { e.preventDefault(); setPreviewNotice({ title: "Coming Soon", message: "Legal documentation is being finalized and will be available in the final version." }); }} className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
               Privacy Policy
             </a>
-            <a href="#terms" className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+            <a href="#terms" onClick={(e) => { e.preventDefault(); setPreviewNotice({ title: "Coming Soon", message: "Legal documentation is being finalized and will be available in the final version." }); }} className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
               Terms of Service
             </a>
-            <a href="#cookies" className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+            <a href="#cookies" onClick={(e) => { e.preventDefault(); setPreviewNotice({ title: "Coming Soon", message: "Legal documentation is being finalized and will be available in the final version." }); }} className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
               Cookies
             </a>
           </div>
         </div>
       </div>
     </footer>
+
+      <PreviewNotice
+        isOpen={previewNotice !== null}
+        onClose={closePreview}
+        title={previewNotice?.title}
+        message={previewNotice?.message}
+      />
+    </>
   );
 };

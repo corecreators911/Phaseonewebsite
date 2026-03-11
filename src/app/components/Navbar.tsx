@@ -42,19 +42,19 @@ export const Navbar = () => {
 
           {/* Desktop Tube-Light Navigation */}
           <nav
-            className="hidden md:flex items-center p-1.5 rounded-full border border-white/10 bg-black/40 backdrop-blur-lg shadow-inner relative z-50 transition-all duration-500 hover:border-white/20"
+            className="hidden lg:flex items-center p-1.5 rounded-full border border-white/10 bg-black/40 backdrop-blur-lg shadow-inner relative z-50 transition-all duration-500 hover:border-white/20"
             onMouseLeave={() => setHoveredIndex(null)}
           >
             {NAV_ITEMS.map((item, i) => {
               const isContact = item === "Contact";
-              
+
               return (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
                 onMouseEnter={() => setHoveredIndex(i)}
                 className={cn(
-                  "relative px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] transition-colors duration-300",
+                  "relative px-4 xl:px-6 py-2 xl:py-2.5 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.2em] transition-colors duration-300",
                   isContact ? "text-white bg-[#8C0B0C]/20 border border-[#8C0B0C]/50 rounded-full shadow-[0_0_15px_rgba(140,11,12,0.3)] hover:bg-[#8C0B0C]/40 hover:shadow-[0_0_20px_rgba(140,11,12,0.5)]" : "text-neutral-400 hover:text-white"
                 )}
               >
@@ -72,7 +72,7 @@ export const Navbar = () => {
           </nav>
 
           <button
-            className="md:hidden relative z-[160] flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/50 backdrop-blur-md text-white transition-all hover:border-[#8C0B0C]/50 hover:bg-[#8C0B0C]/10"
+            className="lg:hidden relative z-[160] flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black/50 backdrop-blur-md text-white transition-all hover:border-[#8C0B0C]/50 hover:bg-[#8C0B0C]/10"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
@@ -90,9 +90,9 @@ export const Navbar = () => {
             animate={{ opacity: 1, backdropFilter: "blur(24px)" }}
             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
             transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-            className="fixed inset-0 z-[150] flex flex-col items-center justify-center bg-black/95"
+            className="fixed inset-0 z-[155] flex flex-col items-center justify-center bg-black/95"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(140,11,12,0.15)_0%,transparent_70%)] opacity-50" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(140,11,12,0.15)_0%,transparent_70%)] opacity-50 pointer-events-none" />
             
             <nav className="flex flex-col items-center gap-8 relative z-10">
               {NAV_ITEMS.map((item, i) => (
