@@ -30,6 +30,8 @@ export default defineConfig({
   },
 
   build: {
+    outDir: 'docs',
+    emptyOutDir: true,
     target: 'es2020',
     cssTarget: 'chrome80',
     // Split vendor & app code for better caching
