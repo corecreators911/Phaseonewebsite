@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, Suspense, lazy } from "react";
 import gsap from "gsap";
-import { ShaderBackground } from "./ShaderBackground";
+const ShaderBackground = lazy(() => import("./ShaderBackground").then(m => ({ default: m.ShaderBackground })));
 import { ArrowDownRight } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { motion } from "motion/react";
@@ -44,7 +44,9 @@ export const Hero = () => {
       className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-black"
     >
       {/* Dynamic Background */}
-      <ShaderBackground />
+      <Suspense fallback={null}>
+        <ShaderBackground />
+      </Suspense>
 
       {/* Subtle Grain Overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay z-0" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')" }} />
@@ -90,7 +92,7 @@ export const Hero = () => {
                 const names = ["Team member portrait", "Creative director portrait", "VFX artist portrait"];
                 return (
                   <div key={i} className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/20 shadow-lg relative group cursor-pointer">
-                    <ImageWithFallback src={avatar} alt={names[i]} className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" />
+                    <ImageWithFallback src={avatar} alt={names[i]} className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" loading="eager" decoding="sync" />
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                   </div>
                 );

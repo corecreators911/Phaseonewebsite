@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -7,12 +7,12 @@ import { Preloader } from "./components/Preloader";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { FilmGrain } from "./components/FilmGrain";
-import { Footer } from "./components/Footer";
-import { Showreel } from "./components/Showreel";
-import { Departments } from "./components/Departments";
-import { Projects } from "./components/Projects";
-import { About } from "./components/About";
-import { Contact } from "./components/Contact";
+const Footer = lazy(() => import("./components/Footer").then(m => ({ default: m.Footer })));
+const Showreel = lazy(() => import("./components/Showreel").then(m => ({ default: m.Showreel })));
+const Departments = lazy(() => import("./components/Departments").then(m => ({ default: m.Departments })));
+const Projects = lazy(() => import("./components/Projects").then(m => ({ default: m.Projects })));
+const About = lazy(() => import("./components/About").then(m => ({ default: m.About })));
+const Contact = lazy(() => import("./components/Contact").then(m => ({ default: m.Contact })));
 import { CustomCursor } from "./components/CustomCursor";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { SectionDivider } from "./components/SectionDivider";
@@ -65,18 +65,22 @@ export default function App() {
           <Navbar />
           <main id="main-content">
             <Hero />
-            <SectionDivider />
-            <Showreel />
-            <SectionDivider />
-            <Departments />
-            <SectionDivider />
-            <Projects />
-            <SectionDivider />
-            <About />
-            <SectionDivider />
-            <Contact />
+            <Suspense fallback={null}>
+              <SectionDivider />
+              <Showreel />
+              <SectionDivider />
+              <Departments />
+              <SectionDivider />
+              <Projects />
+              <SectionDivider />
+              <About />
+              <SectionDivider />
+              <Contact />
+            </Suspense>
           </main>
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
         </ErrorBoundary>
       )}
     </div>
