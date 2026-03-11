@@ -173,16 +173,16 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           {/* System text lines */}
           <div ref={textLinesRef} className="flex justify-between items-end mb-4">
             <div className="flex flex-col gap-1">
-              <span className="line text-[9px] font-mono uppercase tracking-[0.3em] text-white/20">
+              <span className="line opacity-0 text-[9px] font-mono uppercase tracking-[0.3em] text-white/20">
                 Phase One VFX
               </span>
-              <span className="line text-[9px] font-mono uppercase tracking-[0.3em] text-white/20">
+              <span className="line opacity-0 text-[9px] font-mono uppercase tracking-[0.3em] text-white/20">
                 Initializing Pipeline...
               </span>
             </div>
             <div
               ref={percentRef}
-              className="line text-3xl md:text-4xl font-black tracking-tighter text-white/80 tabular-nums font-mono"
+              className="line opacity-0 text-3xl md:text-4xl font-black tracking-tighter text-white/80 tabular-nums font-mono"
             >
               000
             </div>

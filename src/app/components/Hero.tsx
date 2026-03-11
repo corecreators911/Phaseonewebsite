@@ -50,7 +50,7 @@ export const Hero = () => {
       <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay z-0" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')" }} />
 
       {/* Parallax Grid Lines */}
-      <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]">
+      <div className="hidden md:block absolute inset-0 pointer-events-none z-0 opacity-[0.03]">
         <div className="absolute left-[10%] top-0 bottom-0 w-[1px] bg-white" />
         <div className="absolute right-[10%] top-0 bottom-0 w-[1px] bg-white" />
         <div className="absolute top-[20%] left-0 right-0 h-[1px] bg-white" />
@@ -65,7 +65,7 @@ export const Hero = () => {
         className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between p-4 sm:p-6 md:p-12"
       >
         {/* Top UI */}
-        <div className="flex justify-between items-start pt-20 sm:pt-24 md:pt-28 w-full px-[2%] md:px-[5%]">
+        <div className="hidden md:flex justify-between items-start pt-32 w-full px-[2%] md:px-[5%]">
           <div className="flex flex-col gap-1.5 overflow-hidden">
             <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">SYS_RENDER_001</span>
             <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono text-[#8C0B0C] uppercase tracking-[0.15em] sm:tracking-[0.2em]">LND // LAX // NY</span>

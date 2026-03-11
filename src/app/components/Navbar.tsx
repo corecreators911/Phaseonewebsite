@@ -24,10 +24,10 @@ export const Navbar = () => {
     <>
       <header
         className={cn(
-          "fixed top-0 z-[160] w-full transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]",
+          "fixed top-0 z-[160] w-full transform-gpu transition-all duration-300 ease-in-out",
           scrolled 
-            ? "bg-black/70 border-b border-[#8C0B0C]/20 shadow-[0_10px_40px_rgba(140,11,12,0.15)] py-4 backdrop-blur-xl" 
-            : "bg-gradient-to-b from-black/80 via-black/20 to-transparent py-8 border-b border-transparent"
+            ? "bg-black/90 border-b border-[#8C0B0C]/20 shadow-[0_10px_40px_rgba(140,11,12,0.15)] py-4 backdrop-blur-lg" 
+            : "bg-gradient-to-b from-black/90 via-black/40 to-transparent py-6 sm:py-8 border-b border-transparent"
         )}
       >
         <div className="container mx-auto px-6 flex items-center justify-between">

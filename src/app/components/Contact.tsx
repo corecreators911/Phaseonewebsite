@@ -254,7 +254,7 @@ export const Contact = () => {
                     <CheckCircle2 className="w-10 h-10 text-[#8C0B0C]" />
                   </div>
                   <h3 className="text-3xl font-black uppercase tracking-tighter text-white mb-3">
-                    Transmission Sent
+                    Message Sent
                   </h3>
                   <p className="text-sm text-neutral-500 max-w-sm">
                     We've received your message and will get back to you within 24 hours.
@@ -319,15 +319,15 @@ export const Contact = () => {
                       className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-8 sm:px-12 py-4 sm:py-5 transition-all duration-500 disabled:opacity-50 hover:border-[#8C0B0C] hover:shadow-[0_0_40px_rgba(140,11,12,0.3)] will-change-transform w-full sm:w-auto"
                       data-cursor-hover
                     >
-                      <span className="relative z-10 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition-colors">
+                      <span className="relative z-10 flex items-center justify-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition-colors w-full">
                         {isSubmitting ? (
                           <>
                             <span className="h-3 w-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                            Transmitting...
+                            Sending...
                           </>
                         ) : (
                           <>
-                            Send Transmission
+                            Send Message
                             <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                           </>
                         )}
