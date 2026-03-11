@@ -138,7 +138,7 @@ export const About = () => {
     <section
       id="about"
       ref={containerRef}
-      className="relative w-full bg-black py-12 md:py-16 px-6 overflow-hidden scroll-mt-24"
+      className="relative w-full bg-black py-8 sm:py-12 md:py-16 px-4 sm:px-6 overflow-hidden scroll-mt-24"
     >
       {/* Background subtle elements */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none">
@@ -155,12 +155,12 @@ export const About = () => {
         </div>
 
         {/* Heading */}
-        <div ref={headingRef} className="overflow-hidden mb-16 md:mb-24">
+        <div ref={headingRef} className="overflow-hidden mb-10 sm:mb-16 md:mb-24">
           <h2 className="flex flex-wrap">
             {"PHASE ONE".split("").map((char, i) => (
               <span
                 key={i}
-                className={`char-reveal inline-block text-[14vw] md:text-[10vw] font-black leading-none tracking-tighter uppercase ${
+                className={`char-reveal inline-block text-[12vw] sm:text-[14vw] md:text-[10vw] font-black leading-none tracking-tighter uppercase ${
                   char === " " ? "w-[0.3em]" : ""
                 }`}
                 style={{
@@ -175,7 +175,7 @@ export const About = () => {
         </div>
 
         {/* Main content grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12 md:gap-16 items-start">
           {/* Image column */}
           <div className="md:col-span-5 order-2 md:order-1">
             <div
@@ -193,14 +193,14 @@ export const About = () => {
               <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.06] group-hover:ring-[#8C0B0C]/20 transition-colors duration-700 rounded-xl" />
 
               {/* Badge on image */}
-              <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-                <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-4 py-2">
-                  <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-neutral-400">
+              <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 sm:gap-0">
+                <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-3 sm:px-4 py-1.5 sm:py-2">
+                  <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-400">
                     Est. 2018 — London
                   </p>
                 </div>
-                <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-4 py-2">
-                  <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-[#8C0B0C]">
+                <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-3 sm:px-4 py-1.5 sm:py-2">
+                  <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#8C0B0C]">
                     LND / LAX / NYC
                   </p>
                 </div>
@@ -211,8 +211,8 @@ export const About = () => {
           {/* Text column */}
           <div className="md:col-span-7 order-1 md:order-2">
             {/* Word-by-word text reveal */}
-            <div ref={textRef} className="mb-16">
-              <p className="text-2xl md:text-3xl lg:text-4xl font-medium leading-relaxed tracking-tight flex flex-wrap gap-x-[0.3em]">
+            <div ref={textRef} className="mb-10 sm:mb-16">
+              <p className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-medium leading-relaxed tracking-tight flex flex-wrap gap-x-[0.25em] sm:gap-x-[0.3em]">
                 {paragraphText.split(" ").map((word, i) => (
                   <span key={i} className="word inline-block text-white">
                     {word}
@@ -222,18 +222,18 @@ export const About = () => {
             </div>
 
             {/* Animated Stats */}
-            <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-t border-b border-white/[0.06]">
+            <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 py-8 sm:py-10 border-t border-b border-white/[0.06]">
               {STATS.map((stat, i) => (
-                <div key={stat.label} className="group flex flex-col gap-2">
+                <div key={stat.label} className="group flex flex-col gap-1.5 sm:gap-2">
                   <div className="flex items-baseline">
-                    <span className="stat-value text-4xl md:text-5xl font-black text-white tracking-tight group-hover:text-[#8C0B0C] transition-colors duration-500">
+                    <span className="stat-value text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight group-hover:text-[#8C0B0C] transition-colors duration-500">
                       0
                     </span>
-                    <span className="text-2xl md:text-3xl font-bold text-[#8C0B0C]">
+                    <span className="text-xl sm:text-2xl md:text-3xl font-bold text-[#8C0B0C]">
                       {stat.suffix}
                     </span>
                   </div>
-                  <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                  <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors">
                     {stat.label}
                   </span>
                 </div>
@@ -241,9 +241,9 @@ export const About = () => {
             </div>
 
             {/* Philosophy quote */}
-            <div className="mt-12 flex gap-6">
+            <div className="mt-8 sm:mt-12 flex gap-4 sm:gap-6">
               <div className="w-[2px] bg-gradient-to-b from-[#8C0B0C] to-transparent flex-shrink-0" />
-              <blockquote className="text-sm md:text-base text-neutral-500 italic leading-relaxed">
+              <blockquote className="text-xs sm:text-sm md:text-base text-neutral-500 italic leading-relaxed">
                 "We don't just create visual effects — we architect realities. Every frame is a canvas, every project a universe waiting to be born."
                 <span className="block mt-3 text-[10px] font-mono not-italic uppercase tracking-[0.2em] text-[#8C0B0C]">
                   — Creative Director
@@ -254,7 +254,7 @@ export const About = () => {
         </div>
 
         {/* Client Marquee */}
-        <div className="mt-20 md:mt-28">
+        <div className="mt-14 sm:mt-20 md:mt-28">
           <div className="flex items-center gap-4 mb-8">
             <span className="text-[10px] font-mono text-neutral-600 uppercase tracking-[0.3em]">
               Trusted by industry leaders
@@ -262,12 +262,12 @@ export const About = () => {
             <div className="flex-1 h-[1px] bg-white/[0.04]" />
           </div>
 
-          <Marquee speed={30} className="py-6 border-t border-b border-white/[0.04]">
-            <div className="flex items-center gap-16 px-8">
+          <Marquee speed={30} className="py-4 sm:py-6 border-t border-b border-white/[0.04]">
+            <div className="flex items-center gap-8 sm:gap-16 px-4 sm:px-8">
               {CLIENTS.map((client, i) => (
                 <span
                   key={`${client}-${i}`}
-                  className="text-2xl md:text-3xl font-bold uppercase tracking-tight text-neutral-800 hover:text-neutral-400 transition-colors duration-500 whitespace-nowrap cursor-default"
+                  className="text-lg sm:text-2xl md:text-3xl font-bold uppercase tracking-tight text-neutral-800 hover:text-neutral-400 transition-colors duration-500 whitespace-nowrap cursor-default"
                 >
                   {client}
                 </span>

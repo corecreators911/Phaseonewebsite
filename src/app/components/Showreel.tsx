@@ -100,8 +100,8 @@ export const Showreel = () => {
             stagger: 0.06,
             ease: "power4.out",
             scrollTrigger: {
-              trigger: textRevealRef.current,
-              start: "top 85%",
+              trigger: containerRef.current,
+              start: "top 60%",
               toggleActions: "play none none reverse",
             },
           }
@@ -160,7 +160,7 @@ export const Showreel = () => {
     <section
       id="showreel"
       ref={containerRef}
-      className="relative w-full h-screen bg-black scroll-mt-24 mt-12 mb-12 md:mt-16 md:mb-16"
+      className="relative w-full h-screen bg-black scroll-mt-24"
     >
       <div className="w-full h-full flex items-center justify-center overflow-hidden">
         <div
@@ -216,17 +216,17 @@ export const Showreel = () => {
               />
 
               <div
-                className={`relative w-28 h-28 md:w-36 md:h-36 rounded-full flex items-center justify-center transition-all duration-700 ${
+                className={`relative w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full flex items-center justify-center transition-all duration-700 ${
                   isHoveringPlay
                     ? "bg-[#8C0B0C] shadow-[0_0_80px_rgba(140,11,12,0.6)]"
                     : "bg-white/5 backdrop-blur-xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
                 }`}
               >
                 <Play
-                  className={`ml-1.5 transition-all duration-500 ${
+                  className={`ml-1 sm:ml-1.5 transition-all duration-500 ${
                     isHoveringPlay ? "text-white scale-110" : "text-white/90"
                   }`}
-                  size={36}
+                  size={24}
                   fill="currentColor"
                 />
               </div>
@@ -250,22 +250,22 @@ export const Showreel = () => {
           </div>
 
           {/* Bottom text reveal */}
-          <div className="absolute bottom-0 left-0 w-full p-6 md:p-12">
-            <div ref={textRevealRef} className="flex flex-col gap-2">
+          <div className="absolute bottom-0 left-0 w-full p-4 sm:p-6 md:p-12">
+            <div ref={textRevealRef} className="flex flex-col gap-1.5 sm:gap-2">
               <div className="overflow-hidden">
-                <div className="flex items-baseline gap-4">
-                  <span className="word-reveal inline-block text-[10px] md:text-xs font-mono text-[#8C0B0C] uppercase tracking-[0.3em]">
+                <div className="flex items-baseline gap-3 sm:gap-4">
+                  <span className="word-reveal inline-block text-[9px] sm:text-[10px] md:text-xs font-mono text-[#8C0B0C] uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                     2026
                   </span>
-                  <span className="word-reveal inline-block w-12 h-[1px] bg-[#8C0B0C]/50 self-center" />
+                  <span className="word-reveal inline-block w-8 sm:w-12 h-[1px] bg-[#8C0B0C]/50 self-center" />
                 </div>
               </div>
               <div className="overflow-hidden">
-                <h2 className="flex flex-wrap gap-x-3 md:gap-x-4">
+                <h2 className="flex flex-wrap gap-x-1.5 sm:gap-x-3 md:gap-x-4">
                   {"SHOWREEL".split("").map((letter, i) => (
                     <span
                       key={i}
-                      className="word-reveal inline-block text-5xl md:text-8xl lg:text-[9rem] font-black uppercase tracking-tighter text-white"
+                      className="word-reveal inline-block text-3xl sm:text-5xl md:text-8xl lg:text-[9rem] font-black uppercase tracking-tighter text-white"
                       style={{ lineHeight: 0.85 }}
                     >
                       {letter}
@@ -273,8 +273,8 @@ export const Showreel = () => {
                   ))}
                 </h2>
               </div>
-              <div className="overflow-hidden mt-2">
-                <p className="word-reveal text-[10px] md:text-xs font-mono text-neutral-500 uppercase tracking-[0.2em] max-w-sm">
+              <div className="overflow-hidden mt-1 sm:mt-2">
+                <p className="word-reveal text-[8px] sm:text-[10px] md:text-xs font-mono text-neutral-500 uppercase tracking-[0.15em] sm:tracking-[0.2em] max-w-xs sm:max-w-sm">
                   Visual Effects & Motion Design — A curated selection of our finest work
                 </p>
               </div>

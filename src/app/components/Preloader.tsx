@@ -140,11 +140,11 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       {/* Split curtain panels */}
       <div
         ref={overlayTopRef}
-        className="absolute top-0 left-0 right-0 h-1/2 bg-[#030303] z-20"
+        className="absolute top-0 left-0 right-0 h-[51%] bg-[#030303] z-20"
       />
       <div
         ref={overlayBottomRef}
-        className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#030303] z-20"
+        className="absolute bottom-0 left-0 right-0 h-[51%] bg-[#030303] z-20"
       />
 
       {/* Cinematic radial glow */}

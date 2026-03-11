@@ -112,7 +112,7 @@ export const Projects = () => {
     <section
       id="projects"
       ref={containerRef}
-      className="relative w-full bg-black py-12 md:py-16 px-6 scroll-mt-24"
+      className="relative w-full bg-black py-8 sm:py-12 md:py-16 px-4 sm:px-6 scroll-mt-24"
     >
       {/* Subtle dot-grid texture */}
       <div
@@ -126,7 +126,7 @@ export const Projects = () => {
 
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* ── Header ── */}
-        <div className="mb-16 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <div className="mb-10 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8">
           <div>
             <div className="flex items-center gap-4 mb-6">
               <div className="h-[1px] w-12 bg-[#8C0B0C]" />
@@ -140,7 +140,7 @@ export const Projects = () => {
                   <span
                     key={i}
                     className={cn(
-                      "char-reveal inline-block text-[10vw] md:text-[5.5vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-600 uppercase",
+                      "char-reveal inline-block text-[9vw] sm:text-[10vw] md:text-[5.5vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-600 uppercase",
                       char === " " ? "w-[0.28em]" : ""
                     )}
                   >
@@ -168,7 +168,7 @@ export const Projects = () => {
             Row 2 → [Project 2: 5 cols] [Project 3: 7 cols]
           Both rows same height — no vertical offset, no aspect-ratio tricks.
         */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 md:gap-5">
           {PROJECTS.map((project, idx) => {
             const isLarge = project.size === "large";
             const colClass = isLarge ? "md:col-span-7" : "md:col-span-5";
@@ -182,8 +182,8 @@ export const Projects = () => {
                 className={cn(
                   colClass,
                   "group relative rounded-xl overflow-hidden bg-neutral-900",
-                  // Unified card height — tall on desktop
-                  "h-[340px] sm:h-[400px] md:h-[480px]",
+                  // Unified card height — responsive
+                  "h-[280px] sm:h-[340px] md:h-[480px]",
                   // Subtle dim on sibling hover
                   "transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]",
                   isOtherHovered
@@ -212,7 +212,7 @@ export const Projects = () => {
                 <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.05] group-hover:ring-[#8C0B0C]/25 rounded-xl transition-colors duration-700" />
 
                 {/* ── Top row: ID / Year + Award ── */}
-                <div className="absolute top-0 left-0 right-0 px-6 md:px-7 pt-6 flex items-center justify-between">
+                <div className="absolute top-0 left-0 right-0 px-4 sm:px-6 md:px-7 pt-4 sm:pt-6 flex items-center justify-between">
                   <span className="text-[10px] font-mono text-white/40 uppercase tracking-[0.28em] opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1 group-hover:translate-y-0">
                     {project.id} — {project.year}
                   </span>
@@ -225,7 +225,7 @@ export const Projects = () => {
                 </div>
 
                 {/* ── Bottom content ── */}
-                <div className="absolute bottom-0 left-0 right-0 px-6 md:px-7 pb-6 md:pb-7">
+                <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 md:px-7 pb-4 sm:pb-6 md:pb-7">
                   {/* Client row + VIEW arrow */}
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-white/50 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
@@ -253,8 +253,8 @@ export const Projects = () => {
                       "font-black uppercase tracking-tighter text-white leading-[0.92] transition-transform duration-700",
                       "translate-y-1 group-hover:translate-y-0",
                       isLarge
-                        ? "text-[clamp(2rem,4vw,3.5rem)]"
-                        : "text-[clamp(1.6rem,3.2vw,2.8rem)]"
+                        ? "text-[clamp(1.5rem,4vw,3.5rem)]"
+                        : "text-[clamp(1.3rem,3.2vw,2.8rem)]"
                     )}
                   >
                     {project.title}

@@ -128,7 +128,7 @@ export const Contact = () => {
     <section
       id="contact"
       ref={containerRef}
-      className="relative w-full bg-black py-12 md:py-16 px-6 overflow-hidden scroll-mt-24"
+      className="relative w-full bg-black py-8 sm:py-12 md:py-16 px-4 sm:px-6 overflow-hidden scroll-mt-24"
     >
       {/* Background accent */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(140,11,12,0.08)_0%,transparent_60%)] pointer-events-none" />
@@ -147,12 +147,12 @@ export const Contact = () => {
         </div>
 
         {/* Big heading */}
-        <div ref={headingRef} className="overflow-hidden mb-12 md:mb-16">
+        <div ref={headingRef} className="overflow-hidden mb-8 sm:mb-12 md:mb-16">
           <h2 className="flex flex-wrap">
             {"LET'S CREATE".split("").map((char, i) => (
               <span
                 key={i}
-                className={`char-reveal inline-block text-[12vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-700 uppercase ${
+                className={`char-reveal inline-block text-[10vw] sm:text-[12vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-700 uppercase ${
                   char === " " ? "w-[0.3em]" : ""
                 } ${char === "'" ? "mx-[-0.05em]" : ""}`}
               >
@@ -162,51 +162,51 @@ export const Contact = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-20">
           {/* Left side - Contact info */}
           <div className="lg:col-span-4 flex flex-col justify-between">
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-6 sm:gap-10">
               {/* Email */}
               <a
                 href="mailto:hello@phaseonevfx.com"
-                className="group flex items-start gap-4"
+                className="group flex items-start gap-3 sm:gap-4"
                 data-cursor-hover
               >
-                <div className="flex-shrink-0 h-10 w-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#8C0B0C]/50 group-hover:bg-[#8C0B0C]/10 transition-all duration-500">
-                  <Mail className="w-4 h-4 text-neutral-500 group-hover:text-[#8C0B0C] transition-colors" />
+                <div className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#8C0B0C]/50 group-hover:bg-[#8C0B0C]/10 transition-all duration-500">
+                  <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neutral-500 group-hover:text-[#8C0B0C] transition-colors" />
                 </div>
-                <div>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-600 mb-1">
+                <div className="min-w-0">
+                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-600 mb-1">
                     Email
                   </p>
-                  <p className="text-lg font-bold tracking-tight text-white group-hover:text-[#8C0B0C] transition-colors">
+                  <p className="text-base sm:text-lg font-bold tracking-tight text-white group-hover:text-[#8C0B0C] transition-colors break-all sm:break-normal">
                     hello@phaseonevfx.com
                   </p>
                 </div>
               </a>
 
               {/* Phone */}
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 h-10 w-10 rounded-full border border-white/10 flex items-center justify-center">
-                  <Phone className="w-4 h-4 text-neutral-500" />
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-white/10 flex items-center justify-center">
+                  <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neutral-500" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-600 mb-1">
+                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-600 mb-1">
                     Phone
                   </p>
-                  <p className="text-lg font-bold tracking-tight text-white">
+                  <p className="text-base sm:text-lg font-bold tracking-tight text-white">
                     +44 20 7123 4567
                   </p>
                 </div>
               </div>
 
               {/* Offices */}
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 h-10 w-10 rounded-full border border-white/10 flex items-center justify-center">
-                  <MapPin className="w-4 h-4 text-neutral-500" />
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-white/10 flex items-center justify-center">
+                  <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neutral-500" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-600 mb-3">
+                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-600 mb-2 sm:mb-3">
                     Global Offices
                   </p>
                   <div className="flex flex-col gap-4">
@@ -228,12 +228,12 @@ export const Contact = () => {
             </div>
 
             {/* Availability indicator */}
-            <div className="mt-12 flex items-center gap-3 bg-white/[0.02] border border-white/[0.06] rounded-full py-3 px-5">
+            <div className="mt-8 sm:mt-12 flex items-center gap-3 bg-white/[0.02] border border-white/[0.06] rounded-full py-2.5 sm:py-3 px-4 sm:px-5">
               <div className="relative">
                 <div className="h-2 w-2 rounded-full bg-emerald-500" />
                 <div className="absolute inset-0 h-2 w-2 rounded-full bg-emerald-500 animate-ping opacity-75" />
               </div>
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-400">
+              <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-400">
                 Available for Q2 2026
               </span>
             </div>
@@ -241,7 +241,7 @@ export const Contact = () => {
 
           {/* Right side - Form */}
           <div ref={formContainerRef} className="lg:col-span-8">
-            <div className="relative w-full rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-10 backdrop-blur-sm">
+            <div className="relative w-full rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 sm:p-6 md:p-10 backdrop-blur-sm">
               {/* Corner accents */}
               <div className="absolute top-0 left-0 w-8 h-8 border-l border-t border-[#8C0B0C]/30 rounded-tl-2xl" />
               <div className="absolute top-0 right-0 w-8 h-8 border-r border-t border-[#8C0B0C]/30 rounded-tr-2xl" />
@@ -311,12 +311,12 @@ export const Contact = () => {
                   </div>
 
                   {/* Submit button */}
-                  <div className="flex justify-end mt-4">
+                  <div className="flex justify-end mt-2 sm:mt-4">
                     <button
                       ref={buttonRef}
                       type="submit"
                       disabled={isSubmitting}
-                      className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-12 py-5 transition-all duration-500 disabled:opacity-50 hover:border-[#8C0B0C] hover:shadow-[0_0_40px_rgba(140,11,12,0.3)] will-change-transform"
+                      className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-8 sm:px-12 py-4 sm:py-5 transition-all duration-500 disabled:opacity-50 hover:border-[#8C0B0C] hover:shadow-[0_0_40px_rgba(140,11,12,0.3)] will-change-transform w-full sm:w-auto"
                       data-cursor-hover
                     >
                       <span className="relative z-10 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition-colors">

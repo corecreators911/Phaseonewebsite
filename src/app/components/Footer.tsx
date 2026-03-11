@@ -68,12 +68,12 @@ export const Footer = () => {
       className="relative w-full bg-[#030303] overflow-hidden"
     >
       {/* CTA Marquee Band */}
-      <div className="border-t border-b border-white/[0.04] py-6">
+      <div className="border-t border-b border-white/[0.04] py-4 sm:py-6">
         <Marquee speed={40} className="">
-          <div className="flex items-center gap-12 px-6">
+          <div className="flex items-center gap-8 sm:gap-12 px-4 sm:px-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <span key={i} className="contents">
-                <span className="text-lg md:text-xl font-bold uppercase tracking-[0.1em] text-neutral-700 whitespace-nowrap">
+                <span className="text-base sm:text-lg md:text-xl font-bold uppercase tracking-[0.1em] text-neutral-700 whitespace-nowrap">
                   Let's Work Together
                 </span>
                 <span className="text-[#8C0B0C] text-xl">&#10038;</span>
@@ -84,10 +84,10 @@ export const Footer = () => {
       </div>
 
       {/* Main footer content */}
-      <div className="container mx-auto max-w-7xl px-6 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-12 gap-8 sm:gap-12 md:gap-8">
           {/* Brand column */}
-          <div className="md:col-span-4 flex flex-col gap-6">
+          <div className="col-span-2 sm:col-span-4 md:col-span-4 flex flex-col gap-4 sm:gap-6">
             <a href="#home" className="flex items-center gap-3 group" data-cursor-hover>
               <div className="h-12 w-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 transition-colors duration-500">
                 <img src={logoImg} alt="Phase One" className="h-6 w-6 object-contain" />
@@ -102,7 +102,7 @@ export const Footer = () => {
               </div>
             </a>
 
-            <p className="text-sm text-neutral-600 leading-relaxed max-w-sm mt-2">
+            <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-sm mt-2">
               A full-spectrum VFX studio delivering uncompromising visual fidelity for film, episodic, and commercial content worldwide.
             </p>
 
@@ -126,16 +126,16 @@ export const Footer = () => {
 
           {/* Navigation columns */}
           {NAV_COLS.map((col) => (
-            <div key={col.title} className="md:col-span-2">
-              <h4 className="text-[10px] font-mono uppercase tracking-[0.3em] text-neutral-500 mb-6">
+            <div key={col.title} className="col-span-1 md:col-span-2">
+              <h4 className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.2em] sm:tracking-[0.3em] text-neutral-500 mb-4 sm:mb-6">
                 {col.title}
               </h4>
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-2 sm:gap-3">
                 {col.links.map((link) => (
                   <li key={link}>
                     <a
                       href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="text-sm text-neutral-600 hover:text-white hover:pl-2 transition-all duration-300"
+                      className="text-xs sm:text-sm text-neutral-600 hover:text-white hover:pl-2 transition-all duration-300"
                       data-cursor-hover
                     >
                       {link}
@@ -147,7 +147,7 @@ export const Footer = () => {
           ))}
 
           {/* Back to top */}
-          <div className="md:col-span-2 flex md:flex-col md:items-end md:justify-between">
+          <div className="col-span-1 sm:col-span-1 md:col-span-2 flex md:flex-col items-start sm:items-end md:items-end md:justify-between">
             <button
               onClick={scrollToTop}
               className="group flex flex-col items-center gap-3 self-start md:self-end"
@@ -165,16 +165,16 @@ export const Footer = () => {
       </div>
 
       {/* Giant text at bottom */}
-      <div ref={bigTextRef} className="border-t border-[#8C0B0C]/20 pt-8 pb-4 relative overflow-hidden">
+      <div ref={bigTextRef} className="border-t border-[#8C0B0C]/20 pt-6 sm:pt-8 pb-3 sm:pb-4 relative overflow-hidden">
         {/* Subtle glow behind the text */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-1/2 bg-[#8C0B0C]/10 blur-[100px] pointer-events-none rounded-full" />
         
-        <div className="container mx-auto max-w-7xl px-6 relative z-10">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
           <div className="flex flex-wrap justify-center">
             {"PHASE ONE".split("").map((char, i) => (
               <span
                 key={i}
-                className={`footer-char inline-block text-[18vw] md:text-[14vw] font-black tracking-tighter uppercase leading-none ${
+                className={`footer-char inline-block text-[16vw] sm:text-[18vw] md:text-[14vw] font-black tracking-tighter uppercase leading-none ${
                   char === " " ? "w-[0.2em]" : ""
                 }`}
                 style={{
@@ -194,18 +194,18 @@ export const Footer = () => {
 
       {/* Bottom bar */}
       <div className="border-t border-white/[0.04]">
-        <div className="container mx-auto max-w-7xl px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+          <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 text-center sm:text-left">
             &copy; {new Date().getFullYear()} Phase One VFX. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
-            <a href="#privacy" className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+          <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
+            <a href="#privacy" className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
               Privacy Policy
             </a>
-            <a href="#terms" className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+            <a href="#terms" className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
               Terms of Service
             </a>
-            <a href="#cookies" className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+            <a href="#cookies" className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
               Cookies
             </a>
           </div>

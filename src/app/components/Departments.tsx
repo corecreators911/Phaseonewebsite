@@ -119,7 +119,7 @@ export const Departments = () => {
     <section
       id="departments"
       ref={containerRef}
-      className="relative w-full bg-black py-12 md:py-16 px-6 scroll-mt-24 overflow-hidden"
+      className="relative w-full bg-black py-8 sm:py-12 md:py-16 px-4 sm:px-6 scroll-mt-24 overflow-hidden"
     >
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Section label */}
@@ -131,12 +131,12 @@ export const Departments = () => {
         </div>
 
         {/* Heading with char reveal */}
-        <div ref={headingRef} className="mb-8 md:mb-12 overflow-hidden">
+        <div ref={headingRef} className="mb-6 sm:mb-8 md:mb-12 overflow-hidden">
           <h2 className="flex flex-wrap">
             {"DEPARTMENTS".split("").map((char, i) => (
               <span
                 key={i}
-                className="char-reveal inline-block text-[12vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-700 uppercase"
+                className="char-reveal inline-block text-[10vw] sm:text-[12vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-700 uppercase"
               >
                 {char}
               </span>
@@ -157,20 +157,20 @@ export const Departments = () => {
                 <button
                   id={`dept-btn-${dept.id}`}
                   onClick={() => toggleAccordion(index)}
-                  className="w-full relative flex items-center justify-between py-8 md:py-10 px-2 md:px-4 text-left transition-all duration-500 hover:bg-white/[0.02]"
+                  className="w-full relative flex items-center justify-between py-6 sm:py-8 md:py-10 px-1 sm:px-2 md:px-4 text-left transition-all duration-500 hover:bg-white/[0.02]"
                   aria-expanded={isOpen}
                   aria-controls={`dept-panel-${dept.id}`}
                 >
                   {/* Left side - number + title */}
-                  <div className="flex items-center gap-6 md:gap-10">
-                    <div className={`w-2.5 h-2.5 rotate-45 transition-all duration-500 flex-shrink-0 ${isOpen ? "bg-[#8C0B0C] shadow-[0_0_10px_rgba(140,11,12,0.8)] scale-110" : "border border-neutral-600 group-hover:border-neutral-400"}`} />
-                    <h3 className={`text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter uppercase transition-colors duration-500 ${isOpen ? "text-white" : "text-neutral-400 group-hover:text-neutral-300"}`}>
+                  <div className="flex items-center gap-4 sm:gap-6 md:gap-10">
+                    <div className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rotate-45 transition-all duration-500 flex-shrink-0 ${isOpen ? "bg-[#8C0B0C] shadow-[0_0_10px_rgba(140,11,12,0.8)] scale-110" : "border border-neutral-600 group-hover:border-neutral-400"}`} />
+                    <h3 className={`text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter uppercase transition-colors duration-500 ${isOpen ? "text-white" : "text-neutral-400 group-hover:text-neutral-300"}`}>
                       {dept.title}
                     </h3>
                   </div>
 
-                  <div className={`flex-shrink-0 w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-500 overflow-hidden ${isOpen ? "border-[#8C0B0C]/50 bg-[#8C0B0C]/10" : "border-white/10 group-hover:border-white/30"}`}>
-                    <ChevronDown className={`w-5 h-5 transition-transform duration-500 ${isOpen ? "text-[#8C0B0C] rotate-180" : "text-neutral-600 group-hover:text-neutral-400"}`} />
+                  <div className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-all duration-500 overflow-hidden ${isOpen ? "border-[#8C0B0C]/50 bg-[#8C0B0C]/10" : "border-white/10 group-hover:border-white/30"}`}>
+                    <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-500 ${isOpen ? "text-[#8C0B0C] rotate-180" : "text-neutral-600 group-hover:text-neutral-400"}`} />
                   </div>
                 </button>
                 
@@ -186,14 +186,14 @@ export const Departments = () => {
                       transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
                       className="overflow-hidden"
                     >
-                      <div className="px-2 md:px-4 pb-10 pt-2 md:pl-24">
-                        <p className="max-w-3xl text-sm md:text-base text-neutral-400 leading-relaxed mb-10">
+                      <div className="px-1 sm:px-2 md:px-4 pb-8 sm:pb-10 pt-2 md:pl-24">
+                        <p className="max-w-3xl text-xs sm:text-sm md:text-base text-neutral-400 leading-relaxed mb-8 sm:mb-10">
                           {dept.desc}
                         </p>
                         
-                        <div className="space-y-6">
-                          <h4 className="text-xs font-mono text-neutral-500 uppercase tracking-[0.2em]">Key Members</h4>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                        <div className="space-y-4 sm:space-y-6">
+                          <h4 className="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-[0.2em]">Key Members</h4>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                             {dept.team.map((member) => (
                               <div key={member.id} className="group/member flex flex-col gap-3">
                                 <div className="relative aspect-[3/4] rounded-lg overflow-hidden border border-white/5 bg-white/5">
