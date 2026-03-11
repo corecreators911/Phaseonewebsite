@@ -120,7 +120,7 @@ export const Contact = () => {
     };
   }, []);
 
-  const onSubmit = async (data: FormInputs) => {
+  const onSubmit = async (_data: FormInputs) => {
     return new Promise((resolve) => setTimeout(resolve, 1500));
   };
 
@@ -152,9 +152,8 @@ export const Contact = () => {
             {"LET'S CREATE".split("").map((char, i) => (
               <span
                 key={i}
-                className={`char-reveal inline-block text-[10vw] sm:text-[12vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-700 uppercase ${
-                  char === " " ? "w-[0.3em]" : ""
-                } ${char === "'" ? "mx-[-0.05em]" : ""}`}
+                className={`char-reveal inline-block text-[10vw] sm:text-[12vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-700 uppercase ${char === " " ? "w-[0.3em]" : ""
+                  } ${char === "'" ? "mx-[-0.05em]" : ""}`}
               >
                 {char === " " ? "\u00A0" : char}
               </span>

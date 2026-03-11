@@ -89,10 +89,10 @@ export const Hero = () => {
               {avatars.map((avatar, i) => {
                 const names = ["Team member portrait", "Creative director portrait", "VFX artist portrait"];
                 return (
-                <div key={i} className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/20 shadow-lg relative group cursor-pointer">
-                  <ImageWithFallback src={avatar} alt={names[i]} className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                </div>
+                  <div key={i} className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/20 shadow-lg relative group cursor-pointer">
+                    <ImageWithFallback src={avatar} alt={names[i]} className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                  </div>
                 );
               })}
               <div className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full border border-white/20 bg-black/80 flex items-center justify-center relative z-10 shadow-lg">
@@ -118,10 +118,13 @@ export const Hero = () => {
       </motion.div>
 
       {/* Main Cinematic Text — character-by-character curtain reveal */}
-      <div className="relative z-10 flex flex-col items-center w-full px-2 sm:px-4 mix-blend-plus-lighter pointer-events-none select-none">
+      <h1 className="relative z-10 flex flex-col items-center w-full px-2 sm:px-4 mix-blend-plus-lighter pointer-events-none select-none">
+
+        {/* Screen reader text for SEO */}
+        <span className="sr-only">CRAFTING THE UNREAL.</span>
 
         {/* Line 1: CRAFTING — outlined ghost type */}
-        <div className="flex text-[13vw] sm:text-[15vw] md:text-[11.5vw] font-black tracking-tighter">
+        <div className="flex text-[13vw] sm:text-[15vw] md:text-[11.5vw] font-black tracking-tighter" aria-hidden="true">
           {CRAFTING_CHARS.map((char, i) => (
             <span key={i} className="overflow-hidden inline-block" style={{ lineHeight: 0.92 }}>
               <span
@@ -139,7 +142,7 @@ export const Hero = () => {
         </div>
 
         {/* Line 2: THE UNREAL. — solid white + red accent dot */}
-        <div className="flex text-[13vw] sm:text-[15vw] md:text-[11.5vw] font-black tracking-tighter">
+        <div className="flex text-[13vw] sm:text-[15vw] md:text-[11.5vw] font-black tracking-tighter" aria-hidden="true">
           {LINE2_CHARS.map((char, i) => {
             if (char === " ") {
               return (
@@ -171,7 +174,7 @@ export const Hero = () => {
             </span>
           </span>
         </div>
-      </div>
+      </h1>
 
       {/* "Visual Effects & Motion" badge — reliably below text, never overlapping */}
       <motion.div
