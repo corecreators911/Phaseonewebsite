@@ -66,26 +66,6 @@ export const Showreel = () => {
         ease: "none"
       });
 
-      // Frame corners animate in
-      if (frameRef.current) {
-        gsap.fromTo(
-          frameRef.current.children,
-          { opacity: 0, scale: 0.8 },
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 1,
-            stagger: 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top 20%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
-
       // Text reveal from bottom
       if (textRevealRef.current) {
         const words = textRevealRef.current.querySelectorAll(".word-reveal");
@@ -182,14 +162,6 @@ export const Showreel = () => {
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-[20%] left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#8C0B0C]/20 to-transparent" />
             <div className="absolute bottom-[20%] left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#8C0B0C]/20 to-transparent" />
-          </div>
-
-          {/* Frame corners */}
-          <div ref={frameRef} className="absolute inset-0 pointer-events-none p-6 md:p-12">
-            <div className="absolute top-6 left-6 md:top-12 md:left-12 w-12 h-12 border-l border-t border-white/20" />
-            <div className="absolute top-6 right-6 md:top-12 md:right-12 w-12 h-12 border-r border-t border-white/20" />
-            <div className="absolute bottom-6 left-6 md:bottom-12 md:left-12 w-12 h-12 border-l border-b border-white/20" />
-            <div className="absolute bottom-6 right-6 md:bottom-12 md:right-12 w-12 h-12 border-r border-b border-white/20" />
           </div>
 
           {/* Magnetic play button */}

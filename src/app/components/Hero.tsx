@@ -62,7 +62,7 @@ export const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1.5 }}
-        className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between p-4 sm:p-6 md:p-12"
+        className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end md:justify-between p-4 sm:p-6 md:p-12 pb-[10vh] md:pb-12"
       >
         {/* Top UI */}
         <div className="hidden md:flex justify-between items-start pt-32 w-full px-[2%] md:px-[5%]">
