@@ -138,14 +138,14 @@ export const About = () => {
     <section
       id="about"
       ref={containerRef}
-      className="relative w-full bg-black py-8 sm:py-12 md:py-16 px-4 sm:px-6 overflow-hidden scroll-mt-24"
+      className="relative w-full bg-black py-8 sm:py-12 md:py-16 overflow-hidden scroll-mt-24"
     >
       {/* Background subtle elements */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none">
         <div className="absolute top-0 left-[50%] w-[1px] h-full bg-white" />
       </div>
 
-      <div className="container mx-auto max-w-7xl">
+      <div className="w-full px-4 md:px-[5%]">
         {/* Section label */}
         <div className="flex items-center gap-4 mb-6">
           <div className="h-[1px] w-12 bg-[#8C0B0C]" />

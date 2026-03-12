@@ -33,8 +33,8 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({ className = "" }
   }, []);
 
   return (
-    <div className={`w-full px-4 sm:px-6 py-2 sm:py-3 ${className}`}>
-      <div className="container mx-auto max-w-7xl relative flex items-center gap-3">
+    <div className={`w-full py-2 sm:py-3 ${className}`}>
+      <div className="w-full px-4 md:px-[5%] relative flex items-center gap-3">
         {/* HUD dot left */}
         <div className="h-[3px] w-[3px] rounded-full bg-[#8C0B0C] opacity-40 flex-shrink-0" />
 

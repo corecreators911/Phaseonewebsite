@@ -119,9 +119,9 @@ export const Departments = () => {
     <section
       id="departments"
       ref={containerRef}
-      className="relative w-full bg-black py-8 sm:py-12 md:py-16 px-4 sm:px-6 scroll-mt-24 overflow-hidden"
+      className="relative w-full bg-black py-8 sm:py-12 md:py-16 scroll-mt-24 overflow-hidden"
     >
-      <div className="container mx-auto max-w-7xl relative z-10">
+      <div className="w-full px-4 md:px-[5%] relative z-10">
         {/* Section label */}
         <div className="flex items-center gap-4 mb-6">
           <div className="h-[1px] w-12 bg-[#8C0B0C]" />

@@ -67,7 +67,7 @@ export const Hero = () => {
         className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end md:justify-between p-4 sm:p-6 md:p-12 pb-[10vh] md:pb-12"
       >
         {/* Top UI */}
-        <div className="hidden md:flex justify-between items-start pt-32 w-full px-[2%] md:px-[5%]">
+        <div className="hidden md:flex justify-between items-start pt-32 w-full px-4 md:px-[5%]">
           <div className="flex flex-col gap-1.5 overflow-hidden">
             <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">SYS_RENDER_001</span>
             <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono text-[#8C0B0C] uppercase tracking-[0.15em] sm:tracking-[0.2em]">LND // LAX // NY</span>
@@ -83,7 +83,7 @@ export const Hero = () => {
         </div>
 
         {/* Bottom UI */}
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-end w-full px-[2%] md:px-[5%] pb-6 sm:pb-8 gap-6 sm:gap-10 md:gap-0 pointer-events-auto">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end w-full px-4 md:px-[5%] pb-6 sm:pb-8 gap-6 sm:gap-10 md:gap-0 pointer-events-auto">
 
           {/* Avatar Cluster & Trust Layer */}
           <div className="flex items-center gap-3 sm:gap-5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full p-1.5 sm:p-2 pr-5 sm:pr-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-colors hover:border-white/20 hover:bg-white/10 max-w-[95vw]">

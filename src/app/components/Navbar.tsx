@@ -30,7 +30,7 @@ export const Navbar = () => {
             : "bg-gradient-to-b from-black/90 via-black/40 to-transparent py-6 sm:py-8 border-b border-transparent"
         )}
       >
-        <div className="container mx-auto px-6 flex items-center justify-between">
+        <div className="w-full px-4 md:px-[5%] flex items-center justify-between">
           <a href="#home" className="flex items-center gap-3 z-50 group">
             <div className="relative flex items-center justify-center h-10 w-10 overflow-hidden rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-500 group-hover:border-[#8C0B0C]/50 group-hover:shadow-[0_0_15px_rgba(140,11,12,0.4)]">
               <img src={logoImg} alt="Phase One Logo" className="h-5 w-5 object-contain" />

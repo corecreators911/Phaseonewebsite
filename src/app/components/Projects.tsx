@@ -115,7 +115,7 @@ export const Projects = () => {
     <section
       id="projects"
       ref={containerRef}
-      className="relative w-full bg-black py-8 sm:py-12 md:py-16 px-4 sm:px-6 scroll-mt-24"
+      className="relative w-full bg-black py-8 sm:py-12 md:py-16 scroll-mt-24"
     >
       {/* Subtle dot-grid texture */}
       <div
@@ -127,7 +127,7 @@ export const Projects = () => {
         }}
       />
 
-      <div className="container mx-auto max-w-7xl relative z-10">
+      <div className="w-full px-4 md:px-[5%] relative z-10">
         {/* ── Header ── */}
         <div className="mb-10 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8">
           <div>
@@ -223,7 +223,7 @@ export const Projects = () => {
                 <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.05] group-hover:ring-[#8C0B0C]/25 rounded-xl transition-colors duration-700" />
 
                 {/* ── Top row: ID / Year + Award ── */}
-                <div className="absolute top-0 left-0 right-0 px-4 sm:px-6 md:px-7 pt-4 sm:pt-6 flex items-center justify-between">
+                <div className="absolute top-0 left-0 right-0 md:px-7 pt-4 sm:pt-6 flex items-center justify-between">
                   <span className="text-[10px] font-mono text-white/40 uppercase tracking-[0.28em] opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1 group-hover:translate-y-0">
                     {project.id} — {project.year}
                   </span>
@@ -236,7 +236,7 @@ export const Projects = () => {
                 </div>
 
                 {/* ── Bottom content ── */}
-                <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 md:px-7 pb-4 sm:pb-6 md:pb-7">
+                <div className="absolute bottom-0 left-0 right-0 md:px-7 pb-4 sm:pb-6 md:pb-7">
                   {/* Client row + VIEW arrow */}
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-white/50 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">

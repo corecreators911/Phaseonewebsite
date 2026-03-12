@@ -74,7 +74,7 @@ export const Footer = () => {
       {/* CTA Marquee Band */}
       <div className="border-t border-b border-white/[0.04] py-4 sm:py-6">
         <Marquee speed={40} className="">
-          <div className="flex items-center gap-8 sm:gap-12 px-4 sm:px-6">
+          <div className="flex items-center gap-8 sm:gap-12">
             {Array.from({ length: 6 }).map((_, i) => (
               <span key={i} className="contents">
                 <span className="text-base sm:text-lg md:text-xl font-bold uppercase tracking-[0.1em] text-neutral-700 whitespace-nowrap">
@@ -88,7 +88,7 @@ export const Footer = () => {
       </div>
 
       {/* Main footer content */}
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+      <div className="w-full px-4 md:px-[5%] py-12 sm:py-16 md:py-20">
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8">
           {/* Brand column */}
           <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
@@ -196,7 +196,7 @@ export const Footer = () => {
         {/* Subtle glow behind the text */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-1/2 bg-[#8C0B0C]/10 blur-[100px] pointer-events-none rounded-full" />
         
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
+        <div className="w-full px-4 md:px-[5%] relative z-10">
           <div className="flex flex-wrap justify-center">
             {"PHASE ONE".split("").map((char, i) => (
               <span
@@ -221,7 +221,7 @@ export const Footer = () => {
 
       {/* Bottom bar */}
       <div className="border-t border-white/[0.04]">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-4 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+        <div className="w-full px-4 md:px-[5%] py-4 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
           <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 text-center sm:text-left">
             &copy; {new Date().getFullYear()} Phase One VFX. All rights reserved.
           </p>
