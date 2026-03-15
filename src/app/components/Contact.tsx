@@ -188,7 +188,7 @@ export const Contact = () => {
                 <div className="absolute inset-0 h-2 w-2 rounded-full bg-emerald-500 animate-ping opacity-75" />
               </div>
               <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-400">
-                Available for Q2 2026
+                Available for New Projects
               </span>
             </div>
           </div>
