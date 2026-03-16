@@ -193,9 +193,11 @@ export const Contact = () => {
             </div>
           </div>
 
-          {/* Right side - Form */}
           <div ref={formContainerRef} className="lg:col-span-8">
-            <div className="relative w-full rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 sm:p-6 md:p-10 backdrop-blur-sm">
+            <div
+              data-cursor-hide
+              className="relative w-full rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 sm:p-6 md:p-10 backdrop-blur-sm z-[500]"
+            >
               {/* Corner accents */}
               <div className="absolute top-0 left-0 w-8 h-8 border-l border-t border-[#8C0B0C]/30 rounded-tl-2xl" />
               <div className="absolute top-0 right-0 w-8 h-8 border-r border-t border-[#8C0B0C]/30 rounded-tr-2xl" />
@@ -225,7 +227,7 @@ export const Contact = () => {
                       <input
                         {...register("name", { required: true })}
                         type="text"
-                        className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors md:cursor-text"
                         placeholder="John Doe"
                       />
                       {errors.name && (
@@ -239,7 +241,7 @@ export const Contact = () => {
                       <input
                         {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                         type="email"
-                        className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors"
+                        className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors md:cursor-text"
                         placeholder="john@example.com"
                       />
                       {errors.email && (
@@ -256,7 +258,7 @@ export const Contact = () => {
                     <textarea
                       {...register("message", { required: true })}
                       rows={6}
-                      className="w-full resize-none bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors"
+                      className="w-full resize-none bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors md:cursor-text"
                       placeholder="Tell us what's on your mind..."
                     />
                     {errors.message && (

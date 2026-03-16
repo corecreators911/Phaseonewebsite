@@ -107,6 +107,24 @@
     textarea {
       cursor: none !important;
     }
+
+    /* Contact form exception: show native system cursor inside form box */
+    [data-cursor-hide],
+    [data-cursor-hide] *,
+    [data-cursor-hide]::before,
+    [data-cursor-hide]::after {
+      cursor: auto !important;
+    }
+
+    [data-cursor-hide] input,
+    [data-cursor-hide] textarea {
+      cursor: text !important;
+    }
+
+    [data-cursor-hide] button,
+    [data-cursor-hide] [role="button"] {
+      cursor: pointer !important;
+    }
   }
 
   /* Restore native cursor for users who prefer reduced motion (e.g. magnification tools) */

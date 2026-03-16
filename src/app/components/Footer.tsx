@@ -93,12 +93,13 @@ export const Footer = () => {
           {/* Brand column */}
           <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
             <a href="#home" className="flex items-center gap-3 group" data-cursor-hover>
-              <div className="h-12 w-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 transition-colors duration-500">
-                <img src={logoImg} alt="Phase One" className="h-6 w-6 object-contain" />
+              <div className="h-12 w-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 transition-colors duration-500 overflow-hidden">
+                <img src={logoImg} alt="Phase One" className="h-full w-full object-contain scale-[1.05]" />
               </div>
               <div>
-                <span className="text-lg font-bold tracking-[0.15em] uppercase text-white">
-                  Phase <span className="text-[#8C0B0C]">One</span>
+                <span className="text-lg font-bold tracking-[0.15em] uppercase transition-colors duration-300">
+                  <span className="text-[#8C0B0C] text-lg font-bold tracking-[0.15em] uppercase">Phase One</span>
+                  <span className="ml-2 text-white text-lg font-bold tracking-[0.15em] uppercase group-hover:text-neutral-300">VFX</span>
                 </span>
                 <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-neutral-600 mt-0.5">
                   Next Era Visual Effects

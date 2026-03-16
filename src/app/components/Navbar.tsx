@@ -33,10 +33,11 @@ export const Navbar = () => {
         <div className="w-full px-4 md:px-[5%] flex items-center justify-between">
           <a href="#home" className="flex items-center gap-3 z-50 group">
             <div className="relative flex items-center justify-center h-10 w-10 overflow-hidden rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-500 group-hover:border-[#8C0B0C]/50 group-hover:shadow-[0_0_15px_rgba(140,11,12,0.4)]">
-              <img src={logoImg} alt="Phase One Logo" className="h-5 w-5 object-contain" />
+              <img src={logoImg} alt="Phase One Logo" className="h-full w-full object-contain scale-[1.05]" />
             </div>
-            <span className="text-lg font-bold tracking-[0.2em] uppercase text-white transition-colors duration-500 group-hover:text-neutral-300">
-              Phase <span className="text-[#8C0B0C]">One</span>
+            <span className="text-lg font-bold tracking-[0.2em] uppercase transition-colors duration-500">
+              <span className="text-[#8C0B0C] text-lg font-bold tracking-[0.2em] uppercase">Phase One</span>
+              <span className="ml-2 text-white group-hover:text-neutral-300 text-lg font-bold tracking-[0.2em] uppercase">VFX</span>
             </span>
           </a>
 

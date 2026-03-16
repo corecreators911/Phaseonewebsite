@@ -67,6 +67,15 @@ export const CustomCursor = () => {
       });
     };
 
+    const handleHideEnter = () => {
+      // hide the animated cursor visuals
+      gsap.to([dot, ring], { opacity: 0, duration: 0.2, ease: "power2.out" });
+    };
+
+    const handleHideLeave = () => {
+      gsap.to([dot, ring], { opacity: 1, duration: 0.2, ease: "power2.out" });
+    };
+
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     const setupListeners = () => {
@@ -76,6 +85,14 @@ export const CustomCursor = () => {
         el.removeEventListener("mouseleave", handleMouseLeave);
         el.addEventListener("mouseenter", handleMouseEnter);
         el.addEventListener("mouseleave", handleMouseLeave);
+      });
+
+      const hideEls = document.querySelectorAll("[data-cursor-hide]");
+      hideEls.forEach((el) => {
+        el.removeEventListener("mouseenter", handleHideEnter);
+        el.removeEventListener("mouseleave", handleHideLeave);
+        el.addEventListener("mouseenter", handleHideEnter);
+        el.addEventListener("mouseleave", handleHideLeave);
       });
     };
 
@@ -100,6 +117,11 @@ export const CustomCursor = () => {
       els.forEach((el) => {
         el.removeEventListener("mouseenter", handleMouseEnter);
         el.removeEventListener("mouseleave", handleMouseLeave);
+      });
+      const hideEls = document.querySelectorAll("[data-cursor-hide]");
+      hideEls.forEach((el) => {
+        el.removeEventListener("mouseenter", handleHideEnter);
+        el.removeEventListener("mouseleave", handleHideLeave);
       });
     };
   }, [prefersReducedMotion]);
