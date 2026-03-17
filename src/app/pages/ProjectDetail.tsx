@@ -17,27 +17,32 @@ export const ProjectDetail = () => {
 
   useLayoutEffect(() => {
     if (!project) return;
-    const ctx = gsap.context(() => {
-      // Fade in the hero text elements
-      gsap.fromTo(
-        ".project-hero-el",
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out", delay: 0.2 }
-      );
-      // Fade in the video
-      gsap.fromTo(
-        ".project-video",
-        { scale: 0.95, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.2, ease: "power4.out", delay: 0.5 }
-      );
-      // Fade in content
-      gsap.fromTo(
-        ".project-content",
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.7 }
-      );
-    }, containerRef);
-    return () => ctx.revert();
+    try {
+      const ctx = gsap.context(() => {
+        // Fade in the hero text elements
+        gsap.fromTo(
+          ".project-hero-el",
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out", delay: 0.2 }
+        );
+        // Fade in the video
+        gsap.fromTo(
+          ".project-video",
+          { scale: 0.95, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 1.2, ease: "power4.out", delay: 0.5 }
+        );
+        // Fade in content
+        gsap.fromTo(
+          ".project-content",
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.7 }
+        );
+      }, containerRef);
+      return () => ctx.revert();
+    } catch (error) {
+      console.error("ProjectDetail animation init failed:", error);
+      return undefined;
+    }
   }, [project]);
 
   if (!project) {

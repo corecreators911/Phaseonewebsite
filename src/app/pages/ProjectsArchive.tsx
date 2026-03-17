@@ -7,22 +7,29 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
 export const ProjectsArchive = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const safeProjects = Array.isArray(projects) ? projects : [];
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".archive-header-el",
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power4.out", delay: 0.1 }
-      );
-      
-      gsap.fromTo(
-        ".archive-card",
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: "power3.out", delay: 0.3 }
-      );
-    }, containerRef);
-    return () => ctx.revert();
+    try {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          ".archive-header-el",
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power4.out", delay: 0.1 }
+        );
+
+        gsap.fromTo(
+          ".archive-card",
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: "power3.out", delay: 0.3 }
+        );
+      }, containerRef);
+
+      return () => ctx.revert();
+    } catch (error) {
+      console.error("ProjectsArchive animation init failed:", error);
+      return undefined;
+    }
   }, []);
 
   return (
@@ -48,13 +55,13 @@ export const ProjectsArchive = () => {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
             </div>
             <span className="text-xs font-bold tracking-[0.25em] text-white uppercase">
-              Showing {projects.length} Projects
+              Showing {safeProjects.length} Projects
             </span>
           </div>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {projects.map((project) => (
+          {safeProjects.map((project) => (
             <Link
               to={`/projects/${project.projectId}`}
               key={project.id}
