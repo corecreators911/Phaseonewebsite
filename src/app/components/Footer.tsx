@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUp, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
+import { Link } from "react-router-dom";
 import { Marquee } from "./Marquee";
 import { PreviewNotice } from "./PreviewNotice";
 
@@ -92,7 +93,7 @@ export const Footer = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8">
           {/* Brand column */}
           <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
-            <a href="#home" className="flex items-center gap-3 group" data-cursor-hover>
+            <Link to="/#home" className="flex items-center gap-3 group" data-cursor-hover>
               <div className="h-12 w-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 transition-colors duration-500 overflow-hidden">
                 <img src={logoImg} alt="Phase One" className="h-full w-full object-contain scale-[1.05]" />
               </div>
@@ -105,7 +106,7 @@ export const Footer = () => {
                   Next Era Visual Effects
                 </p>
               </div>
-            </a>
+            </Link>
 
             <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-sm mt-2">
               A full-spectrum VFX studio delivering uncompromising visual fidelity for film, episodic, and commercial content worldwide.
@@ -145,11 +146,13 @@ export const Footer = () => {
                   const isPlaceholder = col.title === "Studio";
                   return (
                   <li key={link}>
-                    <a
-                      href={
-                        col.title === "Departments"
-                          ? "#departments"
-                          : `#${link.toLowerCase().replace(/\s+/g, "-")}`
+                    <Link
+                      to={
+                        link === "Projects"
+                          ? "/projects"
+                          : col.title === "Departments"
+                          ? "/#departments"
+                          : `/#${link.toLowerCase().replace(/\s+/g, "-")}`
                       }
                       onClick={
                         isPlaceholder
@@ -162,11 +165,11 @@ export const Footer = () => {
                             }
                           : undefined
                       }
-                      className="text-xs sm:text-sm text-neutral-600 hover:text-white hover:pl-2 transition-all duration-300"
+                      className="text-xs sm:text-sm text-neutral-600 hover:text-white hover:pl-2 transition-all duration-300 block"
                       data-cursor-hover
                     >
                       {link}
-                    </a>
+                    </Link>
                   </li>
                   );
                 })}
