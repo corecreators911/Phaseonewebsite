@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Suspense, lazy } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,7 +8,7 @@ import { Preloader } from "./components/Preloader";
 import { Navbar } from "./components/Navbar";
 import { Home } from "./pages/Home";
 import { FilmGrain } from "./components/FilmGrain";
-const Footer = lazy(() => import("./components/Footer").then(m => ({ default: m.Footer })));
+import { Footer } from "./components/Footer";
 import { CustomCursor } from "./components/CustomCursor";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -97,9 +97,7 @@ export default function App() {
               <Route path="/projects/:id" element={<ProjectDetail />} />
             </Routes>
           </main>
-          <Suspense fallback={null}>
-            <Footer />
-          </Suspense>
+          <Footer />
         </ErrorBoundary>
       )}
     </div>
