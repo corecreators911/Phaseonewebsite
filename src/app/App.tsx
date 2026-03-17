@@ -86,19 +86,36 @@ export default function App() {
       {loading ? (
         <Preloader onComplete={() => setLoading(false)} />
       ) : (
-        <ErrorBoundary>
-          <CustomCursor />
-          <ScrollProgress />
-          <Navbar />
+        <>
+          <ErrorBoundary fallback={null} resetKey={location.pathname}>
+            <CustomCursor />
+          </ErrorBoundary>
+          <ErrorBoundary fallback={null} resetKey={location.pathname}>
+            <ScrollProgress />
+          </ErrorBoundary>
+          <ErrorBoundary fallback={null} resetKey={location.pathname}>
+            <Navbar />
+          </ErrorBoundary>
           <main id="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/projects" element={<ProjectsArchive />} />
-              <Route path="/projects/:id" element={<ProjectDetail />} />
-            </Routes>
+            <ErrorBoundary
+              resetKey={`${location.pathname}${location.hash}`}
+              fallback={
+                <div className="min-h-screen flex items-center justify-center bg-black text-neutral-500 text-sm font-mono">
+                  Something went wrong. Please refresh the page.
+                </div>
+              }
+            >
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/projects" element={<ProjectsArchive />} />
+                <Route path="/projects/:id" element={<ProjectDetail />} />
+              </Routes>
+            </ErrorBoundary>
           </main>
-          <Footer />
-        </ErrorBoundary>
+          <ErrorBoundary fallback={null} resetKey={location.pathname}>
+            <Footer />
+          </ErrorBoundary>
+        </>
       )}
     </div>
   );

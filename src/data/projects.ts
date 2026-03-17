@@ -77,7 +77,7 @@ export const projects: Project[] = [
     year: "2023",
     description: "Seamless invisible effects and complex set extensions for a period drama piece, requiring historically accurate digital crowds and architectural replacements.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
-    thumbnailUrl: "https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=2564&auto=format&fit=crop"
+    thumbnailUrl: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2564&auto=format&fit=crop"
   },
   {
     id: "06",
