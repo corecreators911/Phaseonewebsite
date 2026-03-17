@@ -1,55 +1,28 @@
-import React, { useRef, useLayoutEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import gsap from "gsap";
-import { ArrowUpRight } from "lucide-react";
 import { projects } from "../../data/projects";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
 export const ProjectsArchive = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const safeProjects = Array.isArray(projects) ? projects : [];
 
-  useLayoutEffect(() => {
-    try {
-      const ctx = gsap.context(() => {
-        gsap.fromTo(
-          ".archive-header-el",
-          { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power4.out", delay: 0.1 }
-        );
-
-        gsap.fromTo(
-          ".archive-card",
-          { y: 60, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: "power3.out", delay: 0.3 }
-        );
-      }, containerRef);
-
-      return () => ctx.revert();
-    } catch (error) {
-      console.error("ProjectsArchive animation init failed:", error);
-      return undefined;
-    }
-  }, []);
-
   return (
-    <div ref={containerRef} className="min-h-screen bg-black pt-32 pb-24 px-4 md:px-[5%] relative z-10">
+    <div className="min-h-screen bg-black pt-32 pb-24 px-4 md:px-[5%] relative z-10">
       {/* Background Glow */}
       <div className="fixed top-1/4 -right-1/4 w-[800px] h-[800px] bg-[#8C0B0C]/10 rounded-full blur-[120px] pointer-events-none opacity-50" />
       
       <div className="max-w-[1400px] mx-auto relative z-10">
         <header className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/10 pb-8">
           <div>
-            <h1 className="archive-header-el opacity-0 translate-y-8 text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4">
               Project <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8C0B0C] to-red-600">Archive</span>
             </h1>
-            <p className="archive-header-el opacity-0 translate-y-8 text-neutral-400 max-w-xl text-lg">
+            <p className="text-neutral-400 max-w-xl text-lg">
               A comprehensive showcase of our visual effects, CGI, and post-production work across film, television, and commercial projects.
             </p>
           </div>
 
           {/* Enhanced Showing X Projects Badge */}
-          <div className="archive-header-el opacity-0 translate-y-8 flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3 rounded-full backdrop-blur-md">
+          <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-5 py-3 rounded-full backdrop-blur-md">
             <div className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8C0B0C] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
@@ -65,12 +38,13 @@ export const ProjectsArchive = () => {
             <Link
               to={`/projects/${project.projectId}`}
               key={project.id}
-              className="archive-card opacity-0 translate-y-12 group relative flex flex-col h-full rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] transition-all duration-500 hover:border-[#8C0B0C]/40 hover:bg-white/[0.05] hover:shadow-[0_0_30px_rgba(140,11,12,0.15)]"
+              className="group relative flex flex-col h-full rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] transition-all duration-500 hover:border-[#8C0B0C]/40 hover:bg-white/[0.05] hover:shadow-[0_0_30px_rgba(140,11,12,0.15)]"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-black/50">
-                <ImageWithFallback 
-                  src={project.thumbnailUrl} 
+                <img
+                  src={project.thumbnailUrl}
                   alt={project.title}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
@@ -82,7 +56,7 @@ export const ProjectsArchive = () => {
 
                 {/* Hover Arrow */}
                 <div className="absolute top-4 right-4 bg-[#8C0B0C] p-2.5 rounded-full opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 shadow-[0_0_15px_rgba(140,11,12,0.5)]">
-                  <ArrowUpRight size={16} className="text-white" />
+                  <span className="text-white text-sm font-bold">OPEN</span>
                 </div>
               </div>
 
