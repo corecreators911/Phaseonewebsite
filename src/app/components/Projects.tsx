@@ -161,7 +161,7 @@ export const Projects = () => {
 
                 <div className="absolute top-0 left-0 right-0 px-5 md:px-7 pt-4 sm:pt-6 flex items-center justify-between">
                   <span className="text-[10px] font-mono text-white/40 uppercase tracking-[0.28em] opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1 group-hover:translate-y-0">
-                    {project.id} — {project.year}
+                    {project.id} - {project.year}
                   </span>
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-75 -translate-y-1 group-hover:translate-y-0">
                     <div className="h-[5px] w-[5px] rounded-full bg-[#8C0B0C]" />

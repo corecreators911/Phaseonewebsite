@@ -148,9 +148,7 @@ export const Footer = () => {
                   <li key={link}>
                     <Link
                       to={
-                        link === "Projects"
-                          ? "/projects"
-                          : col.title === "Departments"
+                        col.title === "Departments"
                           ? "/#departments"
                           : `/#${link.toLowerCase().replace(/\s+/g, "-")}`
                       }

@@ -3,7 +3,7 @@ import { Menu, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
 import { motion, AnimatePresence } from "motion/react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const NAV_ITEMS = ["Home", "Showreel", "Departments", "Projects", "About", "Contact"];
 
@@ -49,7 +49,7 @@ export const Navbar = () => {
           >
             {NAV_ITEMS.map((item, i) => {
               const isContact = item === "Contact";
-              const targetPath = item === "Projects" ? "/projects" : `/#${item.toLowerCase()}`;
+              const targetPath = `/#${item.toLowerCase()}`;
 
               return (
               <Link
@@ -107,7 +107,7 @@ export const Navbar = () => {
                   transition={{ delay: i * 0.08, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
                 >
                   <Link
-                    to={item === "Projects" ? "/projects" : `/#${item.toLowerCase()}`}
+                    to={`/#${item.toLowerCase()}`}
                     className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-500 transition-all hover:to-[#8C0B0C] hover:scale-110 hover:tracking-[0.05em] block"
                     onClick={() => setMobileMenuOpen(false)}
                   >

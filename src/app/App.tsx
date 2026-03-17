@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -33,6 +33,7 @@ export default function App() {
   const prefersReducedMotion = useReducedMotion();
   const [loading, setLoading] = useState(() => !prefersReducedMotion);
   const location = useLocation();
+  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
     if (loading) return;
@@ -46,6 +47,7 @@ export default function App() {
     }
 
     const lenis = new Lenis();
+    lenisRef.current = lenis;
     lenis.on("scroll", ScrollTrigger.update);
 
     const updateLenis = (time: number) => {
@@ -55,28 +57,37 @@ export default function App() {
     gsap.ticker.add(updateLenis);
     gsap.ticker.lagSmoothing(0);
 
-    // Handle hash scrolling on mount or when location changes
-    if (location.hash) {
-      setTimeout(() => {
-        const id = location.hash.replace("#", "");
-        const element = document.getElementById(id);
-        if (element) {
-          lenis.scrollTo(element, { offset: 0, immediate: true });
-          
-          // Remove hash from URL to ensure clean refreshed and navigation, without triggering a route change
-          setTimeout(() => {
-            window.history.replaceState(null, '', window.location.pathname);
-          }, 100);
-        }
-      }, 300);
-    }
-
     return () => {
       clearTimeout(refreshId);
-      lenis.destroy();
       gsap.ticker.remove(updateLenis);
+      lenis.destroy();
+      lenisRef.current = null;
     };
-  }, [loading, prefersReducedMotion, location]);
+  }, [loading, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (loading) return;
+    const id = setTimeout(() => ScrollTrigger.refresh(), 120);
+    return () => clearTimeout(id);
+  }, [loading, location.pathname]);
+
+  useEffect(() => {
+    if (loading || !location.hash) return;
+
+    const id = setTimeout(() => {
+      const sectionId = location.hash.slice(1);
+      const target = document.getElementById(sectionId);
+      if (!target) return;
+
+      if (lenisRef.current && !prefersReducedMotion) {
+        lenisRef.current.scrollTo(target, { offset: -8, duration: 1.1 });
+      } else {
+        target.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    }, 120);
+
+    return () => clearTimeout(id);
+  }, [loading, location.hash, location.pathname, prefersReducedMotion]);
 
   return (
     <div className="bg-black text-white min-h-screen w-full selection:bg-[#8C0B0C] selection:text-white md:cursor-none overflow-x-hidden" style={{ fontFamily: "var(--font-family-sans)" }}>

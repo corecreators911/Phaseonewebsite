@@ -50,9 +50,9 @@ export const ProjectDetail = () => {
   }
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-black relative z-10 pt-24 pb-24">
+    <div ref={containerRef} className="min-h-screen bg-black relative z-10 pt-24 pb-24 overflow-hidden">
       {/* Background ambient glow matching the accent */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[#8C0B0C]/10 rounded-full blur-[150px] pointer-events-none opacity-40 z-0" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[#8C0B0C]/10 rounded-full blur-[150px] pointer-events-none opacity-40 z-0" />
       
       {/* Back Button */}
       <div className="relative z-50 max-w-[1400px] mx-auto px-4 md:px-[5%] mb-12">
