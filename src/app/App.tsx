@@ -116,9 +116,9 @@ export default function App() {
               }
             >
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/projects" element={<ProjectsArchive />} />
-                <Route path="/projects/:id" element={<ProjectDetail />} />
+                <Route index element={<Home />} />
+                <Route path="projects" element={<ProjectsArchive />} />
+                <Route path="projects/:id" element={<ProjectDetail />} />
               </Routes>
             </ErrorBoundary>
           </main>
