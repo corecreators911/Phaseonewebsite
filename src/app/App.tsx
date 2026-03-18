@@ -20,20 +20,19 @@ import { ProjectDetail } from "./pages/ProjectDetail";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ScrollToTop component to handle route changes
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  return null;
-};
-
 export default function App() {
   const prefersReducedMotion = useReducedMotion();
   const [loading, setLoading] = useState(() => !prefersReducedMotion);
   const location = useLocation();
   const lenisRef = useRef<Lenis | null>(null);
+
+  // Scroll to top on route change
+  useEffect(() => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (loading) return;
@@ -91,7 +90,7 @@ export default function App() {
 
   return (
     <div className="bg-black text-white min-h-screen w-full selection:bg-[#8C0B0C] selection:text-white md:cursor-none overflow-x-hidden" style={{ fontFamily: "var(--font-family-sans)" }}>
-      <ScrollToTop />
+      
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-6 focus:left-6 focus:z-[200] focus:px-6 focus:py-3 focus:bg-black/90 focus:border focus:border-[#8C0B0C]/50 focus:text-white focus:rounded-full focus:text-[11px] focus:font-bold focus:uppercase focus:tracking-[0.2em] focus:shadow-[0_0_15px_rgba(140,11,12,0.3)] focus:outline-none focus:ring-1 focus:ring-[#8C0B0C]/30 focus:backdrop-blur-md transition-all">Skip to content</a>
       <FilmGrain />
       {loading ? (

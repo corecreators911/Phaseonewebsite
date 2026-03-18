@@ -23,19 +23,41 @@ export const ProjectDetail = () => {
         gsap.fromTo(
           ".project-hero-el",
           { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out", delay: 0.2 }
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            stagger: 0.1,
+            ease: "power3.out",
+            delay: 0.2,
+            clearProps: "all",
+          }
         );
         // Fade in the video
         gsap.fromTo(
           ".project-video",
           { scale: 0.95, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 1.2, ease: "power4.out", delay: 0.5 }
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 1.2,
+            ease: "power4.out",
+            delay: 0.5,
+            clearProps: "all",
+          }
         );
         // Fade in content
         gsap.fromTo(
           ".project-content",
           { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.7 }
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out",
+            delay: 0.7,
+            clearProps: "all",
+          }
         );
       }, containerRef);
       return () => ctx.revert();
@@ -52,7 +74,7 @@ export const ProjectDetail = () => {
   return (
     <div ref={containerRef} className="min-h-screen bg-black relative z-10 pt-24 pb-24 overflow-hidden">
       {/* Background ambient glow matching the accent */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[#8C0B0C]/10 rounded-full blur-[150px] pointer-events-none opacity-40 z-0" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[#8C0B0C]/10 rounded-full blur-[150px] pointer-events-none opacity-40 z-0 transform-gpu will-change-transform" />
       
       {/* Back Button */}
       <div className="relative z-50 max-w-[1400px] mx-auto px-4 md:px-[5%] mb-12">
@@ -66,13 +88,13 @@ export const ProjectDetail = () => {
 
       {/* Hero Text Section */}
       <div className="relative z-20 max-w-[1400px] mx-auto px-4 md:px-[5%] text-center mb-16">
-        <div className="project-hero-el opacity-0 translate-y-8 inline-block px-4 py-1.5 border border-[#8C0B0C]/30 bg-[#8C0B0C]/10 text-[#8C0B0C] text-[10px] font-bold tracking-[0.3em] uppercase rounded-full mb-8">
+        <div className="project-hero-el inline-block px-4 py-1.5 border border-[#8C0B0C]/30 bg-[#8C0B0C]/10 text-[#8C0B0C] text-[10px] font-bold tracking-[0.3em] uppercase rounded-full mb-8">
           {project.category}
         </div>
-        <h1 className="project-hero-el opacity-0 translate-y-8 text-5xl md:text-7xl lg:text-9xl font-black uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-400 mb-6 drop-shadow-2xl">
+        <h1 className="project-hero-el text-5xl md:text-7xl lg:text-9xl font-black uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-400 mb-6 drop-shadow-2xl">
           {project.title}
         </h1>
-        <div className="project-hero-el opacity-0 translate-y-8 flex flex-wrap items-center justify-center gap-4 text-xs font-mono tracking-widest text-neutral-500 uppercase">
+        <div className="project-hero-el flex flex-wrap items-center justify-center gap-4 text-xs font-mono tracking-widest text-neutral-500 uppercase">
           <span>Phase One VFX</span>
           <span className="w-1.5 h-1.5 rounded-full bg-[#8C0B0C] opacity-50"></span>
           <span>Next Era Visual Fidelity</span>
@@ -80,7 +102,7 @@ export const ProjectDetail = () => {
       </div>
 
       {/* Hero Video Section (No Overlap) */}
-      <div className="project-video opacity-0 scale-95 relative z-20 max-w-[1400px] mx-auto px-4 md:px-[5%] mb-20">
+      <div className="project-video relative z-20 max-w-[1400px] mx-auto px-4 md:px-[5%] mb-20">
         <div className="relative w-full aspect-video bg-neutral-900 rounded-2xl border border-white/10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5">
           {project.heroVideoUrl ? (
             <iframe 
@@ -101,7 +123,7 @@ export const ProjectDetail = () => {
       </div>
 
       {/* Main Content Section */}
-      <div className="project-content opacity-0 translate-y-10 relative z-20 max-w-[1400px] mx-auto px-4 md:px-[5%] grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+      <div className="project-content relative z-20 max-w-[1400px] mx-auto px-4 md:px-[5%] grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
         
         {/* Left Column: Description */}
         <div className="lg:col-span-8 flex flex-col gap-12">
@@ -171,3 +193,4 @@ export const ProjectDetail = () => {
     </div>
   );
 };
+

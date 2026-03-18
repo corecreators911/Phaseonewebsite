@@ -16,29 +16,31 @@ export const ProjectsArchive = () => {
         return;
       }
 
-      gsap.fromTo(".archive-header", {
-        opacity: 0,
-        y: 24,
-      }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        clearProps: "transform",
-      });
+      gsap.fromTo(
+        ".archive-header",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          clearProps: "all",
+        }
+      );
 
-      gsap.fromTo(".archive-card", {
-        opacity: 0,
-        y: 32,
-      }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.06,
-        ease: "power3.out",
-        clearProps: "transform",
-        delay: 0.1,
-      });
+      gsap.fromTo(
+        ".archive-card",
+        { opacity: 0, y: 32 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.06,
+          ease: "power3.out",
+          clearProps: "all",
+          delay: 0.1,
+        }
+      );
     }, containerRef);
 
     return () => ctx.revert();
@@ -47,7 +49,7 @@ export const ProjectsArchive = () => {
   return (
     <div ref={containerRef} className="min-h-screen bg-black pt-32 pb-24 px-4 md:px-[5%] relative z-10 overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-24 -right-1/4 w-[800px] h-[800px] bg-[#8C0B0C]/10 rounded-full blur-[120px] pointer-events-none opacity-50" />
+      <div className="absolute top-24 -right-1/4 w-[800px] h-[800px] bg-[#8C0B0C]/10 rounded-full blur-[120px] pointer-events-none opacity-50 transform-gpu will-change-transform" />
       
       <div className="max-w-[1400px] mx-auto relative z-10">
         <header className="archive-header mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/10 pb-8">
@@ -77,7 +79,7 @@ export const ProjectsArchive = () => {
             <Link
               to={`/projects/${project.projectId}`}
               key={project.id}
-              className="archive-card group relative flex flex-col h-full rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] transition-all duration-500 hover:border-[#8C0B0C]/40 hover:bg-white/[0.05] hover:shadow-[0_0_30px_rgba(140,11,12,0.15)]"
+              className="archive-card group relative flex flex-col h-full rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] transition-[border-color,background-color,box-shadow] duration-500 hover:border-[#8C0B0C]/40 hover:bg-white/[0.05] hover:shadow-[0_0_30px_rgba(140,11,12,0.15)]"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-black/50">
                 <img
@@ -127,3 +129,4 @@ export const ProjectsArchive = () => {
     </div>
   );
 };
+
