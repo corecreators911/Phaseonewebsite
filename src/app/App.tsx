@@ -86,58 +86,49 @@ export default function App() {
   useEffect(() => {
     if (loading || !location.hash) return;
 
-    const handler = () => {
-      ScrollTrigger.removeEventListener("refresh", handler);
-      clearTimeout(fallbackId);
+    // Wait for the useLayoutEffect's ScrollTrigger.refresh(true) at 250ms to
+    // finish rebuilding pin-spacers, then do our own refresh + scroll.
+    // 350ms gives a safe margin above the 250ms refresh.
+    const timerId = setTimeout(() => {
+      ScrollTrigger.refresh();
 
-      const sectionId = location.hash.slice(1);
-      const target = document.getElementById(sectionId);
-      if (!target) return;
+      // Use rAF to ensure the browser has applied the refreshed layout
+      rafId = requestAnimationFrame(() => {
+        const sectionId = location.hash.slice(1);
+        const target = document.getElementById(sectionId);
+        if (!target) return;
 
-      // The showreel section uses pin:true which wraps it in a pin-spacer.
-      // We need to scroll to the pin trigger's start position, not the
-      // element's raw offsetTop, to land at the *beginning* of the section.
-      const showreelTrigger =
-        sectionId === "showreel"
-          ? ScrollTrigger.getAll().find(
-              (st) =>
-                st.pin &&
-                st.trigger instanceof HTMLElement &&
-                st.trigger.id === "showreel"
-            )
-          : null;
+        const navOffset = 80;
 
-      // Compute the real scroll position via getBoundingClientRect which
-      // correctly accounts for any pin-spacer height injected by ScrollTrigger
-      const navOffset = 80;
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const targetTop = target.getBoundingClientRect().top + scrollY - navOffset;
+        // For pinned sections (showreel), use ScrollTrigger's computed
+        // start position which already accounts for pin-spacer offsets.
+        const pinnedTrigger = ScrollTrigger.getAll().find(
+          (st) =>
+            st.pin &&
+            st.trigger instanceof HTMLElement &&
+            st.trigger.id === sectionId
+        );
 
-      if (lenisRef.current && !prefersReducedMotion) {
-        if (showreelTrigger) {
-          lenisRef.current.scrollTo(showreelTrigger.start, { duration: 1.1 });
+        let scrollTarget: number;
+        if (pinnedTrigger) {
+          scrollTarget = pinnedTrigger.start;
         } else {
-          lenisRef.current.scrollTo(targetTop, { duration: 1.1 });
+          const scrollY = window.scrollY || document.documentElement.scrollTop;
+          scrollTarget = target.getBoundingClientRect().top + scrollY - navOffset;
         }
-      } else {
-        if (showreelTrigger) {
-          window.scrollTo({ top: showreelTrigger.start, behavior: "auto" });
+
+        if (lenisRef.current && !prefersReducedMotion) {
+          lenisRef.current.scrollTo(scrollTarget, { duration: 1.1 });
         } else {
-          window.scrollTo({ top: targetTop, behavior: "auto" });
+          window.scrollTo({ top: scrollTarget, behavior: "auto" });
         }
-      }
-    };
+      });
+    }, 350);
 
-    ScrollTrigger.addEventListener("refresh", handler);
-    // Force a refresh to calculate the correct positions and trigger the handler
-    ScrollTrigger.refresh();
-    
-    // Fallback timeout just in case the refresh event doesn't fire
-    const fallbackId = setTimeout(handler, 500);
-
+    let rafId: number;
     return () => {
-      ScrollTrigger.removeEventListener("refresh", handler);
-      clearTimeout(fallbackId);
+      clearTimeout(timerId);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, [loading, location.hash, location.pathname, prefersReducedMotion]);
 
