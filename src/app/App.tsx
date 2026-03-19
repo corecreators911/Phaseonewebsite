@@ -86,17 +86,47 @@ export default function App() {
   useEffect(() => {
     if (loading || !location.hash) return;
 
+    // Wait 400ms so ScrollTrigger.refresh(true) at 250ms has finished
+    // rebuilding pin-spacers — otherwise section offsets are wrong
     const id = setTimeout(() => {
+      ScrollTrigger.refresh();
       const sectionId = location.hash.slice(1);
       const target = document.getElementById(sectionId);
       if (!target) return;
 
+      // The showreel section uses pin:true which wraps it in a pin-spacer.
+      // We need to scroll to the pin trigger's start position, not the
+      // element's raw offsetTop, to land at the *beginning* of the section.
+      const showreelTrigger =
+        sectionId === "showreel"
+          ? ScrollTrigger.getAll().find(
+              (st) =>
+                st.pin &&
+                st.trigger instanceof HTMLElement &&
+                st.trigger.id === "showreel"
+            )
+          : null;
+
+      // Compute the real scroll position via getBoundingClientRect which
+      // correctly accounts for any pin-spacer height injected by ScrollTrigger
+      const navOffset = 80;
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const targetTop = target.getBoundingClientRect().top + scrollY - navOffset;
+
       if (lenisRef.current && !prefersReducedMotion) {
-        lenisRef.current.scrollTo(target, { offset: -8, duration: 1.1 });
+        if (showreelTrigger) {
+          lenisRef.current.scrollTo(showreelTrigger.start, { duration: 1.1 });
+        } else {
+          lenisRef.current.scrollTo(targetTop, { duration: 1.1 });
+        }
       } else {
-        target.scrollIntoView({ behavior: "auto", block: "start" });
+        if (showreelTrigger) {
+          window.scrollTo({ top: showreelTrigger.start, behavior: "auto" });
+        } else {
+          window.scrollTo({ top: targetTop, behavior: "auto" });
+        }
       }
-    }, 120);
+    }, 400);
 
     return () => clearTimeout(id);
   }, [loading, location.hash, location.pathname, prefersReducedMotion]);
