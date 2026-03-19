@@ -86,10 +86,10 @@ export default function App() {
   useEffect(() => {
     if (loading || !location.hash) return;
 
-    // Wait 400ms so ScrollTrigger.refresh(true) at 250ms has finished
-    // rebuilding pin-spacers — otherwise section offsets are wrong
-    const id = setTimeout(() => {
-      ScrollTrigger.refresh();
+    const handler = () => {
+      ScrollTrigger.removeEventListener("refresh", handler);
+      clearTimeout(fallbackId);
+
       const sectionId = location.hash.slice(1);
       const target = document.getElementById(sectionId);
       if (!target) return;
@@ -126,9 +126,19 @@ export default function App() {
           window.scrollTo({ top: targetTop, behavior: "auto" });
         }
       }
-    }, 400);
+    };
 
-    return () => clearTimeout(id);
+    ScrollTrigger.addEventListener("refresh", handler);
+    // Force a refresh to calculate the correct positions and trigger the handler
+    ScrollTrigger.refresh();
+    
+    // Fallback timeout just in case the refresh event doesn't fire
+    const fallbackId = setTimeout(handler, 500);
+
+    return () => {
+      ScrollTrigger.removeEventListener("refresh", handler);
+      clearTimeout(fallbackId);
+    };
   }, [loading, location.hash, location.pathname, prefersReducedMotion]);
 
   return (
