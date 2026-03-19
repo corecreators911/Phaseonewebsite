@@ -23,8 +23,9 @@ gsap.registerPlugin(ScrollTrigger);
 export default function App() {
   const prefersReducedMotion = useReducedMotion();
   const location = useLocation();
+  const isHomeRoute = location.pathname === "/";
   const [loading, setLoading] = useState(
-    () => !prefersReducedMotion && window.location.pathname === "/"
+    () => !prefersReducedMotion && isHomeRoute
   );
   const lenisRef = useRef<Lenis | null>(null);
 
