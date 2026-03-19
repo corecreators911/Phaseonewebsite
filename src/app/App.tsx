@@ -43,10 +43,11 @@ export default function App() {
       lenisRef.current.start();
     }
 
-    // Refresh ScrollTrigger after new page's useLayoutEffect hooks have registered their triggers
+    // Refresh ScrollTrigger after new page's useLayoutEffect hooks have registered their triggers.
+    // 400ms gives child components time to mount and register their pin-spacer triggers.
     const refreshId = setTimeout(() => {
       ScrollTrigger.refresh(true);
-    }, 250);
+    }, 400);
 
     return () => clearTimeout(refreshId);
   }, [location.pathname]);
@@ -83,52 +84,71 @@ export default function App() {
 
 
 
+  // Hash-based scroll: handles both same-route hash changes (e.g. scrolling on
+  // the home page) and cross-route transitions (e.g. /projects → /#departments).
+  //
+  // The Showreel component uses pin: true which inserts a pin-spacer div,
+  // adding extra scroll height. We must compute the scroll target using
+  // getBoundingClientRect + window.scrollY (which accounts for pin-spacers)
+  // and bypass Lenis's element-based scrollTo (which can desync).
   useEffect(() => {
     if (loading || !location.hash) return;
 
-    // Wait for the useLayoutEffect's ScrollTrigger.refresh(true) at 250ms to
-    // finish rebuilding pin-spacers, then do our own refresh + scroll.
-    // 350ms gives a safe margin above the 250ms refresh.
-    const timerId = setTimeout(() => {
-      ScrollTrigger.refresh();
+    const sectionId = location.hash.slice(1);
+    let cancelled = false;
+    let attempts = 0;
+    const MAX_ATTEMPTS = 30;
+    const POLL_INTERVAL = 80;
 
-      // Use rAF to ensure the browser has applied the refreshed layout
-      rafId = requestAnimationFrame(() => {
-        const sectionId = location.hash.slice(1);
-        const target = document.getElementById(sectionId);
-        if (!target) return;
+    const performScroll = () => {
+      if (cancelled) return;
+      attempts++;
 
-        const navOffset = 80;
+      const target = document.getElementById(sectionId);
+      if (!target) {
+        if (attempts < MAX_ATTEMPTS) {
+          setTimeout(performScroll, POLL_INTERVAL);
+        }
+        return;
+      }
 
-        // For pinned sections (showreel), use ScrollTrigger's computed
-        // start position which already accounts for pin-spacer offsets.
-        const pinnedTrigger = ScrollTrigger.getAll().find(
-          (st) =>
-            st.pin &&
-            st.trigger instanceof HTMLElement &&
-            st.trigger.id === sectionId
-        );
+      // Ensure ScrollTrigger positions are up-to-date (pin-spacers measured)
+      ScrollTrigger.refresh(true);
 
-        let scrollTarget: number;
-        if (pinnedTrigger) {
-          scrollTarget = pinnedTrigger.start;
-        } else {
+      // Double-rAF to guarantee the browser has fully composited after refresh
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (cancelled) return;
+
+          // Stop Lenis so it doesn't fight our scroll position change
+          if (lenisRef.current) {
+            lenisRef.current.stop();
+          }
+
+          const navOffset = 80;
+          const rect = target.getBoundingClientRect();
           const scrollY = window.scrollY || document.documentElement.scrollTop;
-          scrollTarget = target.getBoundingClientRect().top + scrollY - navOffset;
-        }
+          const scrollTarget = Math.max(0, rect.top + scrollY - navOffset);
 
-        if (lenisRef.current && !prefersReducedMotion) {
-          lenisRef.current.scrollTo(scrollTarget, { duration: 1.1 });
-        } else {
+          // Use native scrollTo — this is immune to Lenis desync issues
           window.scrollTo({ top: scrollTarget, behavior: "auto" });
-        }
-      });
-    }, 350);
 
-    let rafId: number;
+          // Sync Lenis internal state to match the new scroll position
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(scrollTarget, { immediate: true });
+            lenisRef.current.start();
+          }
+        });
+      });
+    };
+
+    // Start after 700ms: the useLayoutEffect schedules ScrollTrigger.refresh(true)
+    // at 400ms, and we need extra time for pin-spacer layout to stabilize.
+    const startTimer = setTimeout(performScroll, 700);
+
     return () => {
-      clearTimeout(timerId);
-      if (rafId) cancelAnimationFrame(rafId);
+      cancelled = true;
+      clearTimeout(startTimer);
     };
   }, [loading, location.hash, location.pathname, prefersReducedMotion]);
 
