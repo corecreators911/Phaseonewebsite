@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { useForm } from "react-hook-form";
 import gsap from "gsap";
 import { ArrowUpRight, CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
@@ -23,7 +23,7 @@ export const Contact = () => {
   const headingRef = useRef<HTMLDivElement>(null);
   const formContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // Heading char reveal
       if (headingRef.current) {

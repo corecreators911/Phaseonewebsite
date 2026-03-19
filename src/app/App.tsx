@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -22,16 +22,32 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function App() {
   const prefersReducedMotion = useReducedMotion();
-  const [loading, setLoading] = useState(() => !prefersReducedMotion);
   const location = useLocation();
+  const [loading, setLoading] = useState(
+    () => !prefersReducedMotion && window.location.pathname === "/"
+  );
   const lenisRef = useRef<Lenis | null>(null);
 
-  // Scroll to top on route change
-  useEffect(() => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true });
-    }
+  // Scroll reset on route change — runs synchronously before paint
+  useLayoutEffect(() => {
+    // Force scroll to top on every route change
     window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    // Reset Lenis smooth scroll position
+    if (lenisRef.current) {
+      lenisRef.current.stop();
+      lenisRef.current.scrollTo(0, { immediate: true });
+      lenisRef.current.start();
+    }
+
+    // Refresh ScrollTrigger after new page's useLayoutEffect hooks have registered their triggers
+    const refreshId = setTimeout(() => {
+      ScrollTrigger.refresh(true);
+    }, 250);
+
+    return () => clearTimeout(refreshId);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -64,11 +80,7 @@ export default function App() {
     };
   }, [loading, prefersReducedMotion]);
 
-  useEffect(() => {
-    if (loading) return;
-    const id = setTimeout(() => ScrollTrigger.refresh(), 120);
-    return () => clearTimeout(id);
-  }, [loading, location.pathname]);
+
 
   useEffect(() => {
     if (loading || !location.hash) return;

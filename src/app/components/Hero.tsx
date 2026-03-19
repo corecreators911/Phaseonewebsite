@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, Suspense, lazy } from "react";
+import React, { useEffect, useLayoutEffect, useRef, Suspense, lazy } from "react";
 import gsap from "gsap";
 const ShaderBackground = lazy(() => import("./ShaderBackground").then(m => ({ default: m.ShaderBackground })));
 import { ArrowDownRight } from "lucide-react";
@@ -11,7 +11,7 @@ const LINE2_CHARS = "THE UNREAL".split("");
 export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // Character-by-character stagger reveal — line 1 flows into line 2 seamlessly
       gsap.fromTo(

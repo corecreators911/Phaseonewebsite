@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUp, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
@@ -35,7 +35,7 @@ export const Footer = () => {
   const [previewNotice, setPreviewNotice] = useState<{ title: string; message: string } | null>(null);
   const closePreview = useCallback(() => setPreviewNotice(null), []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // Big text reveal — fade + small lift (not y:"100%" which creates blank space)
       if (bigTextRef.current) {

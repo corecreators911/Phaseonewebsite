@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -9,7 +9,7 @@ interface SectionDividerProps {
 export const SectionDivider: React.FC<SectionDividerProps> = ({ className = "" }) => {
   const lineRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!lineRef.current) return;
 
     const ctx = gsap.context(() => {

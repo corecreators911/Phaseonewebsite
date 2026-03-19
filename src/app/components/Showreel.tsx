@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Play, Volume2, X } from "lucide-react";
@@ -27,7 +27,12 @@ export const Showreel = () => {
     return () => window.removeEventListener("keydown", handleKey);
   }, [isModalOpen, closeModal]);
 
-  useEffect(() => {
+  // useLayoutEffect is CRITICAL here: GSAP's `pin: true` wraps the element in a
+  // `.pin-spacer` div that React doesn't know about. useLayoutEffect cleanup runs
+  // synchronously before React removes DOM nodes, giving ctx.revert() a chance to
+  // unwrap the pin-spacer first. useEffect cleanup runs too late (after DOM removal
+  // attempt), leaving the pinned element stuck on screen across route changes.
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // Scale up when scrolling into view
       gsap.fromTo(
