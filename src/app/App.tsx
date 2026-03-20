@@ -29,6 +29,8 @@ export default function App() {
   );
   const lenisRef = useRef<Lenis | null>(null);
   const prevPathnameRef = useRef(location.pathname);
+  // Flag set by useLayoutEffect (runs first), read by useEffect (runs second)
+  const isCrossRouteRef = useRef(false);
 
   // Scroll reset on route change — runs synchronously before paint.
   // IMPORTANT: When there's a hash in the URL we skip the scroll-to-0
@@ -38,6 +40,8 @@ export default function App() {
     const hasHash = !!location.hash;
     const isRouteChange = prevPathnameRef.current !== location.pathname;
     prevPathnameRef.current = location.pathname;
+    // Store for the hash scroll useEffect which runs after this
+    isCrossRouteRef.current = isRouteChange;
 
     if (!hasHash) {
       // No hash — normal scroll reset to top
@@ -111,7 +115,8 @@ export default function App() {
     if (loading || !location.hash) return;
 
     const sectionId = location.hash.slice(1);
-    const isSameRoute = prevPathnameRef.current === location.pathname;
+    // Read the flag set by useLayoutEffect (which already ran this cycle)
+    const isCrossRoute = isCrossRouteRef.current;
     let cancelled = false;
     let attempts = 0;
     const MAX_ATTEMPTS = 30;
@@ -143,7 +148,7 @@ export default function App() {
           const scrollTarget = Math.max(0, rect.top + scrollY - navOffset);
 
           if (lenisRef.current && !prefersReducedMotion) {
-            if (!isSameRoute) {
+            if (isCrossRoute) {
               // Cross-route: instantly jump to ~200px above the target to avoid
               // showing the hero, then smooth-scroll the last stretch.
               const jumpTo = Math.max(0, scrollTarget - 200);
@@ -154,7 +159,7 @@ export default function App() {
             // Now smooth-scroll to the exact target position
             lenisRef.current.start();
             lenisRef.current.scrollTo(scrollTarget, {
-              duration: isSameRoute ? 1.2 : 0.8,
+              duration: isCrossRoute ? 0.8 : 1.2,
             });
           } else {
             // Reduced-motion or no Lenis — instant jump
@@ -170,7 +175,7 @@ export default function App() {
 
     // Same-route: elements are already mounted, scroll after a short delay
     // Cross-route: wait for mount + pin-spacer layout to stabilize
-    const delay = isSameRoute ? 50 : 700;
+    const delay = isCrossRoute ? 700 : 100;
     const startTimer = setTimeout(performScroll, delay);
 
     return () => {
