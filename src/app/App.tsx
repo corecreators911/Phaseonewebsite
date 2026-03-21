@@ -55,14 +55,10 @@ export default function App() {
   }, [navigate]);
 
   // Scroll reset on route change — runs synchronously before paint.
-  // IMPORTANT: When there's a hash in the URL we skip the scroll-to-0
-  // because the hash scroll effect handles positioning. Scrolling to 0
-  // first would cause a visible flash of the hero section.
   useLayoutEffect(() => {
-    const hasHash = !!location.hash;
     const isRouteChange = prevPathnameRef.current !== location.pathname;
+    const hasHash = !!location.hash;
     prevPathnameRef.current = location.pathname;
-    // Store for the hash scroll useEffect which runs after this
     isCrossRouteRef.current = isRouteChange;
 
     if (isRouteChange) {
@@ -80,37 +76,15 @@ export default function App() {
         document.body.scrollTop = 0;
 
         if (lenisRef.current) {
-          lenisRef.current.stop();
           lenisRef.current.scrollTo(0, { immediate: true });
-          
-          // Force layout measure before restarting lenis
-          requestAnimationFrame(() => {
-            if (lenisRef.current) {
-              if (typeof lenisRef.current.resize === "function") {
-                lenisRef.current.resize();
-              }
-              lenisRef.current.start();
-            }
-          });
-        }
-      } else {
-        // Cross-route with hash (e.g. /projects → /#departments):
-        // Don't scroll to 0 — leave Lenis stopped so it doesn't interfere.
-        // The hash scroll effect will handle positioning.
-        if (lenisRef.current) {
-          lenisRef.current.stop();
         }
       }
 
-      // Refresh ScrollTrigger after new page's useLayoutEffect hooks have registered their triggers.
-      // 400ms gives child components time to mount and register their pin-spacer triggers.
+      // Refresh ScrollTrigger after new page mounts
       if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
       refreshTimerRef.current = setTimeout(() => {
         ScrollTrigger.refresh(true);
       }, 400);
-
-      // Removed cleanup function so subsequent re-renders in < 700ms 
-      // (like a rapid hash update) do not cancel the black screen dismissal!
     }
   }, [location.pathname, location.hash]);
 
@@ -146,90 +120,69 @@ export default function App() {
 
 
 
-  // Hash-based scroll: handles both same-route hash changes (e.g. scrolling on
-  // the home page) and cross-route transitions (e.g. /projects → /#departments).
-  //
-  // Strategy:
-  //   Same-route: Smooth-scroll to the target using Lenis (elements already mounted).
-  //   Cross-route: Wait for mount + pin-spacers, instantly jump near the target to
-  //               avoid hero flash, then smooth-scroll the final approach.
+  // Hash-based scroll: handles both same-route and cross-route transitions.
   useEffect(() => {
     if (loading || !location.hash) return;
 
     const sectionId = location.hash.slice(1);
-    // Read the flag set by useLayoutEffect (which already ran this cycle)
     const isCrossRoute = isCrossRouteRef.current;
     let cancelled = false;
     let attempts = 0;
-    const MAX_ATTEMPTS = 30;
-    const POLL_INTERVAL = 80;
 
-    const performScroll = () => {
+    const checkAndScroll = () => {
       if (cancelled) return;
-      attempts++;
-
+      
       const target = document.getElementById(sectionId);
       if (!target) {
-        if (attempts < MAX_ATTEMPTS) {
-          setTimeout(performScroll, POLL_INTERVAL);
+        if (attempts < 30) {
+          attempts++;
+          setTimeout(checkAndScroll, 100);
         }
         return;
       }
 
-      // Ensure ScrollTrigger positions are up-to-date (pin-spacers measured)
-      ScrollTrigger.refresh(true);
+      if (isCrossRoute) {
+        // Cross-route: The screen is black for 700ms.
+        // Jump to the target repeatedly for 600ms to ensure lazy-loaded images don't push it aside.
+        let jumpAttempts = 0;
+        if (lenisRef.current) lenisRef.current.stop();
 
-      // Double-rAF to guarantee the browser has fully composited after refresh
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          if (cancelled) return;
-
-          const navOffset = 80;
-          const rect = target.getBoundingClientRect();
-          const scrollY = window.scrollY || document.documentElement.scrollTop;
-          const scrollTarget = Math.max(0, rect.top + scrollY - navOffset);
-
-          if (lenisRef.current && !prefersReducedMotion) {
-            if (isCrossRoute) {
-              // Cross-route: instantly jump to ~200px above the target to avoid
-              // showing the hero, then smooth-scroll the last stretch.
-              const jumpTo = Math.max(0, scrollTarget - 200);
-              window.scrollTo({ top: jumpTo, behavior: "auto" });
-              lenisRef.current.scrollTo(jumpTo, { immediate: true });
-            }
-
-            // Force layout measure before restarting lenis
-            if (typeof lenisRef.current.resize === "function") {
-              lenisRef.current.resize();
-            }
-            // Now smooth-scroll to the exact target position
-            lenisRef.current.start();
-            lenisRef.current.scrollTo(scrollTarget, {
-              duration: isCrossRoute ? 0.8 : 1.2,
-            });
-          } else {
-            // Reduced-motion or no Lenis — instant jump
-            window.scrollTo({ top: scrollTarget, behavior: "auto" });
+        const jumpInterval = setInterval(() => {
+          if (cancelled || jumpAttempts > 12) {
+            clearInterval(jumpInterval);
             if (lenisRef.current) {
-              lenisRef.current.scrollTo(scrollTarget, { immediate: true });
-              if (typeof lenisRef.current.resize === "function") {
-                lenisRef.current.resize();
-              }
+              if (typeof lenisRef.current.resize === "function") lenisRef.current.resize();
               lenisRef.current.start();
             }
+            return;
           }
-        });
-      });
+          jumpAttempts++;
+          
+          ScrollTrigger.refresh();
+          const rect = target.getBoundingClientRect();
+          const currentScrollY = window.scrollY || document.documentElement.scrollTop;
+          const targetY = Math.max(0, rect.top + currentScrollY - 80);
+          
+          window.scrollTo({ top: targetY, behavior: "instant" });
+          if (lenisRef.current) lenisRef.current.scrollTo(targetY, { immediate: true });
+        }, 50);
+      } else {
+        // Same-route: Smooth scroll.
+        if (lenisRef.current && !prefersReducedMotion) {
+          lenisRef.current.scrollTo(target, { offset: -80, duration: 1.2 });
+        } else {
+          const rect = target.getBoundingClientRect();
+          const currentScrollY = window.scrollY || document.documentElement.scrollTop;
+          const targetY = Math.max(0, rect.top + currentScrollY - 80);
+          window.scrollTo({ top: targetY, behavior: "smooth" });
+        }
+      }
     };
 
-    // Same-route: elements are already mounted, scroll after a short delay
-    // Cross-route: wait for mount + pin-spacer layout to stabilize
-    const delay = isCrossRoute ? 700 : 100;
-    const startTimer = setTimeout(performScroll, delay);
+    checkAndScroll();
 
     return () => {
       cancelled = true;
-      clearTimeout(startTimer);
     };
   }, [loading, location.hash, location.pathname, prefersReducedMotion]);
 

@@ -66,6 +66,23 @@ export const Footer = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string, isPlaceholder: boolean, linkText: string) => {
+    if (isPlaceholder) {
+      e.preventDefault();
+      setPreviewNotice({
+        title: "Coming Soon",
+        message: `The ${linkText} page is still being developed and will be available in the final version.`,
+      });
+      return;
+    }
+
+    if (path.includes("#")) {
+      e.preventDefault();
+      window.history.pushState({}, "", path);
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    }
+  };
+
   return (
     <>
     <footer
@@ -144,25 +161,14 @@ export const Footer = () => {
               <ul className="flex flex-col gap-2 sm:gap-3">
                 {col.links.map((link) => {
                   const isPlaceholder = col.title === "Studio";
+                  const targetPath = col.title === "Departments"
+                    ? "/#departments"
+                    : `/#${link.toLowerCase().replace(/\s+/g, "-")}`;
                   return (
                   <li key={link}>
                     <Link
-                      to={
-                        col.title === "Departments"
-                          ? "/#departments"
-                          : `/#${link.toLowerCase().replace(/\s+/g, "-")}`
-                      }
-                      onClick={
-                        isPlaceholder
-                          ? (e) => {
-                              e.preventDefault();
-                              setPreviewNotice({
-                                title: "Coming Soon",
-                                message: `The ${link} page is still being developed and will be available in the final version.`,
-                              });
-                            }
-                          : undefined
-                      }
+                      to={targetPath}
+                      onClick={(e) => handleLinkClick(e, targetPath, isPlaceholder, link)}
                       className="text-xs sm:text-sm text-neutral-600 hover:text-white hover:pl-2 transition-all duration-300 block"
                       data-cursor-hover
                     >

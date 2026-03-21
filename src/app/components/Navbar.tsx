@@ -52,15 +52,23 @@ export const Navbar = () => {
               const targetPath = `/#${item.toLowerCase()}`;
 
               return (
-              <Link
-                key={item}
-                to={targetPath}
-                onMouseEnter={() => setHoveredIndex(i)}
-                className={cn(
-                  "relative px-4 xl:px-6 py-2 xl:py-2.5 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.2em] transition-colors duration-300",
-                  isContact ? "text-white bg-[#8C0B0C]/20 border border-[#8C0B0C]/50 rounded-full shadow-[0_0_15px_rgba(140,11,12,0.3)] hover:bg-[#8C0B0C]/40 hover:shadow-[0_0_20px_rgba(140,11,12,0.5)]" : "text-neutral-400 hover:text-white"
-                )}
-              >
+                  <Link
+                    key={item}
+                    to={targetPath}
+                    onClick={(e) => {
+                      if (location.pathname === "/") {
+                        e.preventDefault();
+                        window.history.pushState(null, "", targetPath);
+                        // Trigger popstate so React Router updates location
+                        window.dispatchEvent(new PopStateEvent('popstate'));
+                      }
+                    }}
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    className={cn(
+                      "relative px-4 xl:px-6 py-2 xl:py-2.5 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.2em] transition-colors duration-300",
+                      isContact ? "text-white bg-[#8C0B0C]/20 border border-[#8C0B0C]/50 rounded-full shadow-[0_0_15px_rgba(140,11,12,0.3)] hover:bg-[#8C0B0C]/40 hover:shadow-[0_0_20px_rgba(140,11,12,0.5)]" : "text-neutral-400 hover:text-white"
+                    )}
+                  >
                 {!isContact && hoveredIndex === i && (
                   <motion.div
                     layoutId="nav-pill"
@@ -109,7 +117,14 @@ export const Navbar = () => {
                   <Link
                     to={`/#${item.toLowerCase()}`}
                     className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-500 transition-all hover:to-[#8C0B0C] hover:scale-110 hover:tracking-[0.05em] block"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      if (location.pathname === "/") {
+                        e.preventDefault();
+                        window.history.pushState(null, "", `/#${item.toLowerCase()}`);
+                        window.dispatchEvent(new PopStateEvent('popstate'));
+                      }
+                      setMobileMenuOpen(false);
+                    }}
                   >
                     {item}
                   </Link>
