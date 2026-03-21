@@ -32,6 +32,8 @@ export default function App() {
   // Flag set by useLayoutEffect (runs first), read by useEffect (runs second)
   const isCrossRouteRef = useRef(false);
 
+  const [showBlackScreen, setShowBlackScreen] = useState(false);
+
   // Scroll reset on route change — runs synchronously before paint.
   // IMPORTANT: When there's a hash in the URL we skip the scroll-to-0
   // because the hash scroll effect handles positioning. Scrolling to 0
@@ -43,33 +45,53 @@ export default function App() {
     // Store for the hash scroll useEffect which runs after this
     isCrossRouteRef.current = isRouteChange;
 
-    if (!hasHash) {
-      // No hash — normal scroll reset to top
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
+    if (isRouteChange) {
+      // Show black screen on every route change immediately without transition
+      setShowBlackScreen(true);
+      const timer = setTimeout(() => {
+        setShowBlackScreen(false);
+      }, 700);
 
-      if (lenisRef.current) {
-        lenisRef.current.stop();
-        lenisRef.current.scrollTo(0, { immediate: true });
-        lenisRef.current.start();
+      if (!hasHash) {
+        // No hash — normal scroll reset to top
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        if (lenisRef.current) {
+          lenisRef.current.stop();
+          lenisRef.current.scrollTo(0, { immediate: true });
+          
+          // Force layout measure before restarting lenis
+          requestAnimationFrame(() => {
+            if (lenisRef.current) {
+              if (typeof lenisRef.current.resize === "function") {
+                lenisRef.current.resize();
+              }
+              lenisRef.current.start();
+            }
+          });
+        }
+      } else {
+        // Cross-route with hash (e.g. /projects → /#departments):
+        // Don't scroll to 0 — leave Lenis stopped so it doesn't interfere.
+        // The hash scroll effect will handle positioning.
+        if (lenisRef.current) {
+          lenisRef.current.stop();
+        }
       }
-    } else if (isRouteChange) {
-      // Cross-route with hash (e.g. /projects → /#departments):
-      // Don't scroll to 0 — leave Lenis stopped so it doesn't interfere.
-      // The hash scroll effect will handle positioning.
-      if (lenisRef.current) {
-        lenisRef.current.stop();
-      }
+
+      // Refresh ScrollTrigger after new page's useLayoutEffect hooks have registered their triggers.
+      // 400ms gives child components time to mount and register their pin-spacer triggers.
+      const refreshId = setTimeout(() => {
+        ScrollTrigger.refresh(true);
+      }, 400);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(refreshId);
+      };
     }
-
-    // Refresh ScrollTrigger after new page's useLayoutEffect hooks have registered their triggers.
-    // 400ms gives child components time to mount and register their pin-spacer triggers.
-    const refreshId = setTimeout(() => {
-      ScrollTrigger.refresh(true);
-    }, 400);
-
-    return () => clearTimeout(refreshId);
   }, [location.pathname, location.hash]);
 
   useEffect(() => {
@@ -156,6 +178,10 @@ export default function App() {
               lenisRef.current.scrollTo(jumpTo, { immediate: true });
             }
 
+            // Force layout measure before restarting lenis
+            if (typeof lenisRef.current.resize === "function") {
+              lenisRef.current.resize();
+            }
             // Now smooth-scroll to the exact target position
             lenisRef.current.start();
             lenisRef.current.scrollTo(scrollTarget, {
@@ -166,6 +192,9 @@ export default function App() {
             window.scrollTo({ top: scrollTarget, behavior: "auto" });
             if (lenisRef.current) {
               lenisRef.current.scrollTo(scrollTarget, { immediate: true });
+              if (typeof lenisRef.current.resize === "function") {
+                lenisRef.current.resize();
+              }
               lenisRef.current.start();
             }
           }
@@ -186,6 +215,12 @@ export default function App() {
 
   return (
     <div className="bg-black text-white min-h-screen w-full selection:bg-[#8C0B0C] selection:text-white md:cursor-none overflow-x-hidden" style={{ fontFamily: "var(--font-family-sans)" }}>
+      {/* Page Transition Overlay */}
+      <div 
+        className={`fixed inset-0 z-[9999] bg-black pointer-events-none transition-opacity duration-[800ms] ease-in-out ${
+          showBlackScreen ? "opacity-100" : "opacity-0"
+        }`} 
+      />
       
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-6 focus:left-6 focus:z-[200] focus:px-6 focus:py-3 focus:bg-black/90 focus:border focus:border-[#8C0B0C]/50 focus:text-white focus:rounded-full focus:text-[11px] focus:font-bold focus:uppercase focus:tracking-[0.2em] focus:shadow-[0_0_15px_rgba(140,11,12,0.3)] focus:outline-none focus:ring-1 focus:ring-[#8C0B0C]/30 focus:backdrop-blur-md transition-all">Skip to content</a>
       <FilmGrain />
