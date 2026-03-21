@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -23,6 +23,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function App() {
   const prefersReducedMotion = useReducedMotion();
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomeRoute = location.pathname === "/";
   const [loading, setLoading] = useState(
     () => !prefersReducedMotion && isHomeRoute
@@ -33,6 +34,25 @@ export default function App() {
   const isCrossRouteRef = useRef(false);
 
   const [showBlackScreen, setShowBlackScreen] = useState(false);
+  const routeTimerRef = useRef<NodeJS.Timeout>();
+  const refreshTimerRef = useRef<NodeJS.Timeout>();
+
+  // Scroll restoration to manual and force scroll top on initial mount
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
+
+  // Clear hash on initial load
+  useEffect(() => {
+    if (window.location.hash) {
+      navigate(window.location.pathname, { replace: true });
+    }
+  }, [navigate]);
 
   // Scroll reset on route change — runs synchronously before paint.
   // IMPORTANT: When there's a hash in the URL we skip the scroll-to-0
@@ -48,7 +68,8 @@ export default function App() {
     if (isRouteChange) {
       // Show black screen on every route change immediately without transition
       setShowBlackScreen(true);
-      const timer = setTimeout(() => {
+      if (routeTimerRef.current) clearTimeout(routeTimerRef.current);
+      routeTimerRef.current = setTimeout(() => {
         setShowBlackScreen(false);
       }, 700);
 
@@ -83,14 +104,13 @@ export default function App() {
 
       // Refresh ScrollTrigger after new page's useLayoutEffect hooks have registered their triggers.
       // 400ms gives child components time to mount and register their pin-spacer triggers.
-      const refreshId = setTimeout(() => {
+      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+      refreshTimerRef.current = setTimeout(() => {
         ScrollTrigger.refresh(true);
       }, 400);
 
-      return () => {
-        clearTimeout(timer);
-        clearTimeout(refreshId);
-      };
+      // Removed cleanup function so subsequent re-renders in < 700ms 
+      // (like a rapid hash update) do not cancel the black screen dismissal!
     }
   }, [location.pathname, location.hash]);
 
@@ -217,8 +237,8 @@ export default function App() {
     <div className="bg-black text-white min-h-screen w-full selection:bg-[#8C0B0C] selection:text-white md:cursor-none overflow-x-hidden" style={{ fontFamily: "var(--font-family-sans)" }}>
       {/* Page Transition Overlay */}
       <div 
-        className={`fixed inset-0 z-[9999] bg-black pointer-events-none transition-opacity duration-[800ms] ease-in-out ${
-          showBlackScreen ? "opacity-100" : "opacity-0"
+        className={`fixed inset-0 z-[9999] bg-black pointer-events-none ${
+          showBlackScreen ? "opacity-100 transition-none" : "opacity-0 transition-opacity duration-[800ms] ease-in-out"
         }`} 
       />
       
