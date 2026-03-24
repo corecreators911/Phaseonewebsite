@@ -38,6 +38,15 @@ export default function App() {
   const refreshTimerRef = useRef<NodeJS.Timeout>();
   const safetyTimerRef = useRef<NodeJS.Timeout>();
 
+  // Clear all outstanding timers on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (routeTimerRef.current) clearTimeout(routeTimerRef.current);
+      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+      if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
+    };
+  }, []);
+
   // Scroll restoration to manual and force scroll top on initial mount
   useLayoutEffect(() => {
     if ("scrollRestoration" in window.history) {
@@ -48,13 +57,17 @@ export default function App() {
     document.body.scrollTop = 0;
   }, []);
 
-  // Clear section param on initial load
+  // Clear section param on initial page load / refresh (not on in-app navigation)
+  const hasInitializedRef = useRef(false);
   useEffect(() => {
+    if (hasInitializedRef.current) return;
+    hasInitializedRef.current = true;
     const params = new URLSearchParams(location.search);
     if (params.has("section")) {
       navigate(location.pathname, { replace: true });
     }
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Scroll reset on route change — runs synchronously before paint.
   useLayoutEffect(() => {
@@ -129,6 +142,19 @@ export default function App() {
 
 
 
+  /** Helper: get the navbar height for scroll offset */
+  const getNavOffset = () => {
+    const header = document.querySelector("header");
+    return header ? header.offsetHeight + 8 : 72;
+  };
+
+  /** Helper: calculate absolute scroll-Y for a target element */
+  const calcTargetY = (el: HTMLElement) => {
+    const rect = el.getBoundingClientRect();
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    return Math.max(0, rect.top + scrollY - getNavOffset());
+  };
+
   // Section-based scroll: handles both same-route and cross-route transitions.
   useEffect(() => {
     const sectionParam = new URLSearchParams(location.search).get("section");
@@ -138,53 +164,53 @@ export default function App() {
     const isCrossRoute = isCrossRouteRef.current;
     let cancelled = false;
     let attempts = 0;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    const scrollToTarget = (target: HTMLElement, immediate: boolean) => {
+      ScrollTrigger.refresh(true);
+      const targetY = calcTargetY(target);
+      window.scrollTo({ top: targetY, behavior: "instant" });
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(targetY, { immediate: true });
+      }
+    };
 
     const checkAndScroll = () => {
       if (cancelled) return;
-      
+
       const target = document.getElementById(sectionId);
       if (!target) {
         if (attempts < 30) {
           attempts++;
-          setTimeout(checkAndScroll, 100);
+          timers.push(setTimeout(checkAndScroll, 100));
         }
         return;
       }
 
       if (isCrossRoute) {
-        // Cross-route: The screen is black for 700ms.
-        // Jump to the target repeatedly for 600ms to ensure lazy-loaded images don't push it aside.
-        let jumpAttempts = 0;
-        if (lenisRef.current) lenisRef.current.stop();
+        // Cross-route: page is rendering under the black overlay (700ms).
+        // Wait for GSAP pin-spacers to initialize, then scroll once.
+        // Initial scroll immediately (rough position)
+        scrollToTarget(target, true);
 
-        const jumpInterval = setInterval(() => {
-          if (cancelled || jumpAttempts > 12) {
-            clearInterval(jumpInterval);
-            // Always restart Lenis even if jumps are exhausted
-            if (lenisRef.current) {
-              if (typeof lenisRef.current.resize === "function") lenisRef.current.resize();
-              lenisRef.current.start();
-            }
-            return;
-          }
-          jumpAttempts++;
-          
-          ScrollTrigger.refresh();
-          const rect = target.getBoundingClientRect();
-          const currentScrollY = window.scrollY || document.documentElement.scrollTop;
-          const targetY = Math.max(0, rect.top + currentScrollY - 80);
-          
-          window.scrollTo({ top: targetY, behavior: "instant" });
-          if (lenisRef.current) lenisRef.current.scrollTo(targetY, { immediate: true });
-        }, 50);
+        // Correction after GSAP pin-spacers are set up (~400ms)
+        timers.push(setTimeout(() => {
+          if (cancelled) return;
+          scrollToTarget(target, true);
+        }, 400));
+
+        // Final correction after black screen fades (~750ms)
+        timers.push(setTimeout(() => {
+          if (cancelled) return;
+          scrollToTarget(target, true);
+        }, 750));
       } else {
         // Same-route: Smooth scroll.
+        const offset = -getNavOffset();
         if (lenisRef.current && !prefersReducedMotion) {
-          lenisRef.current.scrollTo(target, { offset: -80, duration: 1.2 });
+          lenisRef.current.scrollTo(target, { offset, duration: 1.2 });
         } else {
-          const rect = target.getBoundingClientRect();
-          const currentScrollY = window.scrollY || document.documentElement.scrollTop;
-          const targetY = Math.max(0, rect.top + currentScrollY - 80);
+          const targetY = calcTargetY(target);
           window.scrollTo({ top: targetY, behavior: "smooth" });
         }
       }
@@ -194,10 +220,7 @@ export default function App() {
 
     return () => {
       cancelled = true;
-      // Ensure Lenis is never left stopped by this effect
-      if (lenisRef.current && typeof lenisRef.current.start === "function") {
-        lenisRef.current.start();
-      }
+      timers.forEach(clearTimeout);
     };
   }, [loading, location.search, location.pathname, prefersReducedMotion]);
 
