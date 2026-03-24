@@ -67,7 +67,30 @@ export const Projects = () => {
       });
     }, containerRef);
 
-    return () => ctx.revert();
+    // Safety: if ScrollTrigger hasn't fired after 3s, force elements visible
+    const safetyId = setTimeout(() => {
+      if (containerRef.current) {
+        const hiddenEls = containerRef.current.querySelectorAll(".char-reveal");
+        hiddenEls.forEach((el) => {
+          const style = getComputedStyle(el);
+          if (Number(style.opacity) < 0.1) {
+            gsap.set(el, { opacity: 1, y: 0, clearProps: "all" });
+          }
+        });
+        cardsRef.current.forEach((card) => {
+          if (!card) return;
+          const style = getComputedStyle(card);
+          if (Number(style.opacity) < 0.1) {
+            gsap.set(card, { opacity: 1, y: 0, clearProps: "all" });
+          }
+        });
+      }
+    }, 3000);
+
+    return () => {
+      clearTimeout(safetyId);
+      ctx.revert();
+    };
   }, []);
 
   return (

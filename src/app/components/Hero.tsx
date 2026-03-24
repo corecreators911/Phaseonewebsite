@@ -4,12 +4,14 @@ const ShaderBackground = lazy(() => import("./ShaderBackground").then(m => ({ de
 import { ArrowDownRight } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 const CRAFTING_CHARS = "CRAFTING".split("");
 const LINE2_CHARS = "THE UNREAL".split("");
 
 export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -108,10 +110,9 @@ export const Hero = () => {
           </div>
 
           {/* Scroll Indicator */}
-          <a href="#showreel" onClick={(e) => {
+          <a href="#" onClick={(e) => {
             e.preventDefault();
-            window.history.pushState({}, "", "/#showreel");
-            window.dispatchEvent(new PopStateEvent("popstate"));
+            navigate("/?section=showreel", { replace: false });
           }} className="group flex flex-col md:flex-row items-center gap-3 sm:gap-4 cursor-pointer">
             <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] group-hover:text-white transition-colors duration-300">
               Scroll to explore

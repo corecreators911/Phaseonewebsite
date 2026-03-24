@@ -3,7 +3,7 @@ import { Menu, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
 import { motion, AnimatePresence } from "motion/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const NAV_ITEMS = ["Home", "Showreel", "Departments", "Projects", "About", "Contact"];
 
@@ -11,6 +11,8 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const navigate = useNavigate();
+  const loc = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,7 +34,7 @@ export const Navbar = () => {
         )}
       >
         <div className="w-full px-4 md:px-[5%] flex items-center justify-between">
-          <Link to="/#home" className="flex items-center gap-3 z-50 group">
+          <Link to="/?section=home" className="flex items-center gap-3 z-50 group">
             <div className="relative flex items-center justify-center h-10 w-10 overflow-hidden rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-500 group-hover:border-[#8C0B0C]/50 group-hover:shadow-[0_0_15px_rgba(140,11,12,0.4)]">
               <img src={logoImg} alt="Phase One Logo" className="h-full w-full object-contain scale-[1.05]" />
             </div>
@@ -49,18 +51,16 @@ export const Navbar = () => {
           >
             {NAV_ITEMS.map((item, i) => {
               const isContact = item === "Contact";
-              const targetPath = `/#${item.toLowerCase()}`;
+              const targetPath = `/?section=${item.toLowerCase()}`;
 
               return (
                   <Link
                     key={item}
                     to={targetPath}
                     onClick={(e) => {
-                      if (location.pathname === "/") {
+                      if (loc.pathname === "/") {
                         e.preventDefault();
-                        window.history.pushState(null, "", targetPath);
-                        // Trigger popstate so React Router updates location
-                        window.dispatchEvent(new PopStateEvent('popstate'));
+                        navigate(targetPath, { replace: false });
                       }
                     }}
                     onMouseEnter={() => setHoveredIndex(i)}
@@ -115,13 +115,12 @@ export const Navbar = () => {
                   transition={{ delay: i * 0.08, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
                 >
                   <Link
-                    to={`/#${item.toLowerCase()}`}
+                    to={`/?section=${item.toLowerCase()}`}
                     className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-500 transition-all hover:to-[#8C0B0C] hover:scale-110 hover:tracking-[0.05em] block"
                     onClick={(e) => {
-                      if (location.pathname === "/") {
+                      if (loc.pathname === "/") {
                         e.preventDefault();
-                        window.history.pushState(null, "", `/#${item.toLowerCase()}`);
-                        window.dispatchEvent(new PopStateEvent('popstate'));
+                        navigate(`/?section=${item.toLowerCase()}`, { replace: false });
                       }
                       setMobileMenuOpen(false);
                     }}

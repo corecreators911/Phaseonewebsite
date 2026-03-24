@@ -36,6 +36,7 @@ export default function App() {
   const [showBlackScreen, setShowBlackScreen] = useState(false);
   const routeTimerRef = useRef<NodeJS.Timeout>();
   const refreshTimerRef = useRef<NodeJS.Timeout>();
+  const safetyTimerRef = useRef<NodeJS.Timeout>();
 
   // Scroll restoration to manual and force scroll top on initial mount
   useLayoutEffect(() => {
@@ -47,17 +48,19 @@ export default function App() {
     document.body.scrollTop = 0;
   }, []);
 
-  // Clear hash on initial load
+  // Clear section param on initial load
   useEffect(() => {
-    if (window.location.hash) {
-      navigate(window.location.pathname, { replace: true });
+    const params = new URLSearchParams(location.search);
+    if (params.has("section")) {
+      navigate(location.pathname, { replace: true });
     }
   }, [navigate]);
 
   // Scroll reset on route change — runs synchronously before paint.
   useLayoutEffect(() => {
     const isRouteChange = prevPathnameRef.current !== location.pathname;
-    const hasHash = !!location.hash;
+    const sectionParam = new URLSearchParams(location.search).get("section");
+    const hasSection = !!sectionParam;
     prevPathnameRef.current = location.pathname;
     isCrossRouteRef.current = isRouteChange;
 
@@ -69,7 +72,13 @@ export default function App() {
         setShowBlackScreen(false);
       }, 700);
 
-      if (!hasHash) {
+      // Safety: force-dismiss overlay if it somehow gets stuck
+      if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
+      safetyTimerRef.current = setTimeout(() => {
+        setShowBlackScreen(false);
+      }, 1500);
+
+      if (!hasSection) {
         // No hash — normal scroll reset to top
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
@@ -86,7 +95,7 @@ export default function App() {
         ScrollTrigger.refresh(true);
       }, 400);
     }
-  }, [location.pathname, location.hash]);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     if (loading) return;
@@ -120,11 +129,12 @@ export default function App() {
 
 
 
-  // Hash-based scroll: handles both same-route and cross-route transitions.
+  // Section-based scroll: handles both same-route and cross-route transitions.
   useEffect(() => {
-    if (loading || !location.hash) return;
+    const sectionParam = new URLSearchParams(location.search).get("section");
+    if (loading || !sectionParam) return;
 
-    const sectionId = location.hash.slice(1);
+    const sectionId = sectionParam;
     const isCrossRoute = isCrossRouteRef.current;
     let cancelled = false;
     let attempts = 0;
@@ -150,6 +160,7 @@ export default function App() {
         const jumpInterval = setInterval(() => {
           if (cancelled || jumpAttempts > 12) {
             clearInterval(jumpInterval);
+            // Always restart Lenis even if jumps are exhausted
             if (lenisRef.current) {
               if (typeof lenisRef.current.resize === "function") lenisRef.current.resize();
               lenisRef.current.start();
@@ -183,8 +194,12 @@ export default function App() {
 
     return () => {
       cancelled = true;
+      // Ensure Lenis is never left stopped by this effect
+      if (lenisRef.current && typeof lenisRef.current.start === "function") {
+        lenisRef.current.start();
+      }
     };
-  }, [loading, location.hash, location.pathname, prefersReducedMotion]);
+  }, [loading, location.search, location.pathname, prefersReducedMotion]);
 
   return (
     <div className="bg-black text-white min-h-screen w-full selection:bg-[#8C0B0C] selection:text-white md:cursor-none overflow-x-hidden" style={{ fontFamily: "var(--font-family-sans)" }}>
@@ -212,7 +227,7 @@ export default function App() {
           </ErrorBoundary>
           <main id="main-content">
             <ErrorBoundary
-              resetKey={`${location.pathname}${location.hash}`}
+              resetKey={`${location.pathname}${location.search}`}
               fallback={
                 <div className="min-h-screen flex items-center justify-center bg-black text-neutral-500 text-sm font-mono">
                   Something went wrong. Please refresh the page.

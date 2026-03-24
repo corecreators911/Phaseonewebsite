@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUp, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Marquee } from "./Marquee";
 import { PreviewNotice } from "./PreviewNotice";
 
@@ -34,6 +34,7 @@ export const Footer = () => {
   const bigTextRef = useRef<HTMLDivElement>(null);
   const [previewNotice, setPreviewNotice] = useState<{ title: string; message: string } | null>(null);
   const closePreview = useCallback(() => setPreviewNotice(null), []);
+  const navigate = useNavigate();
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -76,10 +77,9 @@ export const Footer = () => {
       return;
     }
 
-    if (path.includes("#")) {
+    if (path.includes("section=")) {
       e.preventDefault();
-      window.history.pushState({}, "", path);
-      window.dispatchEvent(new PopStateEvent("popstate"));
+      navigate(path, { replace: false });
     }
   };
 
@@ -110,7 +110,7 @@ export const Footer = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8">
           {/* Brand column */}
           <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
-            <Link to="/#home" className="flex items-center gap-3 group" data-cursor-hover>
+            <Link to="/?section=home" className="flex items-center gap-3 group" data-cursor-hover>
               <div className="h-12 w-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 transition-colors duration-500 overflow-hidden">
                 <img src={logoImg} alt="Phase One" className="h-full w-full object-contain scale-[1.05]" />
               </div>
@@ -162,8 +162,8 @@ export const Footer = () => {
                 {col.links.map((link) => {
                   const isPlaceholder = col.title === "Studio";
                   const targetPath = col.title === "Departments"
-                    ? "/#departments"
-                    : `/#${link.toLowerCase().replace(/\s+/g, "-")}`;
+                    ? "/?section=departments"
+                    : `/?section=${link.toLowerCase().replace(/\s+/g, "-")}`;
                   return (
                   <li key={link}>
                     <Link
