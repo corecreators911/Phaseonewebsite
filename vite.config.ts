@@ -4,8 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  // GitHub Pages serves from /Phaseonewebsite/ subpath in production
-  base: process.env.NODE_ENV === 'production' ? '/Phaseonewebsite/' : '/',
+  // Vercel deploys at root — no subpath needed
+  base: '/',
 
   plugins: [
     // The React and Tailwind plugins are both required for Make, even if
@@ -30,7 +30,7 @@ export default defineConfig({
   },
 
   build: {
-    outDir: 'docs',
+    outDir: 'dist',
     emptyOutDir: true,
     target: 'es2020',
     cssTarget: 'chrome80',
