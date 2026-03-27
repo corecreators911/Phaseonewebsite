@@ -105,7 +105,7 @@ export const Footer = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8">
           {/* Brand column */}
           <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
-            <Link to="/" state={{ scrollTo: "home" }} className="flex items-center gap-3 group" data-cursor-hover>
+            <Link to="/" onClick={(e) => { e.preventDefault(); navigate("/", { state: { scrollTo: "home", _nonce: Date.now() }, replace: false }); }} className="flex items-center gap-3 group" data-cursor-hover>
               <div className="h-12 w-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 transition-colors duration-500 overflow-hidden">
                 <img src={logoImg} alt="Phase One" className="h-full w-full object-contain scale-[1.05]" />
               </div>
@@ -163,8 +163,13 @@ export const Footer = () => {
                   <li key={link}>
                     <Link
                       to="/"
-                      state={{ scrollTo: sectionId }}
-                      onClick={(e) => handleLinkClick(e, isPlaceholder, link)}
+                      onClick={(e) => {
+                        handleLinkClick(e, isPlaceholder, link);
+                        if (!isPlaceholder) {
+                          e.preventDefault();
+                          navigate("/", { state: { scrollTo: sectionId, _nonce: Date.now() }, replace: false });
+                        }
+                      }}
                       className="text-xs sm:text-sm text-neutral-600 hover:text-white hover:pl-2 transition-all duration-300 block"
                       data-cursor-hover
                     >

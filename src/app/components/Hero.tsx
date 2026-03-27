@@ -112,7 +112,7 @@ export const Hero = () => {
           {/* Scroll Indicator */}
           <a href="#" onClick={(e) => {
             e.preventDefault();
-            navigate("/", { state: { scrollTo: "showreel" }, replace: false });
+            navigate("/", { state: { scrollTo: "showreel", _nonce: Date.now() }, replace: false });
           }} className="group flex flex-col md:flex-row items-center gap-3 sm:gap-4 cursor-pointer">
             <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] group-hover:text-white transition-colors duration-300">
               Scroll to explore

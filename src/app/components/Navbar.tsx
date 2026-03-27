@@ -37,7 +37,7 @@ export const Navbar = () => {
             to="/" 
             onClick={(e) => {
               e.preventDefault();
-              navigate("/", { state: { scrollTo: "home" }, replace: false });
+              navigate("/", { state: { scrollTo: "home", _nonce: Date.now() }, replace: false });
             }}
             className="flex items-center gap-3 z-50 group"
           >
@@ -65,7 +65,7 @@ export const Navbar = () => {
                     to={targetPath}
                     onClick={(e) => {
                       e.preventDefault();
-                      navigate(targetPath, { state: { scrollTo: item.toLowerCase() }, replace: false });
+                      navigate(targetPath, { state: { scrollTo: item.toLowerCase(), _nonce: Date.now() }, replace: false });
                     }}
                     onMouseEnter={() => setHoveredIndex(i)}
                     className={cn(
@@ -123,7 +123,7 @@ export const Navbar = () => {
                     className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-500 transition-all hover:to-[#8C0B0C] hover:scale-110 hover:tracking-[0.05em] block"
                     onClick={(e) => {
                       e.preventDefault();
-                      navigate("/", { state: { scrollTo: item.toLowerCase() }, replace: false });
+                      navigate("/", { state: { scrollTo: item.toLowerCase(), _nonce: Date.now() }, replace: false });
                       setMobileMenuOpen(false);
                     }}
                   >
