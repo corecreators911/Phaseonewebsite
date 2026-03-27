@@ -57,23 +57,10 @@ export default function App() {
     document.body.scrollTop = 0;
   }, []);
 
-  // Clear section param on initial page load / refresh (not on in-app navigation)
-  const hasInitializedRef = useRef(false);
-  useEffect(() => {
-    if (hasInitializedRef.current) return;
-    hasInitializedRef.current = true;
-    const params = new URLSearchParams(location.search);
-    if (params.has("section")) {
-      navigate(location.pathname, { replace: true });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // Scroll reset on route change — runs synchronously before paint.
   useLayoutEffect(() => {
     const isRouteChange = prevPathnameRef.current !== location.pathname;
-    const sectionParam = new URLSearchParams(location.search).get("section");
-    const hasSection = !!sectionParam;
+    const hasSection = !!(location.state as any)?.scrollTo;
     prevPathnameRef.current = location.pathname;
     isCrossRouteRef.current = isRouteChange;
 
@@ -108,7 +95,7 @@ export default function App() {
         ScrollTrigger.refresh(true);
       }, 400);
     }
-  }, [location.pathname, location.search]);
+  }, [location.pathname, location.state]);
 
   useEffect(() => {
     if (loading) return;
@@ -155,12 +142,11 @@ export default function App() {
     return Math.max(0, rect.top + scrollY - getNavOffset());
   };
 
-  // Section-based scroll: handles both same-route and cross-route transitions.
   useEffect(() => {
-    const sectionParam = new URLSearchParams(location.search).get("section");
-    if (loading || !sectionParam) return;
+    const scrollTo = (location.state as any)?.scrollTo;
+    if (loading || !scrollTo) return;
 
-    const sectionId = sectionParam;
+    const sectionId = scrollTo;
     const isCrossRoute = isCrossRouteRef.current;
     let cancelled = false;
     let attempts = 0;
@@ -203,7 +189,7 @@ export default function App() {
         timers.push(setTimeout(() => {
           if (cancelled) return;
           scrollToTarget(target, true);
-        }, 750));
+        }, 800));
       } else {
         // Same-route: Smooth scroll.
         const offset = -getNavOffset();
@@ -222,7 +208,7 @@ export default function App() {
       cancelled = true;
       timers.forEach(clearTimeout);
     };
-  }, [loading, location.search, location.pathname, prefersReducedMotion]);
+  }, [loading, location.state, location.pathname, prefersReducedMotion, navigate]);
 
   return (
     <div className="bg-black text-white min-h-screen w-full selection:bg-[#8C0B0C] selection:text-white md:cursor-none overflow-x-hidden" style={{ fontFamily: "var(--font-family-sans)" }}>

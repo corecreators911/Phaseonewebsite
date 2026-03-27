@@ -33,7 +33,14 @@ export const Navbar = () => {
         )}
       >
         <div className="w-full px-4 md:px-[5%] flex items-center justify-between">
-          <Link to="/?section=home" className="flex items-center gap-3 z-50 group">
+          <Link 
+            to="/" 
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/", { state: { scrollTo: "home" }, replace: false });
+            }}
+            className="flex items-center gap-3 z-50 group"
+          >
             <div className="relative flex items-center justify-center h-10 w-10 overflow-hidden rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-500 group-hover:border-[#8C0B0C]/50 group-hover:shadow-[0_0_15px_rgba(140,11,12,0.4)]">
               <img src={logoImg} alt="Phase One Logo" className="h-full w-full object-contain scale-[1.05]" />
             </div>
@@ -50,7 +57,7 @@ export const Navbar = () => {
           >
             {NAV_ITEMS.map((item, i) => {
               const isContact = item === "Contact";
-              const targetPath = `/?section=${item.toLowerCase()}`;
+              const targetPath = "/";
 
               return (
                   <Link
@@ -58,7 +65,7 @@ export const Navbar = () => {
                     to={targetPath}
                     onClick={(e) => {
                       e.preventDefault();
-                      navigate(targetPath, { replace: false });
+                      navigate(targetPath, { state: { scrollTo: item.toLowerCase() }, replace: false });
                     }}
                     onMouseEnter={() => setHoveredIndex(i)}
                     className={cn(
@@ -112,11 +119,11 @@ export const Navbar = () => {
                   transition={{ delay: i * 0.08, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
                 >
                   <Link
-                    to={`/?section=${item.toLowerCase()}`}
+                    to="/"
                     className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-500 transition-all hover:to-[#8C0B0C] hover:scale-110 hover:tracking-[0.05em] block"
                     onClick={(e) => {
                       e.preventDefault();
-                      navigate(`/?section=${item.toLowerCase()}`, { replace: false });
+                      navigate("/", { state: { scrollTo: item.toLowerCase() }, replace: false });
                       setMobileMenuOpen(false);
                     }}
                   >

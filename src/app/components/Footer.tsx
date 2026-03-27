@@ -67,7 +67,7 @@ export const Footer = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string, isPlaceholder: boolean, linkText: string) => {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, isPlaceholder: boolean, linkText: string) => {
     if (isPlaceholder) {
       e.preventDefault();
       setPreviewNotice({
@@ -75,11 +75,6 @@ export const Footer = () => {
         message: `The ${linkText} page is still being developed and will be available in the final version.`,
       });
       return;
-    }
-
-    if (path.includes("section=")) {
-      e.preventDefault();
-      navigate(path, { replace: false });
     }
   };
 
@@ -110,7 +105,7 @@ export const Footer = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8">
           {/* Brand column */}
           <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
-            <Link to="/?section=home" className="flex items-center gap-3 group" data-cursor-hover>
+            <Link to="/" state={{ scrollTo: "home" }} className="flex items-center gap-3 group" data-cursor-hover>
               <div className="h-12 w-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 transition-colors duration-500 overflow-hidden">
                 <img src={logoImg} alt="Phase One" className="h-full w-full object-contain scale-[1.05]" />
               </div>
@@ -161,14 +156,15 @@ export const Footer = () => {
               <ul className="flex flex-col gap-2 sm:gap-3">
                 {col.links.map((link) => {
                   const isPlaceholder = col.title === "Studio";
-                  const targetPath = col.title === "Departments"
-                    ? "/?section=departments"
-                    : `/?section=${link.toLowerCase().replace(/\s+/g, "-")}`;
+                  const sectionId = col.title === "Departments"
+                    ? "departments"
+                    : link.toLowerCase().replace(/\s+/g, "-");
                   return (
                   <li key={link}>
                     <Link
-                      to={targetPath}
-                      onClick={(e) => handleLinkClick(e, targetPath, isPlaceholder, link)}
+                      to="/"
+                      state={{ scrollTo: sectionId }}
+                      onClick={(e) => handleLinkClick(e, isPlaceholder, link)}
                       className="text-xs sm:text-sm text-neutral-600 hover:text-white hover:pl-2 transition-all duration-300 block"
                       data-cursor-hover
                     >
