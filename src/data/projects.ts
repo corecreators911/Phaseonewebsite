@@ -51,7 +51,7 @@ export const projects: Project[] = [
     client: "Sony Pictures",
     year: "2024",
     award: "Academy Award Shortlist",
-    description: "Deep-sea exploration featuring complex water dynamics, particulate rendering, and bioluminescent creature design. Our FX department developed novel fluid simulation pipelines to handle the massive scale and intricate interaction of the underwater environments.",
+    description: "Deep-sea exploration featuring complex water dynamics, particulate rendering, and bioluminescent creature design. Our FX service developed novel fluid simulation pipelines to handle the massive scale and intricate interaction of the underwater environments.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
     thumbnailUrl: "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=2574&auto=format&fit=crop",
   },

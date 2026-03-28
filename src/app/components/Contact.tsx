@@ -122,7 +122,7 @@ export const Contact = () => {
             <div className="flex flex-col gap-6 sm:gap-10">
               {/* Email */}
               <a
-                href="mailto:hello@phaseonevfx.com"
+                href="mailto:phaseonevfx@gmail.com"
                 className="group flex items-start gap-3 sm:gap-4"
                 data-cursor-hover
               >
@@ -134,7 +134,7 @@ export const Contact = () => {
                     Email
                   </p>
                   <p className="text-base sm:text-lg font-bold tracking-tight text-white group-hover:text-[#8C0B0C] transition-colors break-all sm:break-normal">
-                    hello@phaseonevfx.com
+                    phaseonevfx@gmail.com
                   </p>
                 </div>
               </a>
@@ -149,7 +149,7 @@ export const Contact = () => {
                     Phone
                   </p>
                   <p className="text-base sm:text-lg font-bold tracking-tight text-white">
-                    +44 20 7123 4567
+                    +91 123 456 7890
                   </p>
                 </div>
               </div>
@@ -161,20 +161,20 @@ export const Contact = () => {
                 </div>
                 <div>
                   <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-600 mb-2 sm:mb-3">
-                    Global Offices
+                    Locations
                   </p>
                   <div className="flex flex-col gap-4">
                     <div>
-                      <p className="text-sm font-bold text-white mb-0.5">London (HQ)</p>
-                      <p className="text-xs text-neutral-500">12 Soho Square, W1D 3QF</p>
+                      <p className="text-sm font-bold text-white mb-0.5">Ludhiana</p>
+                      <p className="text-xs text-neutral-500">India</p>
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-white mb-0.5">Los Angeles</p>
-                      <p className="text-xs text-neutral-500">9000 Sunset Blvd, CA 90069</p>
+                      <p className="text-sm font-bold text-white mb-0.5">Delhi</p>
+                      <p className="text-xs text-neutral-500">India</p>
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-white mb-0.5">New York</p>
-                      <p className="text-xs text-neutral-500">350 Fifth Ave, NY 10118</p>
+                      <p className="text-sm font-bold text-white mb-0.5">Vijayawada</p>
+                      <p className="text-xs text-neutral-500">India</p>
                     </div>
                   </div>
                 </div>
@@ -213,7 +213,7 @@ export const Contact = () => {
                     Message Sent
                   </h3>
                   <p className="text-sm text-neutral-500 max-w-sm">
-                    This is a demo preview — in the final version, your inquiry will be delivered directly to the Phase One team.
+                    This is a demo preview — in the final version, your inquiry will be delivered directly to the Phase One VFX team.
                   </p>
                 </div>
               ) : (

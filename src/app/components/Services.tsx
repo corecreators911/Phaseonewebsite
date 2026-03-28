@@ -26,11 +26,11 @@ const TEAM_MEMBERS = [
   }
 ];
 
-const DEPARTMENTS = [
+const SERVICES = [
   {
     id: "01",
     title: "VFX",
-    desc: "Our VFX department is specialized in high-end compositing, CGI integration, and photorealistic simulations for feature films and episodic content. We bring the impossible to life with seamless integration.",
+    desc: "Our VFX service is specialized in high-end compositing, CGI integration, and photorealistic simulations for feature films and episodic content. We bring the impossible to life with seamless integration.",
     team: TEAM_MEMBERS,
   },
   {
@@ -48,13 +48,13 @@ const DEPARTMENTS = [
   {
     id: "04",
     title: "Lighting",
-    desc: "The Lighting department sets the mood and tone for every shot, using advanced techniques to ensure digital elements perfectly match live-action plates or create fully realized CG environments.",
+    desc: "The Lighting service sets the mood and tone for every shot, using advanced techniques to ensure digital elements perfectly match live-action plates or create fully realized CG environments.",
     team: TEAM_MEMBERS,
   },
   {
     id: "05",
     title: "Production",
-    desc: "Our Production team coordinates pipelines, schedules, and resources across all departments, ensuring that creative vision is delivered on time and at the highest possible quality.",
+    desc: "Our Production team coordinates pipelines, schedules, and resources across all services, ensuring that creative vision is delivered on time and at the highest possible quality.",
     team: TEAM_MEMBERS,
   },
   {
@@ -65,7 +65,7 @@ const DEPARTMENTS = [
   },
 ];
 
-export const Departments = () => {
+export const Services = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -117,7 +117,7 @@ export const Departments = () => {
 
   return (
     <section
-      id="departments"
+      id="services"
       ref={containerRef}
       className="relative w-full bg-black py-8 sm:py-12 md:py-16 scroll-mt-24 overflow-hidden"
     >
@@ -133,7 +133,7 @@ export const Departments = () => {
         {/* Heading with char reveal */}
         <div ref={headingRef} className="mb-6 sm:mb-8 md:mb-12 overflow-hidden">
           <h2 className="flex flex-wrap">
-            {"DEPARTMENTS".split("").map((char, i) => (
+            {"SERVICES".split("").map((char, i) => (
               <span
                 key={i}
                 className="char-reveal inline-block text-[10vw] sm:text-[12vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-700 uppercase"
@@ -146,7 +146,7 @@ export const Departments = () => {
 
         {/* Accordion list */}
         <div className="flex flex-col">
-          {DEPARTMENTS.map((dept, index) => {
+          {SERVICES.map((dept, index) => {
             const isOpen = openIndex === index;
             
             return (

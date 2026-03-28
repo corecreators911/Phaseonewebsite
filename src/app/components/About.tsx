@@ -2,18 +2,12 @@ import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { Marquee } from "./Marquee";
 
 const STATS = [
   { value: 150, suffix: "+", label: "Projects Delivered" },
   { value: 32, suffix: "", label: "Awards Won" },
   { value: 80, suffix: "+", label: "Artists Worldwide" },
   { value: 8, suffix: "", label: "Years of Excellence" },
-];
-
-const CLIENTS = [
-  "Netflix", "Warner Bros", "Sony Pictures", "A24", "Disney", "Apple TV+",
-  "HBO", "Paramount", "Universal", "Amazon Studios", "Lionsgate", "BBC"
 ];
 
 export const About = () => {
@@ -157,10 +151,10 @@ export const About = () => {
         {/* Heading */}
         <div ref={headingRef} className="overflow-hidden mb-10 sm:mb-16 md:mb-24">
           <h2 className="flex flex-wrap">
-            {"PHASE ONE".split("").map((char, i) => (
+            {"PHASE ONE VFX".split("").map((char, i) => (
               <span
                 key={i}
-                className={`char-reveal inline-block text-[12vw] sm:text-[14vw] md:text-[10vw] font-black leading-none tracking-tighter uppercase ${
+                className={`char-reveal inline-block text-[10vw] sm:text-[11vw] md:text-[8vw] font-black leading-none tracking-tighter uppercase ${
                   char === " " ? "w-[0.3em]" : ""
                 }`}
                 style={{
@@ -196,7 +190,7 @@ export const About = () => {
               <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 sm:gap-0">
                 <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-3 sm:px-4 py-1.5 sm:py-2">
                   <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-400">
-                    Est. 2018 — London
+                    Est. 2026 — India
                   </p>
                 </div>
                 <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-3 sm:px-4 py-1.5 sm:py-2">
@@ -251,29 +245,6 @@ export const About = () => {
               </blockquote>
             </div>
           </div>
-        </div>
-
-        {/* Client Marquee */}
-        <div className="mt-14 sm:mt-20 md:mt-28">
-          <div className="flex items-center gap-4 mb-8">
-            <span className="text-[10px] font-mono text-neutral-600 uppercase tracking-[0.3em]">
-              Trusted by industry leaders
-            </span>
-            <div className="flex-1 h-[1px] bg-white/[0.04]" />
-          </div>
-
-          <Marquee speed={30} className="py-4 sm:py-6 border-t border-b border-white/[0.04]">
-            <div className="flex items-center gap-8 sm:gap-16 px-4 sm:px-8">
-              {CLIENTS.map((client, i) => (
-                <span
-                  key={`${client}-${i}`}
-                  className="text-lg sm:text-2xl md:text-3xl font-bold uppercase tracking-tight text-neutral-800 hover:text-neutral-400 transition-colors duration-500 whitespace-nowrap cursor-default"
-                >
-                  {client}
-                </span>
-              ))}
-            </div>
-          </Marquee>
         </div>
       </div>
     </section>

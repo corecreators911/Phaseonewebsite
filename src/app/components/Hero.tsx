@@ -33,12 +33,6 @@ export const Hero = () => {
     return () => ctx.revert();
   }, []);
 
-  const avatars = [
-    "https://images.unsplash.com/photo-1770896687186-895de50a4123?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBwb3J0cmFpdCUyMGRhcmslMjBwcm9maWxlfGVufDF8fHx8MTc3Mjk1NDEzOXww&ixlib=rb-4.1.0&q=80&w=1080",
-    "https://images.unsplash.com/photo-1630916079851-de145947bde3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBwb3J0cmFpdCUyMG5lb24lMjByZWR8ZW58MXx8fHwxNzcyOTU0MTQzfDA&ixlib=rb-4.1.0&q=80&w=1080",
-    "https://images.unsplash.com/photo-1661613795419-8f7506266076?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBmYWNlJTIwZGFyayUyMGRyYW1hdGljfGVufDF8fHx8MTc3Mjk1NDE0N3ww&ixlib=rb-4.1.0&q=80&w=1080"
-  ];
-
   return (
     <section
       id="home"
@@ -75,7 +69,7 @@ export const Hero = () => {
             <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono text-[#8C0B0C] uppercase tracking-[0.15em] sm:tracking-[0.2em]">LND // LAX // NY</span>
           </div>
           <div className="flex flex-col items-end gap-1.5">
-            <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">EST. 2018</span>
+            <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">EST. 2026</span>
             <div className="flex gap-1.5 mt-1">
               <span className="h-1 w-4 bg-[#8C0B0C] rounded-full animate-pulse" />
               <span className="h-1 w-1 bg-neutral-700 rounded-full" />
@@ -85,30 +79,7 @@ export const Hero = () => {
         </div>
 
         {/* Bottom UI */}
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-end w-full px-4 md:px-[5%] pb-6 sm:pb-8 gap-6 sm:gap-10 md:gap-0 pointer-events-auto">
-
-          {/* Avatar Cluster & Trust Layer */}
-          <div className="flex items-center gap-3 sm:gap-5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full p-1.5 sm:p-2 pr-5 sm:pr-8 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-colors hover:border-white/20 hover:bg-white/10 max-w-[95vw]">
-            <div className="flex -space-x-2.5 sm:-space-x-3">
-              {avatars.map((avatar, i) => {
-                const names = ["Team member portrait", "Creative director portrait", "VFX artist portrait"];
-                return (
-                  <div key={i} className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full overflow-hidden border border-white/20 shadow-lg relative group cursor-pointer">
-                    <ImageWithFallback src={avatar} alt={names[i]} className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" loading="eager" decoding="sync" />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                  </div>
-                );
-              })}
-              <div className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full border border-white/20 bg-black/80 flex items-center justify-center relative z-10 shadow-lg">
-                <span className="text-[8px] sm:text-[10px] md:text-xs font-bold text-white tracking-tighter">+2K</span>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-[9px] sm:text-[10px] md:text-[11px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-white">Trusted By</span>
-              <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono text-[#8C0B0C] uppercase tracking-wider sm:tracking-widest mt-0.5">Industry Leaders</span>
-            </div>
-          </div>
-
+        <div className="flex flex-col md:flex-row justify-end items-center md:items-end w-full px-4 md:px-[5%] pb-6 sm:pb-8 gap-6 sm:gap-10 md:gap-0 pointer-events-auto">
           {/* Scroll Indicator */}
           <a href="#" onClick={(e) => {
             e.preventDefault();

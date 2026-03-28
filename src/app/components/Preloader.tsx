@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
-import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
+import logoImg from "@/assets/Official Logo.jpeg";
 
 interface PreloaderProps {
   onComplete: () => void;

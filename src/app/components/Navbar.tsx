@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "../../lib/utils";
-import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
+import logoImg from "@/assets/Official Logo.jpeg";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useNavigate } from "react-router-dom";
 
-const NAV_ITEMS = ["Home", "Showreel", "Departments", "Projects", "About", "Contact"];
+const NAV_ITEMS = ["Home", "Showreel", "Services", "Projects", "About", "Contact"];
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -41,8 +41,8 @@ export const Navbar = () => {
             }}
             className="flex items-center gap-3 z-50 group"
           >
-            <div className="relative flex items-center justify-center h-10 w-10 overflow-hidden rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-500 group-hover:border-[#8C0B0C]/50 group-hover:shadow-[0_0_15px_rgba(140,11,12,0.4)]">
-              <img src={logoImg} alt="Phase One Logo" className="h-full w-full object-contain scale-[1.05]" />
+            <div className="relative flex items-center justify-center h-10 md:h-12 w-auto overflow-hidden transition-all duration-500">
+              <img src={logoImg} alt="Phase One VFX Logo" className="h-full w-auto object-contain" />
             </div>
             <span className="text-lg font-bold tracking-[0.2em] uppercase transition-colors duration-500">
               <span className="text-[#8C0B0C] text-lg font-bold tracking-[0.2em] uppercase">Phase One</span>

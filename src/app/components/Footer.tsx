@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUp, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
-import logoImg from "@/assets/a2e2c8a6ed7fae1fb56e5aa4277b6dad6f92533f.png";
+import logoImg from "@/assets/Official Logo.jpeg";
 import { Link, useNavigate } from "react-router-dom";
 import { Marquee } from "./Marquee";
 import { PreviewNotice } from "./PreviewNotice";
@@ -10,10 +10,10 @@ import { PreviewNotice } from "./PreviewNotice";
 const NAV_COLS = [
   {
     title: "Navigation",
-    links: ["Home", "Showreel", "Departments", "Projects", "About", "Contact"],
+    links: ["Home", "Showreel", "Services", "Projects", "About", "Contact"],
   },
   {
-    title: "Departments",
+    title: "Services",
     links: ["VFX", "CFX", "Animation", "Lighting", "Production", "Administration"],
   },
   {
@@ -106,8 +106,8 @@ export const Footer = () => {
           {/* Brand column */}
           <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
             <Link to="/" onClick={(e) => { e.preventDefault(); navigate("/", { state: { scrollTo: "home", _nonce: Date.now() }, replace: false }); }} className="flex items-center gap-3 group" data-cursor-hover>
-              <div className="h-12 w-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 transition-colors duration-500 overflow-hidden">
-                <img src={logoImg} alt="Phase One" className="h-full w-full object-contain scale-[1.05]" />
+              <div className="h-10 sm:h-12 w-auto flex items-center justify-center transition-colors duration-500 overflow-hidden">
+                <img src={logoImg} alt="Phase One VFX" className="h-full w-auto object-contain" />
               </div>
               <div>
                 <span className="text-lg font-bold tracking-[0.15em] uppercase transition-colors duration-300">
@@ -156,8 +156,8 @@ export const Footer = () => {
               <ul className="flex flex-col gap-2 sm:gap-3">
                 {col.links.map((link) => {
                   const isPlaceholder = col.title === "Studio";
-                  const sectionId = col.title === "Departments"
-                    ? "departments"
+                  const sectionId = col.title === "Services"
+                    ? "services"
                     : link.toLowerCase().replace(/\s+/g, "-");
                   return (
                   <li key={link}>
@@ -207,10 +207,10 @@ export const Footer = () => {
         
         <div className="w-full px-4 md:px-[5%] relative z-10">
           <div className="flex flex-wrap justify-center">
-            {"PHASE ONE".split("").map((char, i) => (
+            {"PHASE ONE VFX".split("").map((char, i) => (
               <span
                 key={i}
-                className={`footer-char inline-block text-[16vw] sm:text-[18vw] md:text-[14vw] font-black tracking-tighter uppercase leading-none ${
+                className={`footer-char inline-block text-[12vw] sm:text-[13vw] md:text-[10vw] font-black tracking-tighter uppercase leading-none ${
                   char === " " ? "w-[0.2em]" : ""
                 }`}
                 style={{
