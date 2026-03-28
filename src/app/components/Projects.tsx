@@ -134,13 +134,13 @@ export const Projects = () => {
             </div>
           </div>
           <button
-            className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 hover:text-white transition-colors duration-300"
+            className="group flex items-center gap-4 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-400 hover:text-white transition-all duration-500 bg-white/5 backdrop-blur-md border border-white/10 pl-5 sm:pl-6 pr-1.5 sm:pr-2 py-1.5 sm:py-2 rounded-full hover:border-[#8C0B0C]/30 hover:bg-white/[0.08]"
             data-cursor-hover
             onClick={() => navigate("/projects")}
           >
             <span>View Full Archive</span>
-            <div className="h-8 w-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#8C0B0C]/60 group-hover:bg-[#8C0B0C]/10 transition-all duration-500">
-              <ExternalLink className="w-3 h-3" />
+            <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-black/40 border border-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 group-hover:bg-[#8C0B0C]/20 group-hover:shadow-[0_0_15px_rgba(140,11,12,0.4)] transition-all duration-500">
+              <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-neutral-400 group-hover:text-white transition-colors duration-500" />
             </div>
           </button>
         </div>

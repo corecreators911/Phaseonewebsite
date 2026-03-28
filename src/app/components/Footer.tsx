@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowUp, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
+import { ArrowUp, Instagram } from "lucide-react";
 import logoImg from "@/assets/Official Logo.jpeg";
 import { Link, useNavigate } from "react-router-dom";
 import { Marquee } from "./Marquee";
@@ -23,10 +23,7 @@ const NAV_COLS = [
 ];
 
 const SOCIALS = [
-  { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
-  { icon: Instagram, label: "Instagram", href: "https://instagram.com" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
-  { icon: Youtube, label: "YouTube", href: "https://youtube.com" },
+  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/phaseonevfx" },
 ];
 
 export const Footer = () => {
