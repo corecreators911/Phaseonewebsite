@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -22,7 +22,6 @@ gsap.registerPlugin(ScrollTrigger);
 export default function App() {
   const prefersReducedMotion = useReducedMotion();
   const location = useLocation();
-  const navigate = useNavigate();
   const isHomeRoute = location.pathname === "/";
   const [loading, setLoading] = useState(
     () => !prefersReducedMotion && isHomeRoute
@@ -31,6 +30,8 @@ export default function App() {
   const prevPathnameRef = useRef(location.pathname);
   // Flag set by useLayoutEffect (runs first), read by useEffect (runs second)
   const isCrossRouteRef = useRef(false);
+  // Tracks which _nonce has already been processed to prevent self-cancellation
+  const processedNonceRef = useRef<number | null>(null);
 
   const [showBlackScreen, setShowBlackScreen] = useState(false);
   const routeTimerRef = useRef<NodeJS.Timeout>();
@@ -131,39 +132,33 @@ export default function App() {
   /** Helper: get the navbar height for scroll offset */
   const getNavOffset = () => {
     const header = document.querySelector("header");
-    return header ? header.offsetHeight + 8 : 72;
+    return header ? header.offsetHeight : 72;
   };
 
   /** Helper: calculate absolute scroll-Y for a target element */
   const calcTargetY = (el: HTMLElement) => {
     const rect = el.getBoundingClientRect();
     const scrollY = window.scrollY || document.documentElement.scrollTop;
-    return Math.max(0, rect.top + scrollY - getNavOffset());
+    const pt = parseInt(getComputedStyle(el).paddingTop, 10) || 0;
+    return Math.max(0, rect.top + scrollY - getNavOffset() + pt);
   };
 
   useEffect(() => {
     const scrollTo = (location.state as any)?.scrollTo;
     if (loading || !scrollTo) return;
 
-    // Clean up the state so refreshing doesn't trigger scroll again
-    const newState = { ...location.state };
-    delete newState.scrollTo;
-    navigate(location.pathname, { replace: true, state: newState });
+    // Guard with nonce to prevent re-processing the same scroll request.
+    // Using a ref instead of navigate(replace) avoids triggering a re-render
+    // that would cause this effect's own cleanup to cancel pending timers.
+    const nonce = (location.state as any)?._nonce ?? 0;
+    if (processedNonceRef.current === nonce) return;
+    processedNonceRef.current = nonce;
 
     const sectionId = scrollTo;
     const isCrossRoute = isCrossRouteRef.current;
     let cancelled = false;
     let attempts = 0;
     const timers: ReturnType<typeof setTimeout>[] = [];
-
-    const scrollToTarget = (target: HTMLElement, immediate: boolean) => {
-      ScrollTrigger.refresh(true);
-      const targetY = calcTargetY(target);
-      window.scrollTo({ top: targetY, behavior: "instant" });
-      if (lenisRef.current) {
-        lenisRef.current.scrollTo(targetY, { immediate: true });
-      }
-    };
 
     const checkAndScroll = () => {
       if (cancelled) return;
@@ -178,25 +173,28 @@ export default function App() {
       }
 
       if (isCrossRoute) {
-        // Cross-route: page is rendering under the black overlay (700ms).
-        // Wait for GSAP pin-spacers to initialize, then scroll once.
-        // Initial scroll immediately (rough position)
-        scrollToTarget(target, true);
-
-        // Correction after GSAP pin-spacers are set up (~400ms)
+        // Cross-route: wait until after the 700ms black screen AND the 400ms
+        // ScrollTrigger.refresh() have both completed. At 850ms GSAP pin-spacers
+        // are guaranteed settled so calcTargetY returns the correct position.
         timers.push(setTimeout(() => {
           if (cancelled) return;
-          scrollToTarget(target, true);
-        }, 400));
-
-        // Final correction after black screen fades (~750ms)
-        timers.push(setTimeout(() => {
-          if (cancelled) return;
-          scrollToTarget(target, true);
-        }, 800));
+          const fresh = document.getElementById(sectionId);
+          if (!fresh) return;
+          ScrollTrigger.refresh(true);
+          requestAnimationFrame(() => {
+            if (cancelled) return;
+            const targetY = calcTargetY(fresh);
+            if (lenisRef.current) {
+              lenisRef.current.scrollTo(targetY, { immediate: true });
+            } else {
+              window.scrollTo({ top: targetY, behavior: "instant" });
+            }
+          });
+        }, 850));
       } else {
-        // Same-route: Smooth scroll.
-        const offset = -getNavOffset();
+        // Same-route: smooth scroll with Lenis.
+        const pt = parseInt(getComputedStyle(target).paddingTop, 10) || 0;
+        const offset = -getNavOffset() + pt;
         if (lenisRef.current && !prefersReducedMotion) {
           lenisRef.current.scrollTo(target, { offset, duration: 1.2 });
         } else {
@@ -212,7 +210,7 @@ export default function App() {
       cancelled = true;
       timers.forEach(clearTimeout);
     };
-  }, [loading, location.state, location.pathname, prefersReducedMotion, navigate]);
+  }, [loading, location.state, location.pathname, prefersReducedMotion]);
 
   return (
     <div className="bg-black text-white min-h-screen w-full selection:bg-[#8C0B0C] selection:text-white md:cursor-none overflow-x-hidden" style={{ fontFamily: "var(--font-family-sans)" }}>
