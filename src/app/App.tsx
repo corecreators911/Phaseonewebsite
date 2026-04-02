@@ -31,7 +31,11 @@ export default function App() {
   // Flag set by useLayoutEffect (runs first), read by useEffect (runs second)
   const isCrossRouteRef = useRef(false);
   // Tracks which _nonce has already been processed to prevent self-cancellation
-  const processedNonceRef = useRef<number | null>(null);
+  const processedNonceRef = useRef<number | null>(
+    (location.state as any)?.scrollTo
+      ? ((location.state as any)?._nonce ?? 0)
+      : null
+  );
 
   const [showBlackScreen, setShowBlackScreen] = useState(false);
   const routeTimerRef = useRef<NodeJS.Timeout>();
