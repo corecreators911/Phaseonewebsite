@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, Suspense, lazy } from "react";
 import gsap from "gsap";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 const ShaderBackground = lazy(() => import("./ShaderBackground").then(m => ({ default: m.ShaderBackground })));
 import { ArrowDownRight } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -12,8 +13,13 @@ const LINE2_CHARS = "THE UNREAL".split("");
 export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
+    if (prefersReducedMotion) {
+      gsap.set(".hero-char", { y: "0%", opacity: 1 });
+      return;
+    }
     const ctx = gsap.context(() => {
       // Character-by-character stagger reveal — line 1 flows into line 2 seamlessly
       gsap.fromTo(
@@ -31,7 +37,7 @@ export const Hero = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <section
@@ -57,7 +63,7 @@ export const Hero = () => {
 
       {/* Floating HUD / Overlay UI */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1.5 }}
         className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end md:justify-between p-4 sm:p-6 md:p-12 pb-[10vh] md:pb-12"
@@ -156,7 +162,7 @@ export const Hero = () => {
 
       {/* "Visual Effects & Motion" badge — reliably below text, never overlapping */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        initial={prefersReducedMotion ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ delay: 2.2, duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
         className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none"

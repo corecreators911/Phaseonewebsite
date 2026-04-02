@@ -5,6 +5,7 @@ import { Play, Volume2, X } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { magneticHandlers } from "../../lib/constants";
 import { motion, AnimatePresence } from "motion/react";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 export const Showreel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -14,6 +15,7 @@ export const Showreel = () => {
   const frameRef = useRef<HTMLDivElement>(null);
   const [isHoveringPlay, setIsHoveringPlay] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const closeModal = useCallback(() => setIsModalOpen(false), []);
 
@@ -34,6 +36,8 @@ export const Showreel = () => {
   // attempt), leaving the pinned element stuck on screen across route changes.
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      if (prefersReducedMotion) return;
+
       // Scale up when scrolling into view
       gsap.fromTo(
         videoRef.current,
@@ -153,7 +157,7 @@ export const Showreel = () => {
         }
       }
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <>

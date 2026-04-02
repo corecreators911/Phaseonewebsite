@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import logoImg from "@/assets/Official Logo.jpeg";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 interface PreloaderProps {
   onComplete: () => void;
@@ -16,8 +17,13 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const overlayTopRef = useRef<HTMLDivElement>(null);
   const overlayBottomRef = useRef<HTMLDivElement>(null);
   const bottomInfoRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      onComplete();
+      return;
+    }
     const tl = gsap.timeline({
       onComplete: () => {
         onComplete();
@@ -130,7 +136,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       duration: 0.3,
       ease: "power2.in",
     }, 4.4);
-  }, [onComplete]);
+  }, [onComplete, prefersReducedMotion]);
 
   return (
     <div

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { useForm } from "react-hook-form";
 import gsap from "gsap";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { ArrowUpRight, CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "../../lib/utils";
 
@@ -22,9 +23,17 @@ export const Contact = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const formContainerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        if (headingRef.current)
+          gsap.set(headingRef.current.querySelectorAll(".char-reveal"), { y: "0%", opacity: 1 });
+        if (formContainerRef.current)
+          gsap.set(formContainerRef.current, { opacity: 1, y: 0 });
+        return;
+      }
       // Heading char reveal
       if (headingRef.current) {
         const chars = headingRef.current.querySelectorAll(".char-reveal");
@@ -70,7 +79,7 @@ export const Contact = () => {
     return () => {
       ctx.revert();
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   const onSubmit = async (_data: FormInputs) => {
     await new Promise((resolve) => setTimeout(resolve, 1500));

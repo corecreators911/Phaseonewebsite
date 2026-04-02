@@ -8,7 +8,7 @@ Built with React + GSAP + Three.js. Deployed on Vercel.
 - [x] Hero section
 - [x] About section
 - [x] Projects grid
-- [ ] Navigation fixes
+- [x] Navigation fixes
 - [ ] Services page
 - [ ] Real client data swap (placeholders still in most sections)
 

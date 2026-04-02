@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -19,6 +19,11 @@ import { ProjectDetail } from "./pages/ProjectDetail";
 
 gsap.registerPlugin(ScrollTrigger);
 
+interface LocationState {
+  scrollTo?: string;
+  _nonce?: number;
+}
+
 export default function App() {
   const prefersReducedMotion = useReducedMotion();
   const location = useLocation();
@@ -32,8 +37,8 @@ export default function App() {
   const isCrossRouteRef = useRef(false);
   // Tracks which _nonce has already been processed to prevent self-cancellation
   const processedNonceRef = useRef<number | null>(
-    (location.state as any)?.scrollTo
-      ? ((location.state as any)?._nonce ?? 0)
+    (location.state as LocationState)?.scrollTo
+      ? ((location.state as LocationState)?._nonce ?? 0)
       : null
   );
 
@@ -64,7 +69,7 @@ export default function App() {
   // Scroll reset on route change — runs synchronously before paint.
   useLayoutEffect(() => {
     const isRouteChange = prevPathnameRef.current !== location.pathname;
-    const hasSection = !!(location.state as any)?.scrollTo;
+    const hasSection = !!(location.state as LocationState)?.scrollTo;
     prevPathnameRef.current = location.pathname;
     isCrossRouteRef.current = isRouteChange;
 
@@ -148,13 +153,13 @@ export default function App() {
   };
 
   useEffect(() => {
-    const scrollTo = (location.state as any)?.scrollTo;
+    const scrollTo = (location.state as LocationState)?.scrollTo;
     if (loading || !scrollTo) return;
 
     // Guard with nonce to prevent re-processing the same scroll request.
     // Using a ref instead of navigate(replace) avoids triggering a re-render
     // that would cause this effect's own cleanup to cancel pending timers.
-    const nonce = (location.state as any)?._nonce ?? 0;
+    const nonce = (location.state as LocationState)?._nonce ?? 0;
     if (processedNonceRef.current === nonce) return;
     processedNonceRef.current = nonce;
 

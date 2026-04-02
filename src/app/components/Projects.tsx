@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { cn } from "../../lib/utils";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
@@ -21,8 +22,15 @@ export const Projects = () => {
     ...p,
     size: i === 0 || i === 3 ? "large" : "small"
   }));
+  const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
+    if (prefersReducedMotion) {
+      if (headingRef.current)
+        gsap.set(headingRef.current.querySelectorAll(".char-reveal"), { y: "0%", opacity: 1 });
+      cardsRef.current.forEach((card) => { if (card) gsap.set(card, { opacity: 1, y: 0 }); });
+      return;
+    }
     const ctx = gsap.context(() => {
       // Heading character animation
       if (headingRef.current) {
@@ -91,7 +99,7 @@ export const Projects = () => {
       clearTimeout(safetyId);
       ctx.revert();
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <section

@@ -42,6 +42,7 @@ export const projects: Project[] = [
     description: "A cyberpunk thriller set in a sprawling, rain-slicked metropolis. We designed the entire cityscape from the ground up, blending procedural generation with handcrafted hero assets to create a dense, believable world dripping with atmosphere.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
     thumbnailUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2564&auto=format&fit=crop",
+    galleryImageUrls: [],
   },
   {
     id: "03",
@@ -54,6 +55,7 @@ export const projects: Project[] = [
     description: "Deep-sea exploration featuring complex water dynamics, particulate rendering, and bioluminescent creature design. Our FX service developed novel fluid simulation pipelines to handle the massive scale and intricate interaction of the underwater environments.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
     thumbnailUrl: "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=2574&auto=format&fit=crop",
+    galleryImageUrls: [],
   },
   {
     id: "04",
@@ -66,6 +68,7 @@ export const projects: Project[] = [
     description: "Shot entirely on an LED volume, we provided real-time Unreal Engine environments and in-camera VFX. This project seamlessly blended physical sets with digital extensions, allowing for unprecedented creative freedom during principal photography.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
     thumbnailUrl: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2048&auto=format&fit=crop",
+    galleryImageUrls: [],
   },
   // Placeholders for full archive list
   {
@@ -77,7 +80,8 @@ export const projects: Project[] = [
     year: "2023",
     description: "Seamless invisible effects and complex set extensions for a period drama piece, requiring historically accurate digital crowds and architectural replacements.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
-    thumbnailUrl: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2564&auto=format&fit=crop"
+    thumbnailUrl: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2564&auto=format&fit=crop",
+    galleryImageUrls: [],
   },
   {
     id: "06",
@@ -88,7 +92,8 @@ export const projects: Project[] = [
     year: "2023",
     description: "Large scale destruction and pyro volumetric simulations rendered in Houdini, integrated seamlessly into live action plates.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
-    thumbnailUrl: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?q=80&w=2564&auto=format&fit=crop"
+    thumbnailUrl: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?q=80&w=2564&auto=format&fit=crop",
+    galleryImageUrls: [],
   }
 ];
 

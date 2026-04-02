@@ -3,6 +3,7 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import gsap from "gsap";
 import { ArrowLeft, Info, Play } from "lucide-react";
 import { getProjectBySlug } from "../../data/projects";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 // The premium redesign:
 // 1. Sleek top navigation
@@ -14,57 +15,53 @@ export const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const project = getProjectBySlug(id);
   const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
-    if (!project) return;
-    try {
-      const ctx = gsap.context(() => {
-        // Fade in the hero text elements
-        gsap.fromTo(
-          ".project-hero-el",
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            stagger: 0.1,
-            ease: "power3.out",
-            delay: 0.2,
-            clearProps: "all",
-          }
-        );
-        // Fade in the video
-        gsap.fromTo(
-          ".project-video",
-          { scale: 0.95, opacity: 0 },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 1.2,
-            ease: "power4.out",
-            delay: 0.5,
-            clearProps: "all",
-          }
-        );
-        // Fade in content
-        gsap.fromTo(
-          ".project-content",
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power3.out",
-            delay: 0.7,
-            clearProps: "all",
-          }
-        );
-      }, containerRef);
-      return () => ctx.revert();
-    } catch (error) {
-      console.error("ProjectDetail animation init failed:", error);
-      return undefined;
-    }
+    if (!project || prefersReducedMotion) return;
+    const ctx = gsap.context(() => {
+      // Fade in the hero text elements
+      gsap.fromTo(
+        ".project-hero-el",
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.1,
+          ease: "power3.out",
+          delay: 0.2,
+          clearProps: "all",
+        }
+      );
+      // Fade in the video
+      gsap.fromTo(
+        ".project-video",
+        { scale: 0.95, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 1.2,
+          ease: "power4.out",
+          delay: 0.5,
+          clearProps: "all",
+        }
+      );
+      // Fade in content
+      gsap.fromTo(
+        ".project-content",
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          delay: 0.7,
+          clearProps: "all",
+        }
+      );
+    }, containerRef);
+    return () => ctx.revert();
   }, [project]);
 
   if (!project) {

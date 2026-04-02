@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 interface SectionDividerProps {
   className?: string;
@@ -8,9 +9,14 @@ interface SectionDividerProps {
 
 export const SectionDivider: React.FC<SectionDividerProps> = ({ className = "" }) => {
   const lineRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
     if (!lineRef.current) return;
+    if (prefersReducedMotion) {
+      gsap.set(lineRef.current, { scaleX: 1 });
+      return;
+    }
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -30,7 +36,7 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({ className = "" }
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <div className={`w-full py-2 sm:py-3 ${className}`}>

@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const STATS = [
   { value: 150, suffix: "+", label: "Projects Delivered" },
@@ -16,9 +17,24 @@ export const About = () => {
   const statsRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        if (headingRef.current)
+          gsap.set(headingRef.current.querySelectorAll(".char-reveal"), { y: "0%", opacity: 1 });
+        if (textRef.current)
+          gsap.set(textRef.current.querySelectorAll(".word"), { opacity: 1 });
+        if (imageRef.current)
+          gsap.set(imageRef.current, { opacity: 1, y: 0 });
+        if (statsRef.current) {
+          statsRef.current.querySelectorAll(".stat-value").forEach((el, i) => {
+            (el as HTMLElement).innerText = STATS[i].value.toString();
+          });
+        }
+        return;
+      }
       // Heading reveal
       if (headingRef.current) {
         const chars = headingRef.current.querySelectorAll(".char-reveal");
@@ -123,7 +139,7 @@ export const About = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [prefersReducedMotion]);
 
   const paragraphText =
     "We are a collective of digital artists, technologists, and filmmakers dedicated to pushing the boundaries of visual storytelling. From concept to final frame, we craft immersive worlds and impossible realities for the world's most demanding creators. Every pixel, every frame, every render — engineered to perfection.";

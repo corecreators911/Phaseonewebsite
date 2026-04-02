@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 import { ArrowUp, Instagram } from "lucide-react";
 import logoImg from "@/assets/Official Logo.jpeg";
 import { Link, useNavigate } from "react-router-dom";
@@ -32,9 +33,15 @@ export const Footer = () => {
   const [previewNotice, setPreviewNotice] = useState<{ title: string; message: string } | null>(null);
   const closePreview = useCallback(() => setPreviewNotice(null), []);
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        if (bigTextRef.current)
+          gsap.set(bigTextRef.current.querySelectorAll(".footer-char"), { opacity: 1, y: 0 });
+        return;
+      }
       // Big text reveal — fade + small lift (not y:"100%" which creates blank space)
       if (bigTextRef.current) {
         const chars = bigTextRef.current.querySelectorAll(".footer-char");
@@ -58,7 +65,7 @@ export const Footer = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [prefersReducedMotion]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
