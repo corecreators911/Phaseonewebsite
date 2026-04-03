@@ -122,7 +122,9 @@
     }
 
     [data-cursor-hide] button,
-    [data-cursor-hide] [role="button"] {
+    [data-cursor-hide] [role="button"],
+    [data-cursor-hide] button *,
+    [data-cursor-hide] [role="button"] * {
       cursor: pointer !important;
     }
   }

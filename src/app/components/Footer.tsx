@@ -141,11 +141,12 @@ export const Footer = () => {
                       message: "Official social media profiles will be linked in the final version.",
                     });
                   }}
-                  className="group h-10 w-10 rounded-full border border-white/[0.06] bg-white/[0.02] flex items-center justify-center hover:border-[#8C0B0C]/50 hover:bg-[#8C0B0C]/10 transition-all duration-300"
+                  className="group h-12 w-12 rounded-full border border-pink-500/20 bg-white/[0.02] flex items-center justify-center hover:border-pink-500/50 hover:bg-pink-500/10 transition-all duration-300"
+                  style={{ boxShadow: "0 0 14px rgba(225,48,108,0.3)" }}
                   data-cursor-hover
                   aria-label={social.label}
                 >
-                  <social.icon className="w-4 h-4 text-neutral-500 group-hover:text-white transition-colors" />
+                  <social.icon className="w-5 h-5 text-pink-400 group-hover:text-pink-300 transition-colors" />
                 </a>
               ))}
             </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Instagram } from "lucide-react";
 import { cn } from "../../lib/utils";
 import logoImg from "@/assets/Official Logo.jpeg";
 import { motion, AnimatePresence } from "motion/react";
@@ -69,7 +69,7 @@ export const Navbar = () => {
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
           >
-            {isMenuOpen ? <X size={28} strokeWidth={2} /> : <Menu size={28} strokeWidth={2} />}
+            {isMenuOpen ? <X size={20} strokeWidth={2} /> : <Menu size={20} strokeWidth={2} />}
           </button>
         </div>
       </header>
@@ -109,7 +109,7 @@ export const Navbar = () => {
                   >
                     <Link
                       to="/"
-                      className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-black tracking-[0.1em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white to-neutral-400 transition-all hover:to-[#8C0B0C] hover:translate-x-3 block leading-none"
+                      className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-black tracking-[0.1em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white to-neutral-400 transition-all hover:to-[#8C0B0C] hover:translate-x-3 block leading-none"
                       onClick={(e) => {
                         e.preventDefault();
                         navigate("/", { state: { scrollTo: item.toLowerCase(), _nonce: Date.now() }, replace: false });
@@ -121,6 +121,32 @@ export const Navbar = () => {
                   </motion.div>
                 ))}
               </nav>
+
+              {/* Instagram icon at bottom of panel */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ delay: NAV_ITEMS.length * 0.08 + 0.3, duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+                className="absolute bottom-10 left-8 md:left-12 z-10"
+              >
+                <a
+                  href="https://www.instagram.com/phaseonevfx"
+                  onClick={(e) => { e.preventDefault(); }}
+                  aria-label="Instagram"
+                  className="group flex items-center gap-3"
+                >
+                  <div
+                    className="h-12 w-12 rounded-full border border-white/[0.08] bg-white/[0.03] flex items-center justify-center transition-all duration-300 group-hover:border-pink-500/50 group-hover:bg-pink-500/10"
+                    style={{ boxShadow: "0 0 14px rgba(225,48,108,0.35)" }}
+                  >
+                    <Instagram className="w-5 h-5 text-pink-400 transition-colors group-hover:text-pink-300" />
+                  </div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-600 group-hover:text-neutral-400 transition-colors">
+                    Instagram
+                  </span>
+                </a>
+              </motion.div>
             </motion.div>
           </>
         )}

@@ -174,15 +174,11 @@ export const Contact = () => {
                   </p>
                   <div className="flex flex-col gap-4">
                     <div>
+                      <p className="text-sm font-bold text-white mb-0.5">Vijayawada (HQ)</p>
+                      <p className="text-xs text-neutral-500">G-3, Kaveri Apts., Moghalrajapuram, Vijaywada - 520010</p>
+                    </div>
+                    <div>
                       <p className="text-sm font-bold text-white mb-0.5">Ludhiana</p>
-                      <p className="text-xs text-neutral-500">India</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-white mb-0.5">Delhi</p>
-                      <p className="text-xs text-neutral-500">India</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-white mb-0.5">Vijayawada</p>
                       <p className="text-xs text-neutral-500">India</p>
                     </div>
                   </div>
@@ -280,7 +276,7 @@ export const Contact = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-8 sm:px-12 py-4 sm:py-5 transition-all duration-500 disabled:opacity-50 hover:border-[#8C0B0C] hover:shadow-[0_0_40px_rgba(140,11,12,0.3)] w-full sm:w-auto"
+                      className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-8 sm:px-12 py-4 sm:py-5 transition-all duration-500 disabled:opacity-50 hover:border-[#8C0B0C] hover:shadow-[0_0_40px_rgba(140,11,12,0.3)] w-full sm:w-auto cursor-pointer"
                       data-cursor-hover
                     >
                       <span className="relative z-10 flex items-center justify-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition-colors w-full">

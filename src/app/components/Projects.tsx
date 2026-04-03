@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { cn } from "../../lib/utils";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { getFeaturedProjects } from "../../data/projects";
 
 // The preview notice can still be kept if needed for other places, but we remove the modal from here.
@@ -127,7 +127,7 @@ export const Projects = () => {
             </div>
             <div ref={headingRef} className="overflow-hidden">
               <h2 className="flex flex-wrap gap-y-0">
-                {"SELECTED WORKS".split("").map((char, i) => (
+                {"PROJECTS".split("").map((char, i) => (
                   <span
                     key={i}
                     className={cn(
@@ -142,14 +142,15 @@ export const Projects = () => {
             </div>
           </div>
           <button
-            className="group flex items-center gap-4 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-400 hover:text-white transition-all duration-500 bg-white/5 backdrop-blur-md border border-white/10 pl-5 sm:pl-6 pr-1.5 sm:pr-2 py-1.5 sm:py-2 rounded-full hover:border-[#8C0B0C]/30 hover:bg-white/[0.08]"
+            className="group relative overflow-hidden rounded-full border border-white/20 bg-transparent px-8 sm:px-12 py-4 sm:py-5 transition-all duration-500 hover:border-[#8C0B0C] hover:shadow-[0_0_40px_rgba(140,11,12,0.3)] cursor-pointer"
             data-cursor-hover
             onClick={() => navigate("/projects")}
           >
-            <span>View Full Archive</span>
-            <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-black/40 border border-white/5 flex items-center justify-center group-hover:border-[#8C0B0C]/50 group-hover:bg-[#8C0B0C]/20 group-hover:shadow-[0_0_15px_rgba(140,11,12,0.4)] transition-all duration-500">
-              <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-neutral-400 group-hover:text-white transition-colors duration-500" />
-            </div>
+            <span className="relative z-10 flex items-center justify-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition-colors">
+              View Full Archive
+              <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </span>
+            <div className="absolute inset-0 z-0 bg-[#8C0B0C] translate-y-[101%] transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-y-0" />
           </button>
         </div>
 
