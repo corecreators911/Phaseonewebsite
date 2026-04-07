@@ -175,11 +175,11 @@ export const Contact = () => {
                   <div className="flex flex-col gap-4">
                     <div>
                       <p className="text-sm font-bold text-white mb-0.5">Vijayawada (HQ)</p>
-                      <p className="text-xs text-neutral-500">G-3, Kaveri Apts., Moghalrajapuram, Vijaywada - 520010</p>
+                      <p className="text-xs text-neutral-500">G-3, Kaveri Apts., Moghalrajapuram, Vijaywada, <br /> Andhra Pradesh - 520010</p>
                     </div>
                     <div>
                       <p className="text-sm font-bold text-white mb-0.5">Ludhiana</p>
-                      <p className="text-xs text-neutral-500">India</p>
+                      <p className="text-xs text-neutral-500">Punjab, India</p>
                     </div>
                   </div>
                 </div>

@@ -1,79 +1,49 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 
-const TEAM_MEMBERS = [
+const CREW = [
   {
     id: 1,
-    name: "Alex Mercer",
-    role: "Lead",
-    image: "https://images.unsplash.com/photo-1554765345-6ad6a5417cde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMG1hbnxlbnwxfHx8fDE3NzI4OTEyMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    name: "Rishik Bansal",
+    roles: ["VFX Supe", "VFX Compositing"],
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
   },
   {
     id: 2,
-    name: "Sarah Chen",
-    role: "Senior Artist",
-    image: "https://images.unsplash.com/photo-1649589244330-09ca58e4fa64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMHdvbWFufGVufDF8fHx8MTc3Mjg3OTE1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+    name: "Shasidhar Javvaji",
+    roles: ["VFX Supe", "FX", "CFX", "3D Generalist"],
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80",
   },
   {
     id: 3,
-    name: "Jordan Hayes",
-    role: "Technical Director",
-    image: "https://images.unsplash.com/photo-1595745688820-1a8bca9dd00f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMHBvcnRyYWl0JTIwcGVyc29ufGVufDF8fHx8MTc3Mjk1ODk2NHww&ixlib=rb-4.1.0&q=80&w=1080",
-  }
+    name: "Sahib Dewan",
+    roles: ["Project Coord", "VFX Editor"],
+    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&q=80",
+  },
+  {
+    id: 4,
+    name: "Gurjass Singh Malhotra",
+    roles: ["Production Supe", "Editor"],
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80",
+  },
+  {
+    id: 5,
+    name: "Atharv Gohil",
+    roles: ["Animation Supe", "3D"],
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80",
+  },
 ];
 
-const SERVICES = [
-  {
-    id: "01",
-    title: "VFX",
-    desc: "Our VFX service is specialized in high-end compositing, CGI integration, and photorealistic simulations for feature films and episodic content. We bring the impossible to life with seamless integration.",
-    team: TEAM_MEMBERS,
-  },
-  {
-    id: "02",
-    title: "CFX",
-    desc: "The CFX team focuses on intricate character FX, including dynamic hair, cloth, and muscle simulations, ensuring realistic movement and physics for every digital actor.",
-    team: TEAM_MEMBERS,
-  },
-  {
-    id: "03",
-    title: "Animation",
-    desc: "Our Animation team breathes life into characters and creatures. With a deep understanding of weight, timing, and emotion, we deliver industry-leading keyframe and motion capture animation.",
-    team: TEAM_MEMBERS,
-  },
-  {
-    id: "04",
-    title: "Lighting",
-    desc: "The Lighting service sets the mood and tone for every shot, using advanced techniques to ensure digital elements perfectly match live-action plates or create fully realized CG environments.",
-    team: TEAM_MEMBERS,
-  },
-  {
-    id: "05",
-    title: "Production",
-    desc: "Our Production team coordinates pipelines, schedules, and resources across all services, ensuring that creative vision is delivered on time and at the highest possible quality.",
-    team: TEAM_MEMBERS,
-  },
-  {
-    id: "06",
-    title: "Administration",
-    desc: "The Administration team handles the vital day-to-day operations, supporting our artists and staff so they can focus entirely on creating groundbreaking visual effects.",
-    team: TEAM_MEMBERS,
-  },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export const Services = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const refreshTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Heading reveal
       if (headingRef.current) {
         const chars = headingRef.current.querySelectorAll(".char-reveal");
         gsap.fromTo(
@@ -98,23 +68,6 @@ export const Services = () => {
     return () => ctx.revert();
   }, []);
 
-  // Clean up refresh timer on unmount
-  useEffect(() => {
-    return () => {
-      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
-    };
-  }, []);
-
-  const toggleAccordion = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-
-    // Debounce ScrollTrigger refresh — cancel any pending refresh first
-    if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
-    refreshTimerRef.current = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 500);
-  };
-
   return (
     <section
       id="services"
@@ -123,17 +76,20 @@ export const Services = () => {
     >
       <div className="w-full px-4 md:px-[5%] relative z-10">
         {/* Section label */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-4 mb-4">
           <div className="h-[1px] w-12 bg-[#8C0B0C]" />
-          <span className="text-[11px] md:text-[13px] font-mono text-[#8C0B0C] uppercase tracking-[0.35em]" style={{ textShadow: "0 0 10px rgba(140,11,12,0.55)" }}>
+          <span
+            className="text-[11px] md:text-[13px] font-mono text-[#8C0B0C] uppercase tracking-[0.35em]"
+            style={{ textShadow: "0 0 10px rgba(140,11,12,0.55)" }}
+          >
             The Team Behind The Magic
           </span>
         </div>
 
         {/* Heading with char reveal */}
-        <div ref={headingRef} className="mb-6 sm:mb-8 md:mb-12 overflow-hidden">
+        <div ref={headingRef} className="mb-6 sm:mb-8 md:mb-10 overflow-hidden">
           <h2 className="flex flex-wrap">
-            {"SERVICES".split("").map((char, i) => (
+            {"CREW".split("").map((char, i) => (
               <span
                 key={i}
                 className="char-reveal inline-block text-[10vw] sm:text-[12vw] md:text-[8vw] font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-neutral-700 uppercase"
@@ -144,81 +100,35 @@ export const Services = () => {
           </h2>
         </div>
 
-        {/* Accordion list */}
-        <div className="flex flex-col">
-          {SERVICES.map((dept, index) => {
-            const isOpen = openIndex === index;
-            
-            return (
-              <div
-                key={dept.id}
-                className="group relative border-t border-white/[0.06] last:border-b last:border-white/[0.06]"
-              >
-                <button
-                  id={`dept-btn-${dept.id}`}
-                  onClick={() => toggleAccordion(index)}
-                  className="w-full relative flex items-center justify-between py-6 sm:py-8 md:py-10 px-1 sm:px-2 md:px-4 text-left transition-all duration-500 hover:bg-white/[0.02]"
-                  aria-expanded={isOpen}
-                  aria-controls={`dept-panel-${dept.id}`}
-                >
-                  {/* Left side - number + title */}
-                  <div className="flex items-center gap-4 sm:gap-6 md:gap-10">
-                    <div className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rotate-45 transition-all duration-500 flex-shrink-0 ${isOpen ? "bg-[#8C0B0C] shadow-[0_0_10px_rgba(140,11,12,0.8)] scale-110" : "border border-neutral-600 group-hover:border-neutral-400"}`} />
-                    <h3 className={`text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter uppercase transition-colors duration-500 ${isOpen ? "text-white" : "text-neutral-400 group-hover:text-neutral-300"}`}>
-                      {dept.title}
-                    </h3>
-                  </div>
-
-                  <div className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-all duration-500 overflow-hidden ${isOpen ? "border-[#8C0B0C]/50 bg-[#8C0B0C]/10" : "border-white/10 group-hover:border-white/30"}`}>
-                    <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-500 ${isOpen ? "text-[#8C0B0C] rotate-180" : "text-neutral-600 group-hover:text-neutral-400"}`} />
-                  </div>
-                </button>
-                
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      id={`dept-panel-${dept.id}`}
-                      role="region"
-                      aria-labelledby={`dept-btn-${dept.id}`}
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-                      className="overflow-hidden"
+        {/* Crew grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 md:gap-6">
+          {CREW.map((member) => (
+            <div key={member.id} className="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-white/5">
+              <ImageWithFallback
+                src={member.image}
+                alt={member.name}
+                className="w-full h-full object-cover filter grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
+              />
+              {/* Bottom gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+              {/* Text */}
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                <p className="text-2xl font-bold text-white leading-tight tracking-tight">
+                  {member.name}
+                </p>
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {member.roles.map((role) => (
+                    <span
+                      key={role}
+                      className="text-[10px] tracking-widest uppercase border border-white/20 bg-white/5 px-2 py-0.5 rounded-full text-neutral-300"
                     >
-                      <div className="px-1 sm:px-2 md:px-4 pb-8 sm:pb-10 pt-2 md:pl-24">
-                        <p className="max-w-3xl text-xs sm:text-sm md:text-base text-neutral-400 leading-relaxed mb-8 sm:mb-10">
-                          {dept.desc}
-                        </p>
-                        
-                        <div className="space-y-4 sm:space-y-6">
-                          <h4 className="text-[10px] sm:text-xs font-mono text-neutral-500 uppercase tracking-[0.2em]">Key Members</h4>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-                            {dept.team.map((member) => (
-                              <div key={member.id} className="group/member flex flex-col gap-3">
-                                <div className="relative aspect-[3/4] rounded-lg overflow-hidden border border-white/5 bg-white/5">
-                                  <ImageWithFallback 
-                                    src={member.image} 
-                                    alt={member.name} 
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover/member:scale-105 filter grayscale hover:grayscale-0"
-                                  />
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-                                </div>
-                                <div>
-                                  <h5 className="text-sm font-bold text-white tracking-tight">{member.name}</h5>
-                                  <p className="text-[10px] font-mono text-[#8C0B0C] uppercase tracking-wider mt-1">{member.role}</p>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      {role}
+                    </span>
+                  ))}
+                </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>
