@@ -175,7 +175,7 @@ export const Contact = () => {
                   <div className="flex flex-col gap-4">
                     <div>
                       <p className="text-sm font-bold text-white mb-0.5">Vijayawada (HQ)</p>
-                      <p className="text-xs text-neutral-500">G-3, Kaveri Apts., Moghalrajapuram, Vijaywada, <br /> Andhra Pradesh - 520010</p>
+                      <p className="text-xs text-neutral-500">G-3, Kaveri Apts., Moghalrajapuram, Vijayawada, <br /> Andhra Pradesh, India - 520010</p>
                     </div>
                     <div>
                       <p className="text-sm font-bold text-white mb-0.5">Ludhiana</p>
@@ -232,7 +232,7 @@ export const Contact = () => {
                       <input
                         {...register("name", { required: true })}
                         type="text"
-                        className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors md:cursor-text"
+                        className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#8C0B0C]/50 transition-colors md:cursor-text"
                         placeholder="John Doe"
                       />
                       {errors.name && (
@@ -246,7 +246,7 @@ export const Contact = () => {
                       <input
                         {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                         type="email"
-                        className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors md:cursor-text"
+                        className="w-full bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#8C0B0C]/50 transition-colors md:cursor-text"
                         placeholder="john@example.com"
                       />
                       {errors.email && (
@@ -263,7 +263,7 @@ export const Contact = () => {
                     <textarea
                       {...register("message", { required: true })}
                       rows={6}
-                      className="w-full resize-none bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none transition-colors md:cursor-text"
+                      className="w-full resize-none bg-transparent border-b border-white/10 py-3 text-white placeholder:text-neutral-700 focus:border-[#8C0B0C] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#8C0B0C]/50 transition-colors md:cursor-text"
                       placeholder="Tell us what's on your mind..."
                     />
                     {errors.message && (

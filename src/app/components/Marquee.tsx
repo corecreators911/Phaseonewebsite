@@ -28,14 +28,19 @@ export const Marquee: React.FC<MarqueeProps> = ({
 
     const contentWidth = inner.scrollWidth / 2;
     const duration = contentWidth / speed;
+    const startX = direction === "left" ? 0 : -contentWidth;
 
-    gsap.set(inner, { x: direction === "left" ? 0 : -contentWidth });
+    gsap.set(inner, { x: startX, force3D: true });
 
     const tween = gsap.to(inner, {
       x: direction === "left" ? -contentWidth : 0,
       duration,
       ease: "none",
       repeat: -1,
+      force3D: true,
+      modifiers: {
+        x: gsap.utils.unitize(gsap.utils.wrap(-contentWidth, 0)),
+      },
     });
 
     return () => {

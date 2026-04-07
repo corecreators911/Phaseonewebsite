@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
-import logoImg from "@/assets/Official Logo.jpeg";
+import logoImg from "@/assets/Logo_v009.png";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 interface PreloaderProps {

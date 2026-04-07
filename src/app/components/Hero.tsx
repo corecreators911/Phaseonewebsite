@@ -1,9 +1,8 @@
-import React, { useEffect, useLayoutEffect, useRef, Suspense, lazy } from "react";
+import { useEffect, useLayoutEffect, useRef, Suspense, lazy } from "react";
 import gsap from "gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 const ShaderBackground = lazy(() => import("./ShaderBackground").then(m => ({ default: m.ShaderBackground })));
 import { ArrowDownRight } from "lucide-react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,16 +11,19 @@ const LINE2_CHARS = "THE UNREAL".split("");
 
 export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const bottomUIRef = useRef<HTMLDivElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
 
+  // Character-by-character entrance animation
   useLayoutEffect(() => {
     if (prefersReducedMotion) {
       gsap.set(".hero-char", { y: "0%", opacity: 1 });
       return;
     }
     const ctx = gsap.context(() => {
-      // Character-by-character stagger reveal — line 1 flows into line 2 seamlessly
       gsap.fromTo(
         ".hero-char",
         { y: "115%", opacity: 0 },
@@ -34,6 +36,62 @@ export const Hero = () => {
           delay: 0.5,
         }
       );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [prefersReducedMotion]);
+
+  // Scroll-driven parallax — runs after layout is stable.
+  // scrub: true follows Lenis's already-smooth scroll position exactly,
+  // avoiding double-smoothing. All transforms are GPU-composited (no reflow).
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    if (!containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Heading: pulls upward and fades as user scrolls away from hero
+      if (headingRef.current) {
+        gsap.to(headingRef.current, {
+          y: -80,
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "45% top",
+            scrub: true,
+          },
+        });
+      }
+
+      // Scroll indicator: fades out first — it's done its job
+      if (bottomUIRef.current) {
+        gsap.to(bottomUIRef.current, {
+          opacity: 0,
+          y: -24,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "18% top",
+            scrub: true,
+          },
+        });
+      }
+
+      // Badge: fades out just after the indicator
+      if (badgeRef.current) {
+        gsap.to(badgeRef.current, {
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "22% top",
+            scrub: true,
+          },
+        });
+      }
     }, containerRef);
 
     return () => ctx.revert();
@@ -83,9 +141,11 @@ export const Hero = () => {
           </div>
         </div>
 
-        {/* Bottom UI */}
-        <div className="flex flex-col md:flex-row justify-end items-center md:items-end w-full px-4 md:px-[5%] pb-6 sm:pb-8 gap-6 sm:gap-10 md:gap-0 pointer-events-auto">
-          {/* Scroll Indicator */}
+        {/* Bottom UI — scroll indicator, ref'd for scroll-driven fade */}
+        <div
+          ref={bottomUIRef}
+          className="flex flex-col md:flex-row justify-end items-center md:items-end w-full px-4 md:px-[5%] pb-6 sm:pb-8 gap-6 sm:gap-10 md:gap-0 pointer-events-auto"
+        >
           <a href="#" onClick={(e) => {
             e.preventDefault();
             navigate("/", { state: { scrollTo: "showreel", _nonce: Date.now() }, replace: false });
@@ -100,9 +160,11 @@ export const Hero = () => {
         </div>
       </motion.div>
 
-      {/* Main Cinematic Text — character-by-character curtain reveal */}
-      <h1 className="relative z-10 flex flex-col items-center w-full px-2 sm:px-4 mix-blend-plus-lighter pointer-events-none select-none">
-
+      {/* Main Cinematic Text — ref'd for scroll-driven parallax */}
+      <h1
+        ref={headingRef}
+        className="relative z-10 flex flex-col items-center w-full px-2 sm:px-4 mix-blend-plus-lighter pointer-events-none select-none will-change-transform"
+      >
         {/* Screen reader text for SEO */}
         <span className="sr-only">CRAFTING THE UNREAL.</span>
 
@@ -159,8 +221,9 @@ export const Hero = () => {
         </div>
       </h1>
 
-      {/* "Visual Effects & Motion" badge — reliably below text, never overlapping */}
+      {/* "Visual Effects & Motion" badge — ref'd for scroll-driven fade */}
       <motion.div
+        ref={badgeRef}
         initial={prefersReducedMotion ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ delay: 2.2, duration: 1.2, ease: [0.19, 1, 0.22, 1] }}

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Instagram } from "lucide-react";
 import { cn } from "../../lib/utils";
-import logoImg from "@/assets/Official Logo.jpeg";
+import logoImg from "@/assets/Logo_v009.png";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useNavigate } from "react-router-dom";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const NAV_ITEMS = ["Home", "Showreel", "Services", "Projects", "About", "Contact"];
 
@@ -11,43 +12,87 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const lastScrollY = React.useRef(0);
+  const isMenuOpenRef = React.useRef(isMenuOpen);
   const navigate = useNavigate();
 
+  // Keep ref in sync so ScrollTrigger callbacks can read it without being recreated
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+    isMenuOpenRef.current = isMenuOpen;
+  }, [isMenuOpen]);
 
-      setScrolled(currentScrollY > 50);
+  useEffect(() => {
+    // Use ScrollTrigger instead of a native window.scroll listener so detection
+    // stays in sync with Lenis's GSAP-ticker scroll cycle — no mid-frame conflicts.
+    const bgTrigger = ScrollTrigger.create({
+      start: 80,
+      onEnter: () => setScrolled(true),
+      onLeaveBack: () => setScrolled(false),
+    });
 
-      // Smart header logic: hide when scrolling down, show when scrolling up
-      if (currentScrollY > lastScrollY.current && currentScrollY > 150) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
+    const visibilityTrigger = ScrollTrigger.create({
+      start: 150,
+      end: "max",
+      onUpdate: (self) => {
+        if (isMenuOpenRef.current) return;
+        if (self.direction === 1) {
+          setIsVisible(false);
+        } else {
+          setIsVisible(true);
+        }
+      },
+    });
 
-      lastScrollY.current = currentScrollY;
+    return () => {
+      bgTrigger.kill();
+      visibilityTrigger.kill();
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <>
-      <header
-        className={cn(
-          "fixed top-0 z-[160] w-full transform-gpu transition-all duration-500 ease-in-out",
-          scrolled 
-            ? "bg-black/90 border-b border-[#8C0B0C]/20 shadow-[0_10px_40px_rgba(140,11,12,0.15)] py-4 backdrop-blur-md" 
-            : "bg-gradient-to-b from-black/90 via-black/40 to-transparent py-6 sm:py-8 border-b border-transparent",
-          !isVisible && !isMenuOpen ? "-translate-y-[150%]" : "translate-y-0"
-        )}
+      {/*
+        motion.header owns ALL transform/opacity state:
+          - Initial entrance: slides down from -100% with opacity fade (premium reveal after preloader)
+          - Hide/show on scroll direction: y to "-110%" / "0%"
+        CSS layers inside handle the background crossfade — only opacity transitions,
+        no layout properties change, zero reflow.
+      */}
+      <motion.header
+        initial={{ y: "-100%", opacity: 0 }}
+        animate={{
+          y: !isVisible && !isMenuOpen ? "-110%" : "0%",
+          opacity: 1,
+        }}
+        transition={{
+          y: { duration: 0.65, ease: [0.19, 1, 0.22, 1] },
+          opacity: { duration: 1.1, ease: [0.19, 1, 0.22, 1] },
+        }}
+        className="fixed top-0 z-[160] w-full py-5"
       >
-        <div className="w-full px-4 md:px-[5%] flex items-center justify-between">
-          <Link 
-            to="/" 
+        {/* Layer 1 — hero-top gradient: ensures logo/text readability over the dark hero.
+            Fades OUT as user scrolls past the hero threshold. */}
+        <div
+          className={cn(
+            "absolute inset-0 bg-gradient-to-b from-black/70 to-transparent pointer-events-none",
+            "transition-opacity duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]",
+            scrolled ? "opacity-0" : "opacity-100"
+          )}
+        />
+
+        {/* Layer 2 — frosted glass: the scrolled state background.
+            Fades IN at the 80px threshold with no height/padding changes. */}
+        <div
+          className={cn(
+            "absolute inset-0 bg-black/90 backdrop-blur-md border-b border-[#8C0B0C]/20",
+            "shadow-[0_10px_40px_rgba(140,11,12,0.15)] pointer-events-none",
+            "transition-opacity duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]",
+            scrolled ? "opacity-100" : "opacity-0"
+          )}
+        />
+
+        <div className="relative z-10 w-full px-4 md:px-[5%] flex items-center justify-between">
+          <Link
+            to="/"
             onClick={(e) => {
               e.preventDefault();
               navigate("/", { state: { scrollTo: "home", _nonce: Date.now() }, replace: false });
@@ -72,7 +117,7 @@ export const Navbar = () => {
             {isMenuOpen ? <X size={20} strokeWidth={2} /> : <Menu size={20} strokeWidth={2} />}
           </button>
         </div>
-      </header>
+      </motion.header>
 
       {/* Side Panel Overlay Menu */}
       <AnimatePresence>
@@ -97,7 +142,7 @@ export const Navbar = () => {
               className="fixed top-0 right-0 bottom-0 z-[155] w-full max-w-[320px] md:max-w-[400px] xl:max-w-[500px] bg-black/95 border-l border-[#8C0B0C]/20 shadow-[-20px_0_60px_rgba(0,0,0,0.8)] flex flex-col justify-center px-8 md:px-12"
             >
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_right_center,rgba(140,11,12,0.15)_0%,transparent_70%)] opacity-50 pointer-events-none" />
-              
+
               <nav className="flex flex-col items-start gap-8 md:gap-10 relative z-10 w-full mt-10">
                 {NAV_ITEMS.map((item, i) => (
                   <motion.div
