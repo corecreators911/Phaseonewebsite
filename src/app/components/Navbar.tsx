@@ -109,7 +109,8 @@ export const Navbar = () => {
                   >
                     <Link
                       to="/"
-                      className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-black tracking-[0.1em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white to-neutral-400 transition-all hover:to-[#8C0B0C] hover:translate-x-3 block leading-none"
+                      className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-[300] tracking-[0.1em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-white to-neutral-400 transition-all hover:to-[#8C0B0C] hover:translate-x-3 block leading-none"
+                      style={{ fontFamily: "Montserrat, sans-serif" }}
                       onClick={(e) => {
                         e.preventDefault();
                         navigate("/", { state: { scrollTo: item.toLowerCase(), _nonce: Date.now() }, replace: false });
@@ -132,7 +133,8 @@ export const Navbar = () => {
               >
                 <a
                   href="https://www.instagram.com/phaseonevfx"
-                  onClick={(e) => { e.preventDefault(); }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label="Instagram"
                   className="group flex items-center gap-3"
                 >
@@ -142,9 +144,6 @@ export const Navbar = () => {
                   >
                     <Instagram className="w-5 h-5 text-pink-400 transition-colors group-hover:text-pink-300" />
                   </div>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-neutral-600 group-hover:text-neutral-400 transition-colors">
-                    Instagram
-                  </span>
                 </a>
               </motion.div>
             </motion.div>

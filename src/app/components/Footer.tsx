@@ -134,13 +134,8 @@ export const Footer = () => {
                 <a
                   key={social.label}
                   href={social.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setPreviewNotice({
-                      title: "Coming Soon",
-                      message: "Official social media profiles will be linked in the final version.",
-                    });
-                  }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group h-12 w-12 rounded-full border border-pink-500/20 bg-white/[0.02] flex items-center justify-center hover:border-pink-500/50 hover:bg-pink-500/10 transition-all duration-300"
                   style={{ boxShadow: "0 0 14px rgba(225,48,108,0.3)" }}
                   data-cursor-hover

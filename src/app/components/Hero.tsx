@@ -72,7 +72,6 @@ export const Hero = () => {
         <div className="hidden md:flex justify-between items-start pt-32 w-full px-4 md:px-[5%]">
           <div className="flex flex-col gap-1.5 overflow-hidden">
             <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">SYS_RENDER_001</span>
-            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-mono text-[#8C0B0C] uppercase tracking-[0.15em] sm:tracking-[0.2em]">LND // LAX // NY</span>
           </div>
           <div className="flex flex-col items-end gap-1.5">
             <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">EST. 2026</span>

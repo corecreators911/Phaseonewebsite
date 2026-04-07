@@ -121,7 +121,7 @@ export const Projects = () => {
           <div>
             <div className="flex items-center gap-4 mb-6">
               <div className="h-[1px] w-12 bg-[#8C0B0C]" />
-              <span className="text-[10px] md:text-[11px] font-mono text-[#8C0B0C] uppercase tracking-[0.3em]">
+              <span className="text-[11px] md:text-[13px] font-mono text-[#8C0B0C] uppercase tracking-[0.35em]" style={{ textShadow: "0 0 10px rgba(140,11,12,0.55)" }}>
                 Portfolio
               </span>
             </div>

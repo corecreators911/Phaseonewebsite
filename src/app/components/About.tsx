@@ -159,7 +159,7 @@ export const About = () => {
         {/* Section label */}
         <div className="flex items-center gap-4 mb-6">
           <div className="h-[1px] w-12 bg-[#8C0B0C]" />
-          <span className="text-[10px] md:text-[11px] font-mono text-[#8C0B0C] uppercase tracking-[0.3em]">
+          <span className="text-[11px] md:text-[13px] font-mono text-[#8C0B0C] uppercase tracking-[0.35em]" style={{ textShadow: "0 0 10px rgba(140,11,12,0.55)" }}>
             About Us
           </span>
         </div>
@@ -174,7 +174,7 @@ export const About = () => {
                   char === " " ? "w-[0.3em]" : ""
                 }`}
                 style={{
-                  WebkitTextStroke: "1px rgba(255,255,255,0.15)",
+                  WebkitTextStroke: "1px rgba(255,255,255,0.45)",
                   color: "transparent",
                 }}
               >
@@ -207,11 +207,6 @@ export const About = () => {
                 <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-3 sm:px-4 py-1.5 sm:py-2">
                   <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-400">
                     Est. 2026 — India
-                  </p>
-                </div>
-                <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full px-3 sm:px-4 py-1.5 sm:py-2">
-                  <p className="text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#8C0B0C]">
-                    LND / LAX / NYC
                   </p>
                 </div>
               </div>

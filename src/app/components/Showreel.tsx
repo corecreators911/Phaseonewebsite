@@ -321,7 +321,7 @@ export const Showreel = () => {
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="h-2 w-2 rounded-full bg-[#8C0B0C] animate-pulse shadow-[0_0_10px_rgba(140,11,12,1)]" />
-                  <span className="text-[10px] font-mono text-[#8C0B0C] uppercase tracking-[0.3em]">2026 Showreel</span>
+                  <span className="text-[11px] font-mono text-[#8C0B0C] uppercase tracking-[0.35em]" style={{ textShadow: "0 0 10px rgba(140,11,12,0.55)" }}>2026 Showreel</span>
                 </div>
                 <h3 className="text-3xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter text-white mb-4">Coming Soon</h3>
                 <p className="text-xs sm:text-sm font-mono text-neutral-500 uppercase tracking-[0.2em] max-w-md">
