@@ -79,18 +79,34 @@ export const Hero = () => {
         });
       }
 
-      // Badge: fades out just after the indicator
+      // Badge: entrance then scroll-driven fade — GSAP owns this element entirely.
+      // immediateRender: false on the scroll tween prevents it from capturing
+      // opacity:0 as its "from" before the entrance animation has run.
       if (badgeRef.current) {
-        gsap.to(badgeRef.current, {
-          opacity: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "22% top",
-            scrub: true,
-          },
-        });
+        if (!prefersReducedMotion) {
+          gsap.fromTo(
+            badgeRef.current,
+            { opacity: 0, scale: 0.9, y: 10 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.8, delay: 1.0, ease: "power2.out" }
+          );
+        } else {
+          gsap.set(badgeRef.current, { opacity: 1, scale: 1, y: 0 });
+        }
+        gsap.fromTo(
+          badgeRef.current,
+          { opacity: 1 },
+          {
+            opacity: 0,
+            ease: "none",
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top top",
+              end: "22% top",
+              scrub: true,
+            },
+          }
+        );
       }
     }, containerRef);
 
@@ -222,13 +238,10 @@ export const Hero = () => {
       </h1>
 
       {/* "Visual Effects & Motion" badge — ref'd for scroll-driven fade */}
-      <motion.div
+      <div
         ref={badgeRef}
-        initial={prefersReducedMotion ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ delay: 2.2, duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
         className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none"
-        style={{ top: "calc(50% + 12vw)" }}
+        style={{ top: "calc(50% + 12vw)", opacity: 0 }}
       >
         <div className="flex items-center gap-2 sm:gap-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-3 sm:px-5 py-1.5 sm:py-2 shadow-2xl">
           <div className="h-1.5 w-1.5 rounded-full bg-[#8C0B0C] animate-pulse shadow-[0_0_10px_rgba(140,11,12,1)]" />
@@ -236,7 +249,7 @@ export const Hero = () => {
             Visual Effects & Motion
           </p>
         </div>
-      </motion.div>
+      </div>
 
     </section>
   );
