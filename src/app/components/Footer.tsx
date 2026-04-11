@@ -119,7 +119,7 @@ export const Footer = () => {
 
         {/* Main footer content */}
         <div className="w-full px-4 md:px-[5%] py-12 sm:py-16 md:py-20">
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-5 sm:gap-12 lg:gap-8">
             {/* Brand column */}
             <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
               <Link to="/" onClick={(e) => { e.preventDefault(); navigate("/", { state: { scrollTo: "home", _nonce: Date.now() }, replace: false }); }} className="flex items-center gap-3 group" data-cursor-hover>
@@ -223,7 +223,7 @@ export const Footer = () => {
               {"PHASE ONE VFX".split("").map((char, i) => (
                 <span
                   key={i}
-                  className={`footer-char inline-block text-[12vw] sm:text-[13vw] md:text-[10vw] font-black tracking-tighter uppercase leading-none ${char === " " ? "w-[0.2em]" : ""
+                  className={`footer-char inline-block text-[8vw] sm:text-[13vw] md:text-[10vw] font-black tracking-tighter uppercase leading-none ${char === " " ? "w-[0.2em]" : ""
                     }`}
                   style={{
                     backgroundImage: "linear-gradient(180deg, #333333 0%, #050505 100%)",

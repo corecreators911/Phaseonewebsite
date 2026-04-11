@@ -88,7 +88,7 @@ export const ProjectDetail = () => {
         <div className="project-hero-el inline-block px-4 py-1.5 border border-[#8C0B0C]/30 bg-[#8C0B0C]/10 text-[#8C0B0C] text-[10px] font-bold tracking-[0.3em] uppercase rounded-full mb-8">
           {project.category}
         </div>
-        <h1 className="project-hero-el text-5xl md:text-7xl lg:text-9xl font-black uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-400 mb-6 drop-shadow-2xl">
+        <h1 className="project-hero-el text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-black uppercase tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-neutral-400 mb-6 drop-shadow-2xl">
           {project.title}
         </h1>
         <div className="project-hero-el flex flex-wrap items-center justify-center gap-4 text-xs font-mono tracking-widest text-neutral-500 uppercase">

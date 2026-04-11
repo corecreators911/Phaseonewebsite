@@ -227,7 +227,7 @@ export const About = () => {
             </div>
 
             {/* Animated Stats */}
-            <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 py-8 sm:py-10 border-t border-b border-white/[0.06]">
+            <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 py-8 sm:py-10 border-t border-b border-white/[0.06]">
               {STATS.map((stat, i) => (
                 <div key={stat.label} className="group flex flex-col gap-1.5 sm:gap-2">
                   <div className="flex items-baseline">

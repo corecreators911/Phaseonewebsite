@@ -49,12 +49,12 @@ export const ProjectsArchive = () => {
   return (
     <div ref={containerRef} className="min-h-screen bg-black pt-32 pb-24 px-4 md:px-[5%] relative z-10 overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-24 -right-1/4 w-[800px] h-[800px] bg-[#8C0B0C]/10 rounded-full blur-[120px] pointer-events-none opacity-50 transform-gpu will-change-transform" />
+      <div className="absolute top-24 -right-1/4 w-[min(800px,120vw)] h-[min(800px,120vw)] bg-[#8C0B0C]/10 rounded-full blur-[120px] pointer-events-none opacity-50 transform-gpu will-change-transform" />
       
       <div className="max-w-[1400px] mx-auto relative z-10">
         <header className="archive-header mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/10 pb-8">
           <div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4">
               Project <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8C0B0C] to-red-600">Archive</span>
             </h1>
             <p className="text-neutral-400 max-w-xl text-lg">
