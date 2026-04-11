@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Instagram } from "lucide-react";
 import { cn } from "../../lib/utils";
-import logoImg from "@/assets/Logo_v009.png";
+const logoImg = "/logo/Logo_v009.png";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useNavigate } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -99,7 +99,7 @@ export const Navbar = () => {
             }}
             className="flex items-center gap-3 z-50 group"
           >
-            <div className="relative flex items-center justify-center h-12 md:h-16 w-auto overflow-hidden transition-all duration-500">
+            <div className="relative flex items-center justify-center h-9 md:h-10 w-auto overflow-hidden transition-all duration-500">
               <img src={logoImg} alt="Phase One VFX Logo" className="h-full w-auto object-contain" />
             </div>
             <span className="text-xl md:text-2xl font-bold tracking-[0.2em] uppercase transition-colors duration-500">

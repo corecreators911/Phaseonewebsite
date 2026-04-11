@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -8,25 +8,25 @@ const CREW = [
     id: 1,
     name: "Rishik Bansal",
     roles: ["VFX Supe", "VFX Compositing"],
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
+    image: "/crew/rishik-bansal.jpeg",
   },
   {
     id: 2,
     name: "Shasidhar Javvaji",
     roles: ["VFX Supe", "FX", "CFX", "3D Generalist"],
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80",
+    image: "/crew/shasidhar-javvaji.jpeg",
   },
   {
     id: 3,
     name: "Sahib Dewan",
     roles: ["Project Coord", "VFX Editor"],
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&q=80",
+    image: "/crew/sahib-dewan.jpeg",
   },
   {
     id: 4,
     name: "Gurjass Singh Malhotra",
     roles: ["Production Supe", "Editor"],
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80",
+    image: "/crew/gurjass-malhotra.jpeg",
   },
   {
     id: 5,

@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { ArrowUp, Instagram } from "lucide-react";
-import logoImg from "@/assets/Logo_v009.png";
+const logoImg = "/logo/Logo_v009.png";
 import { Link, useNavigate } from "react-router-dom";
 import { PreviewNotice } from "./PreviewNotice";
 
@@ -123,7 +123,7 @@ export const Footer = () => {
             {/* Brand column */}
             <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
               <Link to="/" onClick={(e) => { e.preventDefault(); navigate("/", { state: { scrollTo: "home", _nonce: Date.now() }, replace: false }); }} className="flex items-center gap-3 group" data-cursor-hover>
-                <div className="h-10 sm:h-12 w-auto flex items-center justify-center transition-colors duration-500 overflow-hidden">
+                <div className="h-7 sm:h-9 w-auto flex items-center justify-center transition-colors duration-500 overflow-hidden">
                   <img src={logoImg} alt="Phase One VFX" className="h-full w-auto object-contain" />
                 </div>
                 <div>
