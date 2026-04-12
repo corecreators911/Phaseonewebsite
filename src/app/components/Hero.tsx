@@ -21,6 +21,7 @@ export const Hero = () => {
   useLayoutEffect(() => {
     if (prefersReducedMotion) {
       gsap.set(".hero-char", { y: "0%", opacity: 1 });
+      if (badgeRef.current) gsap.set(badgeRef.current, { opacity: 1 });
       return;
     }
     const ctx = gsap.context(() => {
@@ -83,15 +84,11 @@ export const Hero = () => {
       // immediateRender: false on the scroll tween prevents it from capturing
       // opacity:0 as its "from" before the entrance animation has run.
       if (badgeRef.current) {
-        if (!prefersReducedMotion) {
-          gsap.fromTo(
-            badgeRef.current,
-            { opacity: 0, scale: 0.9, y: 10 },
-            { opacity: 1, scale: 1, y: 0, duration: 0.8, delay: 1.0, ease: "power2.out" }
-          );
-        } else {
-          gsap.set(badgeRef.current, { opacity: 1, scale: 1, y: 0 });
-        }
+        gsap.fromTo(
+          badgeRef.current,
+          { opacity: 0, scale: 0.9, y: 10 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.8, delay: 1.0, ease: "power2.out" }
+        );
         gsap.fromTo(
           badgeRef.current,
           { opacity: 1 },

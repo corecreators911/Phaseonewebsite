@@ -41,10 +41,10 @@ export const Showreel = () => {
       // Scale up when scrolling into view
       gsap.fromTo(
         videoRef.current,
-        { scale: 0.5, borderRadius: "60px", opacity: 0, filter: "brightness(0)" },
+        { scale: 0.5, clipPath: "inset(0% round 60px)", opacity: 0, filter: "brightness(0)" },
         {
           scale: 1,
-          borderRadius: "0px",
+          clipPath: "inset(0% round 0px)",
           opacity: 1,
           filter: "brightness(1)",
           ease: "none",
@@ -72,7 +72,7 @@ export const Showreel = () => {
       // Stay full size for the first half of the pin
       tl.to(videoRef.current, {
         scale: 1,
-        borderRadius: "0px",
+        clipPath: "inset(0% round 0px)",
         opacity: 1,
         filter: "brightness(1)",
         duration: 1,
@@ -82,7 +82,7 @@ export const Showreel = () => {
       // Scale down during the second half of the pin
       tl.to(videoRef.current, {
         scale: 0.85,
-        borderRadius: "40px",
+        clipPath: "inset(0% round 40px)",
         opacity: 0.3,
         filter: "brightness(0.3)",
         duration: 1,

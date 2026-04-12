@@ -81,11 +81,16 @@ export const Contact = () => {
     };
   }, [prefersReducedMotion]);
 
+  useEffect(() => {
+    if (!isSuccess) return;
+    const id = setTimeout(() => setIsSuccess(false), 5000);
+    return () => clearTimeout(id);
+  }, [isSuccess]);
+
   const onSubmit = async (_data: FormInputs) => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     reset();
     setIsSuccess(true);
-    setTimeout(() => setIsSuccess(false), 5000);
   };
 
   return (

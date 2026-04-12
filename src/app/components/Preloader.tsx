@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
-const logoImg = "/logo/Logo_v009.png";
+const logoImg = "/logo/Logo_v009.webp";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 interface PreloaderProps {
@@ -136,6 +136,10 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       duration: 0.3,
       ease: "power2.in",
     }, 4.4);
+
+    return () => {
+      tl.kill();
+    };
   }, [onComplete, prefersReducedMotion]);
 
   return (
@@ -168,6 +172,8 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           ref={logoRef}
           src={logoImg}
           alt="Phase One Logo"
+          width={128}
+          height={128}
           className="h-24 md:h-32 object-contain opacity-0 scale-95 drop-shadow-[0_0_30px_rgba(140,11,12,0.5)] blur-sm"
           onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
         />

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Eye } from "lucide-react";
 
@@ -15,18 +15,16 @@ export const PreviewNotice = ({
   title = "Coming Soon",
   message = "This section is still being developed and will be available in the final version.",
 }: PreviewNoticeProps) => {
-  const handleClose = useCallback(() => onClose(), [onClose]);
-
   useEffect(() => {
     if (!isOpen) return;
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleClose();
+      if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleEsc);
     return () => {
       document.removeEventListener("keydown", handleEsc);
     };
-  }, [isOpen, handleClose]);
+  }, [isOpen, onClose]);
 
   return (
     <AnimatePresence>
@@ -55,7 +53,7 @@ export const PreviewNotice = ({
 
             {/* Close button */}
             <button
-              onClick={handleClose}
+              onClick={onClose}
               className="absolute top-3 right-3 h-8 w-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center hover:border-[#8C0B0C]/50 transition-colors"
               aria-label="Close"
             >

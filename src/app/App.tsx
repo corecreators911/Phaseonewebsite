@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, lazy, Suspense } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,9 +13,12 @@ import { ScrollProgress } from "./components/ScrollProgress";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { useReducedMotion } from "../lib/useReducedMotion";
 
-// Static imports to prevent Vite dev-server chunk load errors on first navigation
-import { ProjectsArchive } from "./pages/ProjectsArchive";
-import { ProjectDetail } from "./pages/ProjectDetail";
+const ProjectsArchive = lazy(() =>
+  import("./pages/ProjectsArchive").then((m) => ({ default: m.ProjectsArchive }))
+);
+const ProjectDetail = lazy(() =>
+  import("./pages/ProjectDetail").then((m) => ({ default: m.ProjectDetail }))
+);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -230,7 +233,6 @@ export default function App() {
         }`} 
       />
       
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-6 focus:left-6 focus:z-[200] focus:px-6 focus:py-3 focus:bg-black/90 focus:border focus:border-[#8C0B0C]/50 focus:text-white focus:rounded-full focus:text-[11px] focus:font-bold focus:uppercase focus:tracking-[0.2em] focus:shadow-[0_0_15px_rgba(140,11,12,0.3)] focus:outline-none focus:ring-1 focus:ring-[#8C0B0C]/30 focus:backdrop-blur-md transition-all">Skip to content</a>
       {loading ? (
         <Preloader onComplete={() => setLoading(false)} />
       ) : (
@@ -244,7 +246,7 @@ export default function App() {
           <ErrorBoundary fallback={null} resetKey={location.pathname}>
             <Navbar />
           </ErrorBoundary>
-          <main id="main-content">
+          <main>
             <ErrorBoundary
               resetKey={`${location.pathname}${location.search}`}
               fallback={
@@ -255,8 +257,8 @@ export default function App() {
             >
               <Routes>
                 <Route index element={<Home />} />
-                <Route path="projects" element={<ProjectsArchive />} />
-                <Route path="projects/:id" element={<ProjectDetail />} />
+                <Route path="projects" element={<Suspense fallback={null}><ProjectsArchive /></Suspense>} />
+                <Route path="projects/:id" element={<Suspense fallback={null}><ProjectDetail /></Suspense>} />
               </Routes>
             </ErrorBoundary>
           </main>

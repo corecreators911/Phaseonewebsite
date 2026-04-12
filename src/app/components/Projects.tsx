@@ -183,6 +183,8 @@ export const Projects = () => {
                   <ImageWithFallback
                     src={project.thumbnailUrl}
                     alt={project.title}
+                    width={800}
+                    height={450}
                     className="w-full h-full object-cover scale-[1.04] group-hover:scale-[1.09] transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)]"
                   />
                 </div>

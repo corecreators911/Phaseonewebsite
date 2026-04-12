@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { ArrowUp, Instagram } from "lucide-react";
-const logoImg = "/logo/Logo_v009.png";
+const logoImg = "/logo/Logo_v009.webp";
 import { Link, useNavigate } from "react-router-dom";
 import { PreviewNotice } from "./PreviewNotice";
 
@@ -87,17 +87,7 @@ export const Footer = () => {
         ref={containerRef}
         className="relative w-full bg-[#030303] overflow-hidden"
       >
-        {/* CTA Marquee Band */}
         <div className="border-t border-b border-white/[0.04] py-4 sm:py-6 overflow-hidden whitespace-nowrap">
-          <style>{`
-          @keyframes marquee-cta {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-          }
-          @media (prefers-reduced-motion: reduce) {
-            .marquee-cta-strip { animation-play-state: paused; }
-          }
-        `}</style>
           <div
             className="marquee-cta-strip inline-flex will-change-transform"
             style={{ animation: "marquee-cta 60s linear infinite" }}
@@ -124,7 +114,7 @@ export const Footer = () => {
             <div className="col-span-2 sm:col-span-4 lg:col-span-4 flex flex-col gap-4 sm:gap-6 lg:border-r lg:border-white/[0.04] lg:pr-8">
               <Link to="/" onClick={(e) => { e.preventDefault(); navigate("/", { state: { scrollTo: "home", _nonce: Date.now() }, replace: false }); }} className="flex items-center gap-3 group" data-cursor-hover>
                 <div className="h-7 sm:h-9 w-auto flex items-center justify-center transition-colors duration-500 overflow-hidden">
-                  <img src={logoImg} alt="Phase One VFX" className="h-full w-auto object-contain" />
+                  <img src={logoImg} alt="Phase One VFX" width={36} height={36} className="h-full w-auto object-contain" />
                 </div>
                 <div>
                   <span className="text-lg font-bold tracking-[0.15em] uppercase transition-colors duration-300">

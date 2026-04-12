@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Instagram } from "lucide-react";
 import { cn } from "../../lib/utils";
-const logoImg = "/logo/Logo_v009.png";
+const logoImg = "/logo/Logo_v009.webp";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useNavigate } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const NAV_ITEMS = ["Home", "Showreel", "Services", "Projects", "About", "Contact"];
 
 export const Navbar = () => {
+  const prefersReducedMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -64,8 +66,8 @@ export const Navbar = () => {
           opacity: 1,
         }}
         transition={{
-          y: { duration: 0.65, ease: [0.19, 1, 0.22, 1] },
-          opacity: { duration: 1.1, ease: [0.19, 1, 0.22, 1] },
+          y: { duration: prefersReducedMotion ? 0 : 0.65, ease: [0.19, 1, 0.22, 1] },
+          opacity: { duration: prefersReducedMotion ? 0 : 1.1, ease: [0.19, 1, 0.22, 1] },
         }}
         className="fixed top-0 z-[160] w-full py-5"
       >
@@ -100,7 +102,7 @@ export const Navbar = () => {
             className="flex items-center gap-3 z-50 group"
           >
             <div className="relative flex items-center justify-center h-9 md:h-10 w-auto overflow-hidden transition-all duration-500">
-              <img src={logoImg} alt="Phase One VFX Logo" className="h-full w-auto object-contain" />
+              <img src={logoImg} alt="Phase One VFX Logo" width={40} height={40} className="h-full w-auto object-contain" />
             </div>
             <span className="text-xl md:text-2xl font-bold tracking-[0.2em] uppercase transition-colors duration-500">
               <span className="text-[#8C0B0C] font-bold tracking-[0.2em] uppercase">Phase One</span>

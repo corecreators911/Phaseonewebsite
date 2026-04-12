@@ -62,7 +62,7 @@ export const ProjectDetail = () => {
       );
     }, containerRef);
     return () => ctx.revert();
-  }, [project]);
+  }, [project, prefersReducedMotion]);
 
   if (!project) {
     return <Navigate to="/projects" replace />;
@@ -143,7 +143,7 @@ export const ProjectDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {project.galleryImageUrls.map((url, idx) => (
                     <div key={idx} className="aspect-video rounded-xl overflow-hidden bg-black/50 border border-white/5 relative group">
-                       <img src={url} alt={`BTS ${idx + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" />
+                       <img src={url} alt={`BTS ${idx + 1}`} width={1280} height={720} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100" />
                     </div>
                   ))}
                 </div>

@@ -1,32 +1,32 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const CREW = [
   {
     id: 1,
     name: "Rishik Bansal",
     roles: ["VFX Supe", "VFX Compositing"],
-    image: "/crew/rishik-bansal.jpeg",
+    image: "/crew/rishik-bansal.webp",
   },
   {
     id: 2,
     name: "Shasidhar Javvaji",
     roles: ["VFX Supe", "FX", "CFX", "3D Generalist"],
-    image: "/crew/shasidhar-javvaji.jpeg",
+    image: "/crew/shasidhar-javvaji.webp",
   },
   {
     id: 3,
     name: "Sahib Dewan",
     roles: ["Project Coord", "VFX Editor"],
-    image: "/crew/sahib-dewan.jpeg",
+    image: "/crew/sahib-dewan.webp",
   },
   {
     id: 4,
     name: "Gurjass Singh Malhotra",
     roles: ["Production Supe", "Editor"],
-    image: "/crew/gurjass-malhotra.jpeg",
+    image: "/crew/gurjass-malhotra.webp",
   },
   {
     id: 5,
@@ -36,14 +36,18 @@ const CREW = [
   },
 ];
 
-gsap.registerPlugin(ScrollTrigger);
-
 export const Services = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        if (headingRef.current)
+          gsap.set(headingRef.current.querySelectorAll(".char-reveal"), { y: "0%", opacity: 1 });
+        return;
+      }
       if (headingRef.current) {
         const chars = headingRef.current.querySelectorAll(".char-reveal");
         gsap.fromTo(
@@ -66,7 +70,7 @@ export const Services = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <section
@@ -107,6 +111,8 @@ export const Services = () => {
               <ImageWithFallback
                 src={member.image}
                 alt={member.name}
+                width={400}
+                height={533}
                 className="w-full h-full object-cover filter grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
               />
               {/* Bottom gradient overlay */}

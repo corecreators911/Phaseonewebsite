@@ -85,6 +85,8 @@ export const ProjectsArchive = () => {
                 <img
                   src={project.thumbnailUrl}
                   alt={project.title}
+                  width={800}
+                  height={500}
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                 />

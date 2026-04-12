@@ -18,10 +18,12 @@ export const ScrollProgress = () => {
 
       const progress = Math.min(Math.max(scrollTop / docHeight, 0), 1);
 
-      // Only show after user has scrolled at least 1px
       if (!hasScrolled.current && scrollTop > 1) {
         hasScrolled.current = true;
         container.style.opacity = "1";
+      } else if (hasScrolled.current && scrollTop <= 1) {
+        hasScrolled.current = false;
+        container.style.opacity = "0";
       }
 
       bar.style.height = `${progress * 100}%`;
