@@ -32,7 +32,7 @@ const CREW = [
     id: 5,
     name: "Atharv Gohil",
     roles: ["Animation Supe", "3D"],
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80",
+    image: "/crew/atharv-gohil.webp",
   },
 ];
 
