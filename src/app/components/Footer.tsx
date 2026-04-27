@@ -14,11 +14,11 @@ const NAV_COLS = [
   },
   {
     title: "Services",
-    links: ["VFX", "CFX", "Animation", "Lighting", "Production", "Administration"],
+    links: ["VFX", "CFX", "Animation", "Editing and Previsualization", "Production", "Administration"],
   },
   {
     title: "Studio",
-    links: ["Careers", "Culture", "Press Kit", "Blog", "Privacy", "Terms"],
+    links: ["Careers", "Culture", "Connect", "Blog", "Privacy", "Terms"],
   },
 ];
 
@@ -88,23 +88,6 @@ export const Footer = () => {
         className="relative w-full bg-[#030303] overflow-hidden"
       >
         <div className="border-t border-b border-white/[0.04] py-4 sm:py-6 overflow-hidden whitespace-nowrap">
-          <div
-            className="marquee-cta-strip inline-flex will-change-transform"
-            style={{ animation: "marquee-cta 60s linear infinite" }}
-          >
-            {[0, 1].map((copy) => (
-              <div key={copy} className="flex items-center gap-8 sm:gap-12">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <span key={i} className="inline-flex items-center gap-8 sm:gap-12">
-                    <span className="text-base sm:text-lg md:text-xl font-bold uppercase tracking-[0.1em] text-neutral-700 whitespace-nowrap">
-                      Let's Work Together
-                    </span>
-                    <span className="text-[#8C0B0C] text-xl">&#10038;</span>
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Main footer content */}

@@ -122,7 +122,7 @@ export const Projects = () => {
             <div className="flex items-center gap-4 mb-6">
               <div className="h-[1px] w-12 bg-[#8C0B0C]" />
               <span className="text-[11px] md:text-[13px] font-mono text-[#8C0B0C] uppercase tracking-[0.35em]" style={{ textShadow: "0 0 10px rgba(140,11,12,0.55)" }}>
-                Portfolio
+                Your Vision our Execution
               </span>
             </div>
             <div ref={headingRef} className="overflow-hidden">
@@ -147,7 +147,7 @@ export const Projects = () => {
             onClick={() => navigate("/projects")}
           >
             <span className="relative z-10 flex items-center justify-center gap-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition-colors">
-              View Full Archive
+              View Full Projects
               <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </span>
             <div className="absolute inset-0 z-0 bg-[#8C0B0C] translate-y-[101%] transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:translate-y-0" />

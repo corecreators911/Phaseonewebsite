@@ -136,7 +136,7 @@ export const Contact = () => {
             <div className="flex flex-col gap-6 sm:gap-10">
               {/* Email */}
               <a
-                href="mailto:phaseonevfx@gmail.com"
+                href="mailto:info@phasonevfx.com"
                 className="group flex items-start gap-3 sm:gap-4"
                 data-cursor-hover
               >
@@ -148,7 +148,7 @@ export const Contact = () => {
                     Email
                   </p>
                   <p className="text-base sm:text-lg font-bold tracking-tight text-white group-hover:text-[#8C0B0C] transition-colors break-all sm:break-normal">
-                    phaseonevfx@gmail.com
+                    info@phasonevfx.com
                   </p>
                 </div>
               </a>
@@ -180,7 +180,7 @@ export const Contact = () => {
                   <div className="flex flex-col gap-4">
                     <div>
                       <p className="text-sm font-bold text-white mb-0.5">Vijayawada (HQ)</p>
-                      <p className="text-xs text-neutral-500">G-3, Kaveri Apts., Moghalrajapuram, Vijayawada, <br /> Andhra Pradesh, India - 520010</p>
+                      <p className="text-xs text-neutral-500">Andhra Pradesh, India</p>
                     </div>
                     <div>
                       <p className="text-sm font-bold text-white mb-0.5">Ludhiana</p>

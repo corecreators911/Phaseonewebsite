@@ -248,7 +248,7 @@ export const Showreel = () => {
                 <div className="overflow-hidden">
                   <div className="flex items-baseline gap-3 sm:gap-4">
                     <span className="word-reveal inline-block text-[9px] sm:text-[10px] md:text-xs font-mono text-[#8C0B0C] uppercase tracking-[0.2em] sm:tracking-[0.3em]">
-                      2026
+                      Personal_Reel_2026
                     </span>
                     <span className="word-reveal inline-block w-8 sm:w-12 h-[1px] bg-[#8C0B0C]/50 self-center" />
                   </div>
@@ -268,7 +268,7 @@ export const Showreel = () => {
                 </div>
                 <div className="overflow-hidden mt-1 sm:mt-2">
                   <p className="word-reveal text-[8px] sm:text-[10px] md:text-xs font-mono text-neutral-500 uppercase tracking-[0.15em] sm:tracking-[0.2em] max-w-xs sm:max-w-sm">
-                    Visual Effects & Motion Design — A curated selection of our finest work
+                    Visual Effects & 3D Animation
                   </p>
                 </div>
               </div>

@@ -243,7 +243,7 @@ export const Hero = () => {
         <div className="flex items-center gap-2 sm:gap-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-3 sm:px-5 py-1.5 sm:py-2 shadow-2xl">
           <div className="h-1.5 w-1.5 rounded-full bg-[#8C0B0C] animate-pulse shadow-[0_0_10px_rgba(140,11,12,1)]" />
           <p className="text-[8px] sm:text-[9px] md:text-[10px] font-mono tracking-[0.15em] sm:tracking-[0.25em] text-white uppercase font-medium">
-            Visual Effects & Motion
+            Visual Effects & Animation
           </p>
         </div>
       </div>

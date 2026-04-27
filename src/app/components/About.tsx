@@ -160,19 +160,18 @@ export const About = () => {
         <div className="flex items-center gap-4 mb-6">
           <div className="h-[1px] w-12 bg-[#8C0B0C]" />
           <span className="text-[11px] md:text-[13px] font-mono text-[#8C0B0C] uppercase tracking-[0.35em]" style={{ textShadow: "0 0 10px rgba(140,11,12,0.55)" }}>
-            About Us
+            Work Culture
           </span>
         </div>
 
         {/* Heading */}
         <div ref={headingRef} className="overflow-hidden mb-10 sm:mb-16 md:mb-24">
           <h2 className="flex flex-wrap">
-            {"PHASE ONE VFX".split("").map((char, i) => (
+            {"ABOUT US".split("").map((char, i) => (
               <span
                 key={i}
-                className={`char-reveal inline-block text-[10vw] sm:text-[11vw] md:text-[8vw] font-black leading-none tracking-tighter uppercase ${
-                  char === " " ? "w-[0.3em]" : ""
-                }`}
+                className={`char-reveal inline-block text-[10vw] sm:text-[11vw] md:text-[8vw] font-black leading-none tracking-tighter uppercase ${char === " " ? "w-[0.3em]" : ""
+                  }`}
                 style={{
                   WebkitTextStroke: "1px rgba(255,255,255,0.45)",
                   color: "transparent",
