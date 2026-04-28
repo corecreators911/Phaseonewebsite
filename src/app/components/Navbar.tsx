@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
-const NAV_ITEMS = ["Home", "Showreel", "Services", "Projects", "About", "Contact"];
+const NAV_ITEMS = ["Home", "Services", "Crew", "Projects", "Showreel", "About", "Contact"];
 
 export const Navbar = () => {
   const prefersReducedMotion = useReducedMotion();

@@ -1,70 +1,22 @@
-import { useEffect, useLayoutEffect, useRef, Suspense, lazy } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
-const ShaderBackground = lazy(() => import("./ShaderBackground").then(m => ({ default: m.ShaderBackground })));
 import { ArrowDownRight } from "lucide-react";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 
-const CRAFTING_CHARS = "CRAFTING".split("");
-const LINE2_CHARS = "THE UNREAL".split("");
-
 export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
   const bottomUIRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
 
-  // Character-by-character entrance animation
-  useLayoutEffect(() => {
-    if (prefersReducedMotion) {
-      gsap.set(".hero-char", { y: "0%", opacity: 1 });
-      if (badgeRef.current) gsap.set(badgeRef.current, { opacity: 1 });
-      return;
-    }
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".hero-char",
-        { y: "115%", opacity: 0 },
-        {
-          y: "0%",
-          opacity: 1,
-          duration: 1.5,
-          stagger: 0.042,
-          ease: "power4.out",
-          delay: 0.5,
-        }
-      );
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, [prefersReducedMotion]);
-
-  // Scroll-driven parallax — runs after layout is stable.
-  // scrub: true follows Lenis's already-smooth scroll position exactly,
-  // avoiding double-smoothing. All transforms are GPU-composited (no reflow).
   useEffect(() => {
     if (prefersReducedMotion) return;
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Heading: pulls upward and fades as user scrolls away from hero
-      if (headingRef.current) {
-        gsap.to(headingRef.current, {
-          y: -80,
-          opacity: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "45% top",
-            scrub: true,
-          },
-        });
-      }
-
       // Scroll indicator: fades out first — it's done its job
       if (bottomUIRef.current) {
         gsap.to(bottomUIRef.current, {
@@ -114,12 +66,35 @@ export const Hero = () => {
     <section
       id="home"
       ref={containerRef}
-      className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-black"
+      className="relative h-screen w-screen flex flex-col items-center justify-center overflow-hidden bg-black"
+      style={{ background: "radial-gradient(ellipse at center, rgba(140,11,12,0.15) 0%, #000000 70%)" }}
     >
-      {/* Dynamic Background */}
-      <Suspense fallback={null}>
-        <ShaderBackground />
-      </Suspense>
+      {/* Full-bleed video background — hidden on mobile, gradient fallback shows instead */}
+      <div
+        className="pointer-events-none hidden md:block"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "hidden", zIndex: 0 }}
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        >
+          <source src="/hero-reel/hero-reel.webm" type="video/webm" />
+          <source src="/hero-reel/hero-reel.mp4" type="video/mp4" />
+        </video>
+        {/* Dark scrim — keeps HUD elements legible */}
+        <div className="absolute inset-0 z-[1]" style={{ background: "rgba(0,0,0,0.15)" }} />
+      </div>
 
       {/* Subtle Grain Overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay z-0" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')" }} />
@@ -137,27 +112,27 @@ export const Hero = () => {
         initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1.5 }}
-        className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end md:justify-between p-4 sm:p-6 md:p-12 pb-[10vh] md:pb-12"
+        className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-4 sm:p-6 md:p-12 pb-[10vh] md:pb-12"
       >
-        {/* Top UI */}
-        <div className="hidden md:flex justify-between items-start pt-32 w-full px-4 md:px-[5%]">
-          <div className="flex flex-col gap-1.5 overflow-hidden">
-            <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">SYS_RENDER_001</span>
-          </div>
-          <div className="flex flex-col items-end gap-1.5">
-            <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">EST. 2026</span>
-            <div className="flex gap-1.5 mt-1">
-              <span className="h-1 w-4 bg-[#8C0B0C] rounded-full animate-pulse" />
-              <span className="h-1 w-1 bg-neutral-700 rounded-full" />
-              <span className="h-1 w-1 bg-neutral-700 rounded-full" />
-            </div>
+        {/* SYS_RENDER_001 — top-left, absolutely positioned to match pill's left offset */}
+        <div className="hidden md:flex flex-col gap-1.5 overflow-hidden absolute top-44 left-[5%] z-[2]">
+          <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">SYS_RENDER_001</span>
+        </div>
+
+        {/* EST. 2026 — top-right, absolutely positioned to match scroll indicator's right offset */}
+        <div className="hidden md:flex flex-col items-end gap-1.5 absolute top-44 right-[5%] z-[2]">
+          <span className="text-[9px] sm:text-[10px] md:text-[11px] font-mono text-neutral-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">EST. 2026</span>
+          <div className="flex gap-1.5 mt-1">
+            <span className="h-1 w-4 bg-[#8C0B0C] rounded-full animate-pulse" />
+            <span className="h-1 w-1 bg-neutral-700 rounded-full" />
+            <span className="h-1 w-1 bg-neutral-700 rounded-full" />
           </div>
         </div>
 
         {/* Bottom UI — scroll indicator, ref'd for scroll-driven fade */}
         <div
           ref={bottomUIRef}
-          className="flex flex-col md:flex-row justify-end items-center md:items-end w-full px-4 md:px-[5%] pb-6 sm:pb-8 gap-6 sm:gap-10 md:gap-0 pointer-events-auto"
+          className="flex flex-col md:flex-row justify-end items-center md:items-end w-full px-4 md:px-[5%] gap-6 sm:gap-10 md:gap-0 pointer-events-auto"
         >
           <a href="#" onClick={(e) => {
             e.preventDefault();
@@ -173,72 +148,11 @@ export const Hero = () => {
         </div>
       </motion.div>
 
-      {/* Main Cinematic Text — ref'd for scroll-driven parallax */}
-      <h1
-        ref={headingRef}
-        className="relative z-10 flex flex-col items-center w-full px-2 sm:px-4 mix-blend-plus-lighter pointer-events-none select-none will-change-transform"
-      >
-        {/* Screen reader text for SEO */}
-        <span className="sr-only">CRAFTING THE UNREAL.</span>
-
-        {/* Line 1: CRAFTING — outlined ghost type */}
-        <div className="flex text-[13vw] sm:text-[15vw] md:text-[11.5vw] font-black tracking-tighter" aria-hidden="true">
-          {CRAFTING_CHARS.map((char, i) => (
-            <span key={i} className="overflow-hidden inline-block" style={{ lineHeight: 0.92 }}>
-              <span
-                className="hero-char inline-block transform-gpu text-transparent"
-                style={{
-                  WebkitTextStroke: "1px rgba(255,255,255,0.38)",
-                  lineHeight: 0.92,
-                  opacity: 0,
-                }}
-              >
-                {char}
-              </span>
-            </span>
-          ))}
-        </div>
-
-        {/* Line 2: THE UNREAL. — solid white + red accent dot */}
-        <div className="flex text-[13vw] sm:text-[15vw] md:text-[11.5vw] font-black tracking-tighter" aria-hidden="true">
-          {LINE2_CHARS.map((char, i) => {
-            if (char === " ") {
-              return (
-                <span
-                  key={i}
-                  className="inline-block"
-                  style={{ width: "0.18em", lineHeight: 0.92 }}
-                />
-              );
-            }
-            return (
-              <span key={i} className="overflow-hidden inline-block" style={{ lineHeight: 0.92 }}>
-                <span
-                  className="hero-char inline-block transform-gpu text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)]"
-                  style={{ lineHeight: 0.92, opacity: 0 }}
-                >
-                  {char}
-                </span>
-              </span>
-            );
-          })}
-          {/* Crimson dot */}
-          <span className="overflow-hidden inline-block" style={{ lineHeight: 0.92 }}>
-            <span
-              className="hero-char inline-block transform-gpu text-[#8C0B0C] drop-shadow-[0_0_40px_rgba(140,11,12,0.8)]"
-              style={{ lineHeight: 0.92, opacity: 0 }}
-            >
-              .
-            </span>
-          </span>
-        </div>
-      </h1>
-
-      {/* "Visual Effects & Motion" badge — ref'd for scroll-driven fade */}
+      {/* "Visual Effects & Animation" pill — bottom-left, baseline-aligned with scroll indicator */}
       <div
         ref={badgeRef}
-        className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none"
-        style={{ top: "calc(50% + 12vw)", opacity: 0 }}
+        className="absolute z-20 pointer-events-none bottom-[10vh] md:bottom-12 left-4 md:left-[5%]"
+        style={{ opacity: 0 }}
       >
         <div className="flex items-center gap-2 sm:gap-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-3 sm:px-5 py-1.5 sm:py-2 shadow-2xl">
           <div className="h-1.5 w-1.5 rounded-full bg-[#8C0B0C] animate-pulse shadow-[0_0_10px_rgba(140,11,12,1)]" />

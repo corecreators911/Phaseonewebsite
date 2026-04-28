@@ -4,12 +4,23 @@ Built with React + GSAP + Three.js. Deployed on Vercel.
 
 ---
 
+## Recent Major Changes
+- **Services section** — shipped as a Home-page crew/team section (`#services` anchor), not a standalone route
+- **Showreel section** — fullscreen ScrollTrigger pin with scrub, magnetic button, and video modal
+- **Contact form** — added with react-hook-form; no backend yet
+- **ShaderBackground** — Three.js Perlin/simplex noise shader with mouse tracking and IntersectionObserver pause-when-offscreen
+- **SectionDivider** — decorative inter-section divider component
+- **char-reveal animation** — standardised GSAP stagger heading reveal used across all sections
+- **lucide-react** — added as icon library (used in Navbar, Hero, Footer, Contact, PreviewNotice)
+
+---
+
 ## Current Status
 - [x] Hero section
 - [x] About section
 - [x] Projects grid
 - [x] Navigation fixes
-- [ ] Services page
+- [x] Services section (crew/team on Home page at `#services`; no standalone route)
 - [ ] Real client data swap (placeholders still in most sections)
 
 ---
@@ -28,9 +39,11 @@ No test runner. No lint script. TypeScript strict mode is the primary safety net
 - Tailwind CSS 4 — CSS-first, `@theme inline` in `src/styles/theme.css`. No `tailwind.config.js`
 - GSAP + ScrollTrigger — scroll-driven animations
 - Lenis — smooth scroll, integrated into GSAP's RAF ticker
-- Motion (`motion/react`) — component-level animations only
-- Three.js — WebGL shader background
+- Motion (`motion/react`) — navbar, mobile menu, modal AnimatePresence, one-shot entrance fades
+- Three.js — WebGL shader background (`ShaderBackground.tsx`; Perlin/simplex noise, mouse tracking)
 - React Router DOM v7
+- lucide-react — icon library
+- react-hook-form — form state (Contact form)
 - pnpm (flat lockfile with overrides)
 
 ---
@@ -42,6 +55,8 @@ No test runner. No lint script. TypeScript strict mode is the primary safety net
 
 Routes: `/` → Home | `/projects` → ProjectsArchive | `/projects/:id` → ProjectDetail
 
+`ProjectsArchive` and `ProjectDetail` are lazy-loaded via `React.lazy()` wrapped in `<Suspense fallback={null}>`.
+
 ### Navigation & Scroll
 Navbar uses `navigate(path, { state: { scrollTo: sectionId, _nonce: Date.now() } })`.
 **Do not refactor or simplify this pattern.** The nonce and 3-pass correction (0ms / 400ms / 800ms) are intentional — they handle GSAP pin-spacer settling timing.
@@ -51,9 +66,16 @@ Navbar uses `navigate(path, { state: { scrollTo: sectionId, _nonce: Date.now() }
 Helpers: `getProjectBySlug(slug)`, `getFeaturedProjects()` (first 4 items).
 
 ### File Structure
-- `src/app/components/` — shared UI (Hero, Navbar, Footer, etc.)
-- `src/app/pages/` — route-level pages
-- `src/lib/` — `cn()` utility (clsx + tailwind-merge), `useReducedMotion` hook
+- `src/app/components/` — shared UI:
+  - `Hero`, `Navbar`, `Footer`, `About`, `Projects` — core sections
+  - `Services` — crew/team section (Home page, `#services`)
+  - `Showreel` — fullscreen pin section with video modal and magnetic button
+  - `Contact` — contact form (react-hook-form)
+  - `ShaderBackground` — Three.js WebGL shader, lazy-loaded inside Hero
+  - `SectionDivider` — decorative inter-section divider
+  - `Preloader`, `CustomCursor`, `ScrollProgress`, `ErrorBoundary` — UI chrome
+- `src/app/pages/` — route-level pages (Home, ProjectsArchive, ProjectDetail)
+- `src/lib/` — `cn()` utility (clsx + tailwind-merge), `useReducedMotion` hook, `constants.ts` (magneticHandlers WeakMap)
 
 Always use `cn()` from `src/lib/utils.ts` for conditional classes. Use `@/` alias for all imports.
 
@@ -61,16 +83,23 @@ Always use `cn()` from `src/lib/utils.ts` for conditional classes. Use `@/` alia
 
 ## Animation Rules
 - **Always** check `useReducedMotion()` before any GSAP or Lenis animation. When true: skip smooth scroll init, skip intro animations.
-- GSAP + ScrollTrigger = scroll-driven animations. Motion (`motion/react`) = navbar visibility + mobile menu (`AnimatePresence`) only. Don't mix these roles.
+- GSAP + ScrollTrigger = scroll-driven animations. Motion (`motion/react`) = navbar visibility, mobile menu `AnimatePresence`, modal `AnimatePresence`, and one-shot entrance fades. Don't use Motion for scroll-driven effects.
 - Don't add extra `ScrollTrigger.refresh()` calls — App handles this automatically 400ms after route transitions.
 - All UI chrome (Navbar, Footer, CustomCursor, ScrollProgress) must be wrapped in `<ErrorBoundary fallback={null}>`. Keep this pattern for any new chrome.
+
+### Established Animation Patterns
+- **char-reveal** — standard heading reveal: GSAP `fromTo` on `.char-reveal` spans, stagger 0.03–0.04s, `ease: "power4.out"`, triggered by `ScrollTrigger` `toggleActions`. Used in Hero, About, Services, Contact, Footer, Projects.
+- **word scrub** — body text reveal: per-word opacity driven by `ScrollTrigger scrub: 1`. Used in About.
+- **stat counter** — numeric count-up via GSAP object interpolation with `onUpdate`; `once: true`. Used in About.
+- **fullscreen pin + scrub** — `ScrollTrigger pin: true, scrub: true` with scale/clip-path. Used in Showreel.
+- **magnetic button** — GSAP `quickTo` cursor follow; bounding rect cached on `mouseenter` to avoid layout thrash. Used in Showreel.
 
 ---
 
 ## Styling Rules
 - Dark-only site. `<html class="dark">`. No light mode.
-- Brand accent: `#8C0B0C` — use as inline style or direct hex. Do not convert to a Tailwind variable.
-- Fonts: Inter (sans), JetBrains Mono (mono) — loaded via Google Fonts in `index.html`.
+- Brand accent: `#8C0B0C` — use as direct hex or Tailwind bracket notation (`text-[#8C0B0C]`, `bg-[#8C0B0C]/10`). Never convert to a named CSS variable.
+- Fonts: Inter (sans), JetBrains Mono (mono), Montserrat (display/navbar) — loaded via Google Fonts in `index.html`.
 - Custom properties live in `src/styles/theme.css`.
 - Tailwind utilities only. No new custom CSS unless absolutely necessary.
 
