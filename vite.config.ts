@@ -22,9 +22,9 @@ export default defineConfig({
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
 
-  // Strip console.log and debugger in production
+  // Strip console.* calls and debugger statements in production
   esbuild: {
-    drop: ['debugger'],
+    drop: ['debugger', 'console'],
     legalComments: 'none',
   },
 

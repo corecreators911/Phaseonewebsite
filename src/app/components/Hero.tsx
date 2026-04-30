@@ -13,7 +13,6 @@ export const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
-
   useEffect(() => {
     if (prefersReducedMotion) return;
     if (!containerRef.current) return;
@@ -100,14 +99,14 @@ export const Hero = () => {
         className="pointer-events-none"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "hidden", zIndex: 0 }}
       >
-        {/* No filter, scale, or opacity degradation on this element — quality is clean */}
         <video
           ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="none"
+          poster="/hero-reel/hero-poster.jpg"
           style={{
             position: 'absolute',
             top: '50%',
@@ -128,7 +127,7 @@ export const Hero = () => {
       {/* Subtle Grain Overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay z-0" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')" }} />
 
-{/* "Crafting the Unreal" — centered hero heading */}
+      {/* "Crafting the Unreal" — centered hero heading */}
       <h1
         ref={headingRef}
         className="absolute z-10 pointer-events-none text-center w-full px-4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"

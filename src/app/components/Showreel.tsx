@@ -141,6 +141,10 @@ export const Showreel = () => {
 
         magneticHandlers.set(btn, { handleBtnEnter, handleMouseMove, handleMouseLeave, handleResize });
       }
+
+      // Required: pin-spacer injection changes document height; other ScrollTriggers
+      // need to recalculate. App's automatic 400ms refresh runs too late for this pin.
+      ScrollTrigger.refresh(true);
     }, containerRef);
 
     return () => {
@@ -175,6 +179,8 @@ export const Showreel = () => {
             <ImageWithFallback
               src="https://i.vimeocdn.com/video/2151134813-9932fbd91908e878ff2ec043af3ae3de1bd6011fc37aa75948f2898943496858-d_1280x720?region=us"
               alt="Showreel Thumbnail"
+              width={1280}
+              height={720}
               className="w-full h-full object-cover opacity-70"
             />
 

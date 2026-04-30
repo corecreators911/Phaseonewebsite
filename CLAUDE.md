@@ -97,7 +97,7 @@ Always use `cn()` from `src/lib/utils.ts` for conditional classes. Use `@/` alia
 ## Animation Rules
 - **Always** check `useReducedMotion()` before any GSAP or Lenis animation. When true: skip smooth scroll init, skip intro animations.
 - GSAP + ScrollTrigger = scroll-driven animations. Motion (`motion/react`) = navbar visibility, mobile menu `AnimatePresence`, modal `AnimatePresence`, Services accordion expand/collapse, and one-shot entrance fades. Don't use Motion for scroll-driven effects.
-- Don't add extra `ScrollTrigger.refresh()` calls — App handles this automatically 400ms after route transitions.
+- Don't add extra `ScrollTrigger.refresh()` calls — App handles this automatically 400ms after route transitions. **Exception:** the `ScrollTrigger.refresh(true)` at the end of the `gsap.context()` in `Showreel.tsx` is intentional and must not be removed — pin-spacer injection changes document height and requires an immediate hard recalculate that the App's 400ms deferred refresh cannot cover.
 - All UI chrome (Navbar, Footer, CustomCursor, ScrollProgress) must be wrapped in `<ErrorBoundary fallback={null}>`. Keep this pattern for any new chrome.
 
 ### Established Animation Patterns
