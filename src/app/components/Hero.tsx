@@ -9,6 +9,8 @@ export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const bottomUIRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
 
@@ -27,6 +29,26 @@ export const Hero = () => {
             trigger: containerRef.current,
             start: "top top",
             end: "18% top",
+            scrub: true,
+          },
+        });
+      }
+
+      // Heading: char-reveal entrance then scroll-driven fade
+      if (headingRef.current) {
+        gsap.fromTo(
+          headingRef.current.querySelectorAll(".char-reveal"),
+          { opacity: 0, y: 50 },
+          { opacity: 1, y: 0, duration: 1.2, stagger: 0.035, delay: 0.2, ease: "power4.out" }
+        );
+        gsap.to(headingRef.current, {
+          opacity: 0,
+          ease: "none",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "25% top",
             scrub: true,
           },
         });
@@ -62,6 +84,10 @@ export const Hero = () => {
     return () => ctx.revert();
   }, [prefersReducedMotion]);
 
+  useEffect(() => {
+    videoRef.current?.play().catch(() => { });
+  }, []);
+
   return (
     <section
       id="home"
@@ -76,10 +102,12 @@ export const Hero = () => {
       >
         {/* No filter, scale, or opacity degradation on this element — quality is clean */}
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           style={{
             position: 'absolute',
             top: '50%',
@@ -100,13 +128,22 @@ export const Hero = () => {
       {/* Subtle Grain Overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay z-0" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')" }} />
 
-      {/* Parallax Grid Lines */}
-      <div className="hidden md:block absolute inset-0 pointer-events-none z-0 opacity-[0.03]">
-        <div className="absolute left-[10%] top-0 bottom-0 w-[1px] bg-white" />
-        <div className="absolute right-[10%] top-0 bottom-0 w-[1px] bg-white" />
-        <div className="absolute top-[20%] left-0 right-0 h-[1px] bg-white" />
-        <div className="absolute bottom-[20%] left-0 right-0 h-[1px] bg-white" />
-      </div>
+{/* "Crafting the Unreal" — centered hero heading */}
+      <h1
+        ref={headingRef}
+        className="absolute z-10 pointer-events-none text-center w-full px-4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, textTransform: 'uppercase' }}
+      >
+        {"Crafting the Unreal".split("").map((char, i) => (
+          <span
+            key={i}
+            className="char-reveal inline-block text-white"
+            style={{ fontSize: "clamp(1rem, 2vw, 2.5rem)", letterSpacing: "0.2em", opacity: prefersReducedMotion ? 1 : 0 }}
+          >
+            {char === " " ? " " : char}
+          </span>
+        ))}
+      </h1>
 
       {/* Floating HUD / Overlay UI */}
       <motion.div
