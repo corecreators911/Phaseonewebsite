@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useRef } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import gsap from "gsap";
 import { ArrowLeft, Info } from "lucide-react";
-import { getProjectBySlug } from "../../data/projects";
+import { getProjectBySlug } from "@/data/projects";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 // The premium redesign:
@@ -13,7 +13,7 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 
 export const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const project = getProjectBySlug(id);
+  const project = id ? getProjectBySlug(id) : undefined;
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 

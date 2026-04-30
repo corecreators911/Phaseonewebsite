@@ -1,11 +1,12 @@
 # CLAUDE.md
 VFX company portfolio & showcase site. Conversion-focused, visually heavy, dark aesthetic.
-Built with React + GSAP + Three.js. Deployed on Vercel.
+Built with React + GSAP + Three.js. Deployed on Netlify (migrated from Vercel).
 
 ---
 
 ## Recent Major Changes
-- **Services section** — shipped as a Home-page crew/team section (`#services` anchor), not a standalone route
+- **Services section** — accordion of 7 VFX service categories on the Home page (`#services` anchor), not a standalone route
+- **Crew section** — separate team grid component (`Crew.tsx`) with 5 crew members, rendered below Services on the Home page
 - **Showreel section** — fullscreen ScrollTrigger pin with scrub, magnetic button, and video modal
 - **Contact form** — added with react-hook-form; no backend yet
 - **ShaderBackground** — Three.js Perlin/simplex noise shader with mouse tracking and IntersectionObserver pause-when-offscreen
@@ -20,8 +21,13 @@ Built with React + GSAP + Three.js. Deployed on Vercel.
 - [x] About section
 - [x] Projects grid
 - [x] Navigation fixes
-- [x] Services section (crew/team on Home page at `#services`; no standalone route)
-- [ ] Real client data swap (placeholders still in most sections)
+- [x] Services section (accordion of VFX categories on Home page at `#services`; no standalone route)
+- [x] Crew section (team grid on Home page)
+- [x] Showreel section (fullscreen pin + Vimeo modal)
+- [x] Contact form — frontend complete (react-hook-form; no backend yet)
+- [x] Real project data — 7 real projects with client, year, and award data
+- [ ] Contact form backend (currently simulates submit with 1.5s delay, no API call)
+- [ ] Remaining placeholder content (images, copy in some sections)
 
 ---
 
@@ -39,12 +45,13 @@ No test runner. No lint script. TypeScript strict mode is the primary safety net
 - Tailwind CSS 4 — CSS-first, `@theme inline` in `src/styles/theme.css`. No `tailwind.config.js`
 - GSAP + ScrollTrigger — scroll-driven animations
 - Lenis — smooth scroll, integrated into GSAP's RAF ticker
-- Motion (`motion/react`) — navbar, mobile menu, modal AnimatePresence, one-shot entrance fades
+- Motion (`motion/react`) — navbar, mobile menu, modal AnimatePresence, Services accordion expand/collapse, PreviewNotice entrance/exit, one-shot entrance fades
 - Three.js — WebGL shader background (`ShaderBackground.tsx`; Perlin/simplex noise, mouse tracking)
 - React Router DOM v7
 - lucide-react — icon library
 - react-hook-form — form state (Contact form)
 - pnpm (flat lockfile with overrides)
+- sharp — devDependency for image processing in the build pipeline
 
 ---
 
@@ -63,18 +70,24 @@ Navbar uses `navigate(path, { state: { scrollTo: sectionId, _nonce: Date.now() }
 
 ### Data
 `src/data/projects.ts` is the single source of truth for all project data. To add a project, append to the `Project[]` array — no other file needs changing.
-Helpers: `getProjectBySlug(slug)`, `getFeaturedProjects()` (first 4 items).
+Helpers: `getProjectBySlug(slug)`, `getFeaturedProjects()` (returns all projects).
+
+`src/data/servicesData.ts` is the single source of truth for `Services.tsx` — 7 categories, 31 individual services. To add a service, append to the relevant category's `services[]` array.
 
 ### File Structure
 - `src/app/components/` — shared UI:
   - `Hero`, `Navbar`, `Footer`, `About`, `Projects` — core sections
-  - `Services` — crew/team section (Home page, `#services`)
+  - `Services` — accordion of 7 VFX service categories (Home page, `#services`)
+  - `Crew` — 5-member team grid (Home page, rendered below Services)
   - `Showreel` — fullscreen pin section with video modal and magnetic button
-  - `Contact` — contact form (react-hook-form)
+  - `Contact` — contact form (react-hook-form; frontend only)
   - `ShaderBackground` — Three.js WebGL shader, lazy-loaded inside Hero
   - `SectionDivider` — decorative inter-section divider
+  - `PreviewNotice` — "Coming Soon" modal, used by Footer
   - `Preloader`, `CustomCursor`, `ScrollProgress`, `ErrorBoundary` — UI chrome
+  - `figma/ImageWithFallback` — image with graceful error fallback
 - `src/app/pages/` — route-level pages (Home, ProjectsArchive, ProjectDetail)
+  - Home.tsx renders: `Hero → SectionDivider → Services → Crew → Projects → Showreel → About → Contact`
 - `src/lib/` — `cn()` utility (clsx + tailwind-merge), `useReducedMotion` hook, `constants.ts` (magneticHandlers WeakMap)
 
 Always use `cn()` from `src/lib/utils.ts` for conditional classes. Use `@/` alias for all imports.
@@ -83,7 +96,7 @@ Always use `cn()` from `src/lib/utils.ts` for conditional classes. Use `@/` alia
 
 ## Animation Rules
 - **Always** check `useReducedMotion()` before any GSAP or Lenis animation. When true: skip smooth scroll init, skip intro animations.
-- GSAP + ScrollTrigger = scroll-driven animations. Motion (`motion/react`) = navbar visibility, mobile menu `AnimatePresence`, modal `AnimatePresence`, and one-shot entrance fades. Don't use Motion for scroll-driven effects.
+- GSAP + ScrollTrigger = scroll-driven animations. Motion (`motion/react`) = navbar visibility, mobile menu `AnimatePresence`, modal `AnimatePresence`, Services accordion expand/collapse, and one-shot entrance fades. Don't use Motion for scroll-driven effects.
 - Don't add extra `ScrollTrigger.refresh()` calls — App handles this automatically 400ms after route transitions.
 - All UI chrome (Navbar, Footer, CustomCursor, ScrollProgress) must be wrapped in `<ErrorBoundary fallback={null}>`. Keep this pattern for any new chrome.
 
@@ -93,13 +106,16 @@ Always use `cn()` from `src/lib/utils.ts` for conditional classes. Use `@/` alia
 - **stat counter** — numeric count-up via GSAP object interpolation with `onUpdate`; `once: true`. Used in About.
 - **fullscreen pin + scrub** — `ScrollTrigger pin: true, scrub: true` with scale/clip-path. Used in Showreel.
 - **magnetic button** — GSAP `quickTo` cursor follow; bounding rect cached on `mouseenter` to avoid layout thrash. Used in Showreel.
+- **staggered card entrance** — `gsap.fromTo` opacity/y with 0.15s stagger (desktop only). Includes a 3s safety timeout (`gsap.set`) that forces visibility if ScrollTrigger fails to fire. Used in Projects, ProjectsArchive.
+- **accordion expand/collapse** — motion/react `AnimatePresence` with height + opacity transitions on panel mount/unmount. Used in Services.
+- **preloader timeline** — GSAP master timeline: percentage counter, progress bar glow, text lines, logo reveal, split-curtain exit (~4.4s). Calls `onComplete()` immediately when `useReducedMotion()` is true. Used in Preloader.
 
 ---
 
 ## Styling Rules
 - Dark-only site. `<html class="dark">`. No light mode.
 - Brand accent: `#8C0B0C` — use as direct hex or Tailwind bracket notation (`text-[#8C0B0C]`, `bg-[#8C0B0C]/10`). Never convert to a named CSS variable.
-- Fonts: Inter (sans), JetBrains Mono (mono), Montserrat (display/navbar) — loaded via Google Fonts in `index.html`.
+- Fonts: Inter (sans), JetBrains Mono (mono), Montserrat (display/navbar), Barlow Condensed (weights 300, 700) — loaded via Google Fonts in `index.html`.
 - Custom properties live in `src/styles/theme.css`.
 - Tailwind utilities only. No new custom CSS unless absolutely necessary.
 

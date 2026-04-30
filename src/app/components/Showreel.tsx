@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Play, Volume2, X } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { magneticHandlers } from "../../lib/constants";
+import { magneticHandlers } from "@/lib/constants";
 import { motion, AnimatePresence } from "motion/react";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 

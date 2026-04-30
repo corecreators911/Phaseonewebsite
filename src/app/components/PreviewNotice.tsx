@@ -35,7 +35,7 @@ export const PreviewNotice = ({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
           className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/80 backdrop-blur-sm"
-          onClick={handleClose}
+          onClick={onClose}
         >
           <motion.div
             initial={{ scale: 0.92, opacity: 0, y: 20 }}

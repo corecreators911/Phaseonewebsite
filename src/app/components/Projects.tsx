@@ -2,10 +2,10 @@ import { useRef, useState, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ArrowUpRight } from "lucide-react";
-import { getFeaturedProjects } from "../../data/projects";
+import { getFeaturedProjects } from "@/data/projects";
 
 // The preview notice can still be kept if needed for other places, but we remove the modal from here.
 

@@ -1,8 +1,8 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
-import { projects } from "../../data/projects";
-import { useReducedMotion } from "../../lib/useReducedMotion";
+import { projects } from "@/data/projects";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 export const ProjectsArchive = () => {
   const safeProjects = Array.isArray(projects) ? projects : [];

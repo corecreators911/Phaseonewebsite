@@ -11,7 +11,7 @@ import { Footer } from "./components/Footer";
 import { CustomCursor } from "./components/CustomCursor";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { ErrorBoundary } from "./components/ErrorBoundary";
-import { useReducedMotion } from "../lib/useReducedMotion";
+import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const ProjectsArchive = lazy(() =>
   import("./pages/ProjectsArchive").then((m) => ({ default: m.ProjectsArchive }))

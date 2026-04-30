@@ -15,7 +15,7 @@ export const servicesData: ServiceCategory[] = [
       {
         name: "Split Screen",
         description:
-          "Combining two or more separately shot plates into a single seamless frame, with precision-matched lighting, motion, and perspective across every element.",
+          "Combining two or more separately shot plates into a single composite frame, with precision-matched lighting, motion, and perspective across every element.",
       },
       {
         name: "Keying",

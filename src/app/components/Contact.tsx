@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import gsap from "gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { ArrowUpRight, CheckCircle2, Mail, MapPin, Phone } from "lucide-react";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 
 type FormInputs = {
   name: string;
@@ -20,6 +20,7 @@ export const Contact = () => {
   } = useForm<FormInputs>();
 
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const formContainerRef = useRef<HTMLDivElement>(null);
@@ -87,10 +88,23 @@ export const Contact = () => {
     return () => clearTimeout(id);
   }, [isSuccess]);
 
-  const onSubmit = async (_data: FormInputs) => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    reset();
-    setIsSuccess(true);
+  const onSubmit = async (data: FormInputs) => {
+    setSubmitError(null);
+    try {
+      const res = await fetch(
+        `https://formspree.io/f/${import.meta.env.VITE_FORMSPREE_ID}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: data.name, email: data.email, message: data.message }),
+        }
+      );
+      if (!res.ok) throw new Error("submission_failed");
+      reset();
+      setIsSuccess(true);
+    } catch {
+      setSubmitError("Something went wrong. Please try again or email us directly.");
+    }
   };
 
   return (
@@ -223,7 +237,7 @@ export const Contact = () => {
                     Message Sent
                   </h3>
                   <p className="text-sm text-neutral-500 max-w-sm">
-                    This is a demo preview — in the final version, your inquiry will be delivered directly to the Phase One VFX team.
+                    Your inquiry has been sent. We'll be in touch shortly.
                   </p>
                 </div>
               ) : (
@@ -277,7 +291,10 @@ export const Contact = () => {
                   </div>
 
                   {/* Submit button */}
-                  <div className="flex justify-end mt-2 sm:mt-4">
+                  <div className="flex flex-col items-end gap-3 mt-2 sm:mt-4">
+                    {submitError && (
+                      <p className="text-[11px] font-mono text-[#8C0B0C]">{submitError}</p>
+                    )}
                     <button
                       type="submit"
                       disabled={isSubmitting}
