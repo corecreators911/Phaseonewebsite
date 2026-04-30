@@ -1,7 +1,6 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { cn } from "../../lib/utils";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -17,11 +16,7 @@ export const Projects = () => {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const navigate = useNavigate();
 
-  const featured = getFeaturedProjects();
-  const PROJECTS = featured.map((p, i) => ({
-    ...p,
-    size: i === 0 || i === 3 ? "large" : "small"
-  }));
+  const PROJECTS = getFeaturedProjects();
   const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
@@ -154,10 +149,8 @@ export const Projects = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 md:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
           {PROJECTS.map((project, idx) => {
-            const isLarge = project.size === "large";
-            const colClass = isLarge ? "md:col-span-7" : "md:col-span-5";
             const isHovered = hoveredIndex === idx;
             const isOtherHovered = hoveredIndex !== null && !isHovered;
 
@@ -166,9 +159,8 @@ export const Projects = () => {
                 key={project.id}
                 ref={(el) => (cardsRef.current[idx] = el)}
                 className={cn(
-                  colClass,
                   "group relative rounded-xl overflow-hidden bg-neutral-900 cursor-pointer",
-                  "h-[280px] sm:h-[340px] md:h-[480px]",
+                  "aspect-[2/3]",
                   "transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]",
                   isOtherHovered
                     ? "opacity-40 scale-[0.985]"
@@ -180,12 +172,13 @@ export const Projects = () => {
                 data-cursor-hover
               >
                 <div className="absolute inset-0 w-full h-full overflow-hidden">
+                  {/* .jpeg originals in /public/projects/ should be converted to .webp — run node convert-images.js */}
                   <ImageWithFallback
                     src={project.thumbnailUrl}
                     alt={project.title}
                     width={800}
-                    height={450}
-                    className="w-full h-full object-cover scale-[1.04] group-hover:scale-[1.09] transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)]"
+                    height={1200}
+                    className="w-full h-full object-cover object-center scale-[1.04] group-hover:scale-[1.09] transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)]"
                   />
                 </div>
 
@@ -230,7 +223,7 @@ export const Projects = () => {
                     </button>
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl md:text-[2rem] font-bold leading-[1.1] tracking-tight translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold leading-[1.1] tracking-tight line-clamp-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                     {project.title}
                   </h3>
                   <div className="mt-2 overflow-hidden h-0 group-hover:h-auto group-hover:mt-3 transition-all duration-500 hidden md:block">

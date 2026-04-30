@@ -3,96 +3,105 @@
   projectId: string; // URL slug
   title: string;
   category: string;
-  client: string;
-  year: string;
+  client: string | null;
+  year: string | null;
   award?: string;
   description: string;
   heroVideoUrl: string; // Vimeo URL for the hero video
   thumbnailUrl: string; // Image for the grid
+  videoEmbed?: string; // YouTube embed URL (overrides heroVideoUrl in detail view)
   galleryVideoUrls?: string[]; // Additional Vimeo URLs for Behind the Scenes
   galleryImageUrls?: string[]; // Additional images
 }
 
-// These are placeholders based on the home page projects.
-// The client can update this file easily when new projects arrive.
 export const projects: Project[] = [
   {
     id: "01",
-    projectId: "project-alpha",
-    title: "Project Alpha",
+    projectId: "house-of-david-season-1",
+    title: "House of David Season 1",
     category: "CGI & Animation",
-    client: "Netflix",
+    client: "Amazon MGM Studios",
     year: "2025",
     award: "VES Award Winner",
     description: "An epic sci-fi adventure requiring extensive CGI environments, meticulous character animation, and groundbreaking simulations. Our team delivered over 200 VFX shots, creating highly detailed worlds and creatures that pushed the boundaries of visual fidelity.",
-    heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0", // Replace with actual Vimeo ID
-    thumbnailUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
-    galleryImageUrls: [
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
-    ]
+    heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
+    thumbnailUrl: "/projects/house-of-david-season-1.webp",
+    galleryImageUrls: []
   },
   {
     id: "02",
-    projectId: "neon-echoes",
-    title: "Neon Echoes",
+    projectId: "leo",
+    title: "Leo",
     category: "Environment Design",
-    client: "Warner Bros",
-    year: "2025",
+    client: "Netflix",
+    year: "2023",
     award: "BAFTA Nominated",
     description: "A cyberpunk thriller set in a sprawling, rain-slicked metropolis. We designed the entire cityscape from the ground up, blending procedural generation with handcrafted hero assets to create a dense, believable world dripping with atmosphere.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
-    thumbnailUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2564&auto=format&fit=crop",
+    thumbnailUrl: "/projects/leo.webp",
     galleryImageUrls: [],
   },
   {
     id: "03",
-    projectId: "abyssal-plain",
-    title: "Abyssal Plain",
+    projectId: "superman-and-lois-season-3",
+    title: "Superman and Lois Season 3",
     category: "Simulation & VFX",
-    client: "Sony Pictures",
-    year: "2024",
+    client: "Warner Bros",
+    year: "2023",
     award: "Academy Award Shortlist",
     description: "Deep-sea exploration featuring complex water dynamics, particulate rendering, and bioluminescent creature design. Our FX service developed novel fluid simulation pipelines to handle the massive scale and intricate interaction of the underwater environments.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
-    thumbnailUrl: "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=2574&auto=format&fit=crop",
+    thumbnailUrl: "/projects/superman-and-lois-season-3.webp",
     galleryImageUrls: [],
   },
   {
     id: "04",
-    projectId: "star-dust",
-    title: "Star Dust",
+    projectId: "bad-monkey",
+    title: "Bad Monkey",
     category: "Virtual Production",
-    client: "A24",
+    client: "Apple TV",
     year: "2024",
     award: "Cannes Selection",
     description: "Shot entirely on an LED volume, we provided real-time Unreal Engine environments and in-camera VFX. This project seamlessly blended physical sets with digital extensions, allowing for unprecedented creative freedom during principal photography.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
-    thumbnailUrl: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2048&auto=format&fit=crop",
+    thumbnailUrl: "/projects/bad-monkey.webp",
     galleryImageUrls: [],
   },
-  // Placeholders for full archive list
   {
     id: "05",
-    projectId: "chronos-drift",
-    title: "Chronos Drift",
+    projectId: "outer-banks-season-3",
+    title: "Outer Banks Season 3",
     category: "Compositing",
-    client: "HBO",
+    client: "Netflix",
     year: "2023",
     description: "Seamless invisible effects and complex set extensions for a period drama piece, requiring historically accurate digital crowds and architectural replacements.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
-    thumbnailUrl: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2564&auto=format&fit=crop",
+    thumbnailUrl: "/projects/outer-banks-season-3.webp",
     galleryImageUrls: [],
   },
   {
     id: "06",
-    projectId: "solar-flare",
-    title: "Solar Flare",
+    projectId: "under-wraps-2",
+    title: "Under Wraps 2",
     category: "FX Simulation",
-    client: "Amazon Studios",
-    year: "2023",
+    client: "Disney",
+    year: "2022",
     description: "Large scale destruction and pyro volumetric simulations rendered in Houdini, integrated seamlessly into live action plates.",
     heroVideoUrl: "https://player.vimeo.com/video/824804225?h=8fd15104be&title=0&byline=0&portrait=0",
-    thumbnailUrl: "https://images.unsplash.com/photo-1543722530-d2c3201371e7?q=80&w=2564&auto=format&fit=crop",
+    thumbnailUrl: "/projects/under-wraps-2.webp",
+    galleryImageUrls: [],
+  },
+  {
+    id: "07",
+    projectId: "project-car-chase",
+    title: "Project Car Chase",
+    category: "FX Simulation",
+    client: null,
+    year: null,
+    description: "A high-octane vehicle sequence featuring photorealistic practical effects, environment extensions, and seamless compositing work across hundreds of shots.",
+    heroVideoUrl: "",
+    videoEmbed: "https://www.youtube.com/embed/CTP3JAeZN0I",
+    thumbnailUrl: "/projects/project-car-chase.webp",
     galleryImageUrls: [],
   }
 ];
@@ -102,5 +111,5 @@ export const getProjectBySlug = (slug?: string) => {
 };
 
 export const getFeaturedProjects = () => {
-  return projects.slice(0, 4); // First 4
+  return projects;
 };

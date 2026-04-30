@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import gsap from "gsap";
-import { ArrowLeft, Info, Play } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
 import { getProjectBySlug } from "../../data/projects";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
@@ -100,23 +100,27 @@ export const ProjectDetail = () => {
 
       {/* Hero Video Section (No Overlap) */}
       <div className="project-video relative z-20 max-w-[1400px] mx-auto px-4 md:px-[5%] mb-20">
-        <div className="relative w-full aspect-video bg-neutral-900 rounded-2xl border border-white/10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5">
-          {project.heroVideoUrl ? (
-            <iframe 
-              src={project.heroVideoUrl} 
-              className="w-full h-full object-cover"
-              allow="autoplay; fullscreen; picture-in-picture" 
-              allowFullScreen 
+        {project.videoEmbed ? (
+          <div className="relative w-full aspect-video bg-neutral-900 rounded-2xl border border-white/10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5">
+            <iframe
+              src={project.videoEmbed}
+              width="100%"
+              height="100%"
+              allowFullScreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               title={project.title}
               style={{ border: 'none' }}
             />
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900 gap-4">
-              <Play size={48} className="text-white/20" />
-              <span className="text-white/30 tracking-widest uppercase text-sm font-bold">Video Coming Soon</span>
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="relative max-w-[480px] mx-auto aspect-[2/3] bg-neutral-900 rounded-2xl border border-white/10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5">
+            <img
+              src={project.thumbnailUrl}
+              alt={project.title}
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
+        )}
       </div>
 
       {/* Main Content Section */}

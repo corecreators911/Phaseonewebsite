@@ -193,11 +193,11 @@ export const About = () => {
             >
               <div className="aspect-[3/4] overflow-hidden">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1698533188601-2432adf826f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaW5lbWF0aWMlMjBkYXJrJTIwc3R1ZGlvJTIwdGVhbSUyMGNyZWF0aXZlfGVufDF8fHx8MTc3Mjk1NDY3MXww&ixlib=rb-4.1.0&q=80&w=1080"
+                  src="public/about-us/about us.jpeg"
                   alt="Studio"
                   width={540}
                   height={720}
-                  className="w-full h-full object-cover grayscale contrast-110 brightness-75 transition-all duration-[1.5s] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100"
+                  className="w-full h-full object-cover object-[65%_50%] grayscale contrast-110 brightness-75 transition-all duration-[1.5s] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100"
                 />
               </div>
               {/* Overlay frame */}

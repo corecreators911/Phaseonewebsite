@@ -81,14 +81,14 @@ export const ProjectsArchive = () => {
               key={project.id}
               className="archive-card group relative flex flex-col h-full rounded-xl overflow-hidden border border-white/5 bg-white/[0.02] transition-[border-color,background-color,box-shadow] duration-500 hover:border-[#8C0B0C]/40 hover:bg-white/[0.05] hover:shadow-[0_0_30px_rgba(140,11,12,0.15)]"
             >
-              <div className="relative aspect-[16/10] overflow-hidden bg-black/50">
+              <div className="relative aspect-[2/3] overflow-hidden bg-black/50">
                 <img
                   src={project.thumbnailUrl}
                   alt={project.title}
                   width={800}
-                  height={500}
+                  height={1200}
                   loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
                 

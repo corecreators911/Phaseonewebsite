@@ -69,11 +69,12 @@ export const Hero = () => {
       className="relative h-screen w-screen flex flex-col items-center justify-center overflow-hidden bg-black"
       style={{ background: "radial-gradient(ellipse at center, rgba(140,11,12,0.15) 0%, #000000 70%)" }}
     >
-      {/* Full-bleed video background — hidden on mobile, gradient fallback shows instead */}
+      {/* Full-bleed video background */}
       <div
-        className="pointer-events-none hidden md:block"
+        className="pointer-events-none"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "hidden", zIndex: 0 }}
       >
+        {/* No filter, scale, or opacity degradation on this element — quality is clean */}
         <video
           autoPlay
           muted
@@ -93,7 +94,7 @@ export const Hero = () => {
           <source src="/hero-reel/hero-reel.mp4" type="video/mp4" />
         </video>
         {/* Dark scrim — keeps HUD elements legible */}
-        <div className="absolute inset-0 z-[1]" style={{ background: "rgba(0,0,0,0.15)" }} />
+        <div className="absolute inset-0 z-[1]" style={{ background: "rgba(0,0,0,0.08)" }} />
       </div>
 
       {/* Subtle Grain Overlay */}
