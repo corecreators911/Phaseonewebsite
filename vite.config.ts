@@ -4,7 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  // Vercel deploys at root — no subpath needed
   base: '/',
 
   plugins: [
