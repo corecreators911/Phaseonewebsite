@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { useForm } from "react-hook-form";
 import gsap from "gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";

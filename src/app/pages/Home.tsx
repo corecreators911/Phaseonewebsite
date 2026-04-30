@@ -1,4 +1,3 @@
-import React from "react";
 import { Hero } from "../components/Hero";
 import { SectionDivider } from "../components/SectionDivider";
 import { Showreel } from "../components/Showreel";
