@@ -193,7 +193,7 @@ export const About = () => {
             >
               <div className="aspect-[3/4] overflow-hidden">
                 <ImageWithFallback
-                  src="public/about-us/about us.jpeg"
+                  src="/about-us/about%20us.webp"
                   alt="Studio"
                   width={540}
                   height={720}
