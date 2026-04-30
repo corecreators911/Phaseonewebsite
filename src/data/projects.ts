@@ -100,7 +100,7 @@ export const projects: Project[] = [
     year: null,
     description: "A high-octane vehicle sequence featuring photorealistic practical effects, environment extensions, and seamless compositing work across hundreds of shots.",
     heroVideoUrl: "",
-    videoEmbed: "https://www.youtube.com/embed/CTP3JAeZN0I",
+    videoEmbed: "https://www.youtube.com/embed/CTP3JAeZN0I?controls=0&modestbranding=1&rel=0",
     thumbnailUrl: "/projects/project-car-chase.webp",
     galleryImageUrls: [],
   }

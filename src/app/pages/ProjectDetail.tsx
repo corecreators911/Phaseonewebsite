@@ -101,7 +101,7 @@ export const ProjectDetail = () => {
       {/* Hero Video Section (No Overlap) */}
       <div className="project-video relative z-20 max-w-[1400px] mx-auto px-4 md:px-[5%] mb-20">
         {project.videoEmbed ? (
-          <div className="relative w-full aspect-video bg-neutral-900 rounded-2xl border border-white/10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5">
+          <div className="relative w-full aspect-video bg-neutral-900 rounded-2xl border border-white/10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/5" data-cursor-hide>
             <iframe
               src={project.videoEmbed}
               width="100%"

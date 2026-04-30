@@ -171,8 +171,9 @@ export const Showreel = () => {
             ref={videoRef}
             className="relative w-full h-full overflow-hidden will-change-transform bg-black"
           >
+            {/* Hardcoded thumbnail from Vimeo oEmbed API (vimeo.com/api/oembed.json?url=https://vimeo.com/1187215201); size upscaled from returned 295x166 */}
             <ImageWithFallback
-              src="https://images.unsplash.com/photo-1538430564773-c50dbabcec87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGRhcmslMjByZWQlMjBzbW9rZSUyMGF0bW9zcGhlcmljfGVufDF8fHx8MTc3Mjk1NDY3MXww&ixlib=rb-4.1.0&q=80&w=1080"
+              src="https://i.vimeocdn.com/video/2151134813-9932fbd91908e878ff2ec043af3ae3de1bd6011fc37aa75948f2898943496858-d_1280x720?region=us"
               alt="Showreel Thumbnail"
               className="w-full h-full object-cover opacity-70"
             />
@@ -305,35 +306,16 @@ export const Showreel = () => {
               transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1], delay: 0.1 }}
               className="relative w-[90vw] max-w-5xl aspect-video rounded-2xl overflow-hidden border border-white/[0.06] bg-neutral-950"
               onClick={(e) => e.stopPropagation()}
+              data-cursor-hide
             >
-              {/* Background image */}
-              <ImageWithFallback
-                src="https://images.unsplash.com/photo-1538430564773-c50dbabcec87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGRhcmslMjByZWQlMjBzbW9rZSUyMGF0bW9zcGhlcmljfGVufDF8fHx8MTc3Mjk1NDY3MXww&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Showreel preview"
-                className="w-full h-full object-cover opacity-30"
+              <iframe
+                src="https://player.vimeo.com/video/1187215201?autoplay=1"
+                className="absolute inset-0 w-full h-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title="Phase One VFX Showreel 2026"
               />
-
-              {/* Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/50" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.8)_100%)]" />
-
-              {/* Coming Soon content */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="h-2 w-2 rounded-full bg-[#8C0B0C] animate-pulse shadow-[0_0_10px_rgba(140,11,12,1)]" />
-                  <span className="text-[11px] font-mono text-[#8C0B0C] uppercase tracking-[0.35em]" style={{ textShadow: "0 0 10px rgba(140,11,12,0.55)" }}>2026 Showreel</span>
-                </div>
-                <h3 className="text-3xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter text-white mb-4">Coming Soon</h3>
-                <p className="text-xs sm:text-sm font-mono text-neutral-500 uppercase tracking-[0.2em] max-w-md">
-                  Our latest showreel is currently in production.
-                  <br className="hidden sm:block" />
-                  Check back soon for the full experience.
-                </p>
-                <div className="mt-8 flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-5 py-2.5">
-                  <Play className="w-3 h-3 text-[#8C0B0C]" fill="currentColor" />
-                  <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-[0.2em]">4K / HDR / Dolby Atmos</span>
-                </div>
-              </div>
 
               {/* Corner accents */}
               <div className="absolute top-0 left-0 w-10 h-10 border-l border-t border-[#8C0B0C]/30" />
