@@ -10,7 +10,7 @@ import { PreviewNotice } from "./PreviewNotice";
 const NAV_COLS = [
   {
     title: "Navigation",
-    links: ["Home", "Showreel", "Services", "Projects", "About", "Contact"],
+    links: ["Home", "Services", "Crew", "Projects", "Showreel", "About", "Contact"],
   },
   {
     title: "Services",
