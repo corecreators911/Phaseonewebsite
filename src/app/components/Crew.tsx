@@ -105,7 +105,7 @@ export const Crew = () => {
         </div>
 
         {/* Crew grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-5 md:gap-6">
           {CREW.map((member) => (
             <div key={member.id} className="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-white/5">
               <ImageWithFallback
@@ -118,15 +118,15 @@ export const Crew = () => {
               {/* Bottom gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
               {/* Text */}
-              <div className="absolute bottom-0 left-0 right-0 p-5">
-                <p className="text-2xl font-bold text-white leading-tight tracking-tight">
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5">
+                <p className="text-base sm:text-2xl font-bold text-white leading-tight tracking-tight">
                   {member.name}
                 </p>
-                <div className="flex flex-wrap gap-1.5 mt-3">
+                <div className="flex flex-wrap gap-1 sm:gap-1.5 mt-2 sm:mt-3">
                   {member.roles.map((role) => (
                     <span
                       key={role}
-                      className="text-[10px] tracking-widest uppercase border border-white/20 bg-white/5 px-2 py-0.5 rounded-full text-neutral-300"
+                      className="text-[8px] sm:text-[10px] tracking-widest uppercase border border-white/20 bg-white/5 px-1.5 sm:px-2 py-[1px] sm:py-0.5 rounded-full text-neutral-300"
                     >
                       {role}
                     </span>

@@ -149,7 +149,7 @@ export const Projects = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
           {PROJECTS.map((project, idx) => {
             const isHovered = hoveredIndex === idx;
             const isOtherHovered = hoveredIndex !== null && !isHovered;
@@ -186,21 +186,21 @@ export const Projects = () => {
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(140,11,12,0.45)_0%,transparent_55%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.05] group-hover:ring-[#8C0B0C]/25 rounded-xl transition-colors duration-700" />
 
-                <div className="absolute top-0 left-0 right-0 px-5 md:px-7 pt-4 sm:pt-6 flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-white/40 uppercase tracking-[0.28em] opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1 group-hover:translate-y-0">
+                <div className="absolute top-0 left-0 right-0 px-3 sm:px-5 md:px-7 pt-3 sm:pt-4 md:pt-6 flex items-center justify-between">
+                  <span className="text-[7px] sm:text-[10px] font-mono text-white/40 uppercase tracking-[0.28em] opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1 group-hover:translate-y-0">
                     {project.id} - {project.year}
                   </span>
-                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-75 -translate-y-1 group-hover:translate-y-0">
-                    <div className="h-[5px] w-[5px] rounded-full bg-[#8C0B0C]" />
-                    <span className="text-[9px] font-mono text-[#8C0B0C] uppercase tracking-[0.2em]">
+                  <div className="flex items-center gap-1.5 sm:gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-75 -translate-y-1 group-hover:translate-y-0">
+                    <div className="h-[4px] sm:h-[5px] w-[4px] sm:w-[5px] rounded-full bg-[#8C0B0C]" />
+                    <span className="text-[6px] sm:text-[9px] font-mono text-[#8C0B0C] uppercase tracking-[0.2em] max-w-[50%] truncate sm:max-w-none">
                       {project.award}
                     </span>
                   </div>
                 </div>
 
-                <div className="absolute bottom-0 left-0 right-0 px-5 md:px-7 pb-4 sm:pb-6 md:pb-7">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-white/50 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                <div className="absolute bottom-0 left-0 right-0 px-3 sm:px-5 md:px-7 pb-4 sm:pb-5 md:pb-7">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-3 gap-2 sm:gap-0">
+                    <span className="text-[8px] sm:text-[10px] font-mono uppercase tracking-[0.22em] text-white/50 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-1 md:translate-y-2 group-hover:translate-y-0">
                       {project.client}
                     </span>
 
@@ -210,24 +210,24 @@ export const Projects = () => {
                         navigate(`/projects/${project.projectId}`);
                       }}
                       className={cn(
-                        "relative flex items-center gap-2 px-3 py-1.5 rounded-full overflow-hidden transition-all duration-500 translate-y-4 group-hover:translate-y-0",
+                        "relative flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full overflow-hidden transition-all duration-500 translate-y-2 md:translate-y-4 group-hover:translate-y-0",
                         "bg-[#8C0B0C] hover:bg-[#a60d0e]",
                         "opacity-0 group-hover:opacity-100",
                         "shadow-[0_0_15px_rgba(140,11,12,0.4)]"
                       )}
                     >
-                      <span className="relative z-10 text-[9px] font-bold text-white uppercase tracking-[0.1em]">
+                      <span className="relative z-10 text-[7px] sm:text-[9px] font-bold text-white uppercase tracking-[0.1em]">
                         View
                       </span>
-                      <ArrowUpRight className="relative z-10 w-3 h-3 text-white" />
+                      <ArrowUpRight className="relative z-10 w-2.5 sm:w-3 h-2.5 sm:h-3 text-white" />
                     </button>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold leading-[1.1] tracking-tight line-clamp-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-base sm:text-lg md:text-2xl font-bold leading-[1.15] tracking-tight line-clamp-2 translate-y-2 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                     {project.title}
                   </h3>
-                  <div className="mt-2 overflow-hidden h-0 group-hover:h-auto group-hover:mt-3 transition-all duration-500 hidden md:block">
-                    <p className="text-sm text-neutral-400 font-medium tracking-wide">
+                  <div className="mt-1 sm:mt-2 overflow-hidden h-0 group-hover:h-auto group-hover:mt-2 sm:group-hover:mt-3 transition-all duration-500 hidden md:block">
+                    <p className="text-xs sm:text-sm text-neutral-400 font-medium tracking-wide">
                       {project.category}
                     </p>
                   </div>
