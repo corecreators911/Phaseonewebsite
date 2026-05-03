@@ -91,14 +91,16 @@ export const Contact = () => {
   const onSubmit = async (data: FormInputs) => {
     setSubmitError(null);
     try {
-      const res = await fetch(
-        `https://formspree.io/f/${import.meta.env.VITE_FORMSPREE_ID}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: data.name, email: data.email, message: data.message }),
-        }
-      );
+const res = await fetch("/", {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: new URLSearchParams({
+    "form-name": "contact",
+    name: data.name,
+    email: data.email,
+    message: data.message,
+  }).toString(),
+});
       if (!res.ok) throw new Error("submission_failed");
       reset();
       setIsSuccess(true);
