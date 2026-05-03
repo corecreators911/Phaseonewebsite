@@ -149,7 +149,7 @@ export const Hero = () => {
         initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1.5 }}
-        className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-4 sm:p-6 md:p-12 pb-[10vh] md:pb-12"
+        className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-end p-4 sm:p-6 md:p-12 pb-8 md:pb-12"
       >
         {/* SYS_RENDER_001 — top-left, absolutely positioned to match pill's left offset */}
         <div className="hidden md:flex flex-col gap-1.5 overflow-hidden absolute top-44 left-[5%] z-[2]">
@@ -185,10 +185,10 @@ export const Hero = () => {
         </div>
       </motion.div>
 
-      {/* "Visual Effects & Animation" pill — bottom-left, baseline-aligned with scroll indicator */}
+      {/* "Visual Effects & Animation" pill — bottom-left on desktop, centered above scroll indicator on mobile */}
       <div
         ref={badgeRef}
-        className="absolute z-20 pointer-events-none bottom-[10vh] md:bottom-12 left-4 md:left-[5%]"
+        className="absolute z-20 pointer-events-none bottom-32 md:bottom-12 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-[5%]"
         style={{ opacity: 0 }}
       >
         <div className="flex items-center gap-2 sm:gap-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-3 sm:px-5 py-1.5 sm:py-2 shadow-2xl">

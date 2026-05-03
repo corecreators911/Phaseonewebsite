@@ -5,10 +5,8 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 const STATS = [
-  { value: 150, suffix: "+", label: "Projects Delivered" },
-  { value: 32, suffix: "", label: "Awards Won" },
-  { value: 80, suffix: "+", label: "Artists Worldwide" },
-  { value: 8, suffix: "", label: "Years of Excellence" },
+  { value: 30, suffix: "+", label: "Projects Delivered" },
+  { value: 5, suffix: "+", label: "Years of Excellence" },
 ];
 
 export const About = () => {
@@ -142,7 +140,7 @@ export const About = () => {
   }, [prefersReducedMotion]);
 
   const paragraphText =
-    "We are a collective of digital artists, technologists, and filmmakers dedicated to pushing the boundaries of visual storytelling. From concept to final frame, we craft immersive worlds and impossible realities for the world's most demanding creators. Every pixel, every frame, every render — engineered to perfection.";
+    "We are a collective of digital artists, technologists, and filmmakers dedicated to pushing the boundaries of visual storytelling. From concept to final frame, we craft immersive worlds and impossible realities for the world's most demanding creators. Every pixel, every frame, every render, engineered to perfection.";
 
   return (
     <section
@@ -250,7 +248,7 @@ export const About = () => {
             <div className="mt-8 sm:mt-12 flex gap-4 sm:gap-6">
               <div className="w-[2px] bg-gradient-to-b from-[#8C0B0C] to-transparent flex-shrink-0" />
               <blockquote className="text-xs sm:text-sm md:text-base text-neutral-500 italic leading-relaxed">
-                "We don't just create visual effects — we architect realities. Every frame is a canvas, every project a universe waiting to be born."
+                "We don't just create visual effects, we architect realities. Every frame is a canvas, every project a universe waiting to be born."
                 <span className="block mt-3 text-[10px] font-mono not-italic uppercase tracking-[0.2em] text-[#8C0B0C]">
                   — Creative Director
                 </span>

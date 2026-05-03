@@ -177,7 +177,7 @@ export const Contact = () => {
                     Phone
                   </p>
                   <p className="text-base sm:text-lg font-bold tracking-tight text-white">
-                    +91 123 456 7890
+                    +91 90590 08547
                   </p>
                 </div>
               </div>
