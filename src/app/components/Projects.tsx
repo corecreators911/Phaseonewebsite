@@ -24,7 +24,19 @@ export const Projects = () => {
   // but for simplicity, we'll just bind the offset.
   // Assuming 6 items visible on desktop, max offset is total - 6.
   // To avoid negative maxOffset on small lists:
-  const itemsVisible = 6; 
+  const [itemsVisible, setItemsVisible] = useState(6);
+
+  useLayoutEffect(() => {
+    const checkWidth = () => {
+      if (window.innerWidth >= 1024) setItemsVisible(6);
+      else if (window.innerWidth >= 768) setItemsVisible(4);
+      else setItemsVisible(3);
+    };
+    checkWidth();
+    window.addEventListener("resize", checkWidth);
+    return () => window.removeEventListener("resize", checkWidth);
+  }, []);
+
   const maxOffset = Math.max(0, PROJECTS.length - itemsVisible);
 
   const prefersReducedMotion = useReducedMotion();
@@ -165,7 +177,7 @@ export const Projects = () => {
           <div 
             className="grid grid-cols-3 gap-2 md:flex md:transition-transform md:duration-[800ms] md:ease-[cubic-bezier(0.25,1,0.5,1)] max-md:!transform-none"
             style={{ 
-              transform: `translateX(calc(-${offsetIndex} * (100% / 6)))`,
+              transform: `translateX(calc(-${offsetIndex} * (100% / ${itemsVisible})))`,
             }}
           >
             {PROJECTS.map((project, idx) => {
