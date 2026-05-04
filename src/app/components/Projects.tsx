@@ -175,7 +175,7 @@ export const Projects = () => {
 
         <div className="w-full overflow-hidden pb-8">
           <div 
-            className="grid grid-cols-3 gap-2 md:flex md:transition-transform md:duration-[800ms] md:ease-[cubic-bezier(0.25,1,0.5,1)] max-md:!transform-none"
+            className="grid grid-cols-3 gap-2 md:gap-0 md:flex md:transition-transform md:duration-[800ms] md:ease-[cubic-bezier(0.25,1,0.5,1)] max-md:!transform-none"
             style={{ 
               transform: `translateX(calc(-${offsetIndex} * (100% / ${itemsVisible})))`,
             }}
