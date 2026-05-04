@@ -111,17 +111,13 @@ export const ProjectsArchive = () => {
                   <div className="text-[#8C0B0C] text-[10px] font-bold tracking-[0.25em] uppercase mb-3">
                     {project.category}
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-neutral-500 transition-all duration-300">
+                  <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-neutral-500 transition-all duration-300">
                     {project.title}
                   </h3>
-                  <div className="text-neutral-500 text-xs font-medium tracking-wide mb-6">
-                    CLIENT: <span className="text-neutral-300">{project.client}</span>
-                  </div>
                 </div>
 
                 <div className="mt-auto pt-5 border-t border-white/5 flex items-center justify-between text-[10px] text-neutral-500 uppercase tracking-[0.2em] font-bold relative z-10">
                   <span className="group-hover:text-white transition-colors duration-300">View Project</span>
-                  {project.award && <span className="text-[#8C0B0C]">{project.award}</span>}
                 </div>
               </div>
             </Link>

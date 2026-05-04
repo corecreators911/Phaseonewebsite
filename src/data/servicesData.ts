@@ -184,4 +184,19 @@ export const servicesData: ServiceCategory[] = [
       },
     ],
   },
+  {
+    category: "WEB DEVELOPMENT",
+    services: [
+      {
+        name: "Website Design",
+        description:
+          "Custom website design and development services for creative professionals, agencies, and studios in the film, television, and commercial production industries.",
+      },
+      {
+        name: "Backend Development",
+        description:
+          "Server-side development for content management systems, media asset management, and custom web applications tailored to the needs of production companies and creative agencies.",
+      },
+    ],
+  },
 ];

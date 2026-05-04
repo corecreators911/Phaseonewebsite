@@ -19,6 +19,15 @@ const ProjectsArchive = lazy(() =>
 const ProjectDetail = lazy(() =>
   import("./pages/ProjectDetail").then((m) => ({ default: m.ProjectDetail }))
 );
+const PrivacyPolicy = lazy(() =>
+  import("./pages/PrivacyPolicy").then((m) => ({ default: m.PrivacyPolicy }))
+);
+const TermsOfService = lazy(() =>
+  import("./pages/TermsOfService").then((m) => ({ default: m.TermsOfService }))
+);
+const CookiesPolicy = lazy(() =>
+  import("./pages/CookiesPolicy").then((m) => ({ default: m.CookiesPolicy }))
+);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -259,6 +268,9 @@ export default function App() {
                 <Route index element={<Home />} />
                 <Route path="projects" element={<Suspense fallback={null}><ProjectsArchive /></Suspense>} />
                 <Route path="projects/:id" element={<Suspense fallback={null}><ProjectDetail /></Suspense>} />
+                <Route path="privacy-policy" element={<Suspense fallback={null}><PrivacyPolicy /></Suspense>} />
+                <Route path="terms-of-service" element={<Suspense fallback={null}><TermsOfService /></Suspense>} />
+                <Route path="cookies-policy" element={<Suspense fallback={null}><CookiesPolicy /></Suspense>} />
               </Routes>
             </ErrorBoundary>
           </main>

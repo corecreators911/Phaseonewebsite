@@ -175,13 +175,13 @@ export const Showreel = () => {
             ref={videoRef}
             className="relative w-full h-full overflow-hidden will-change-transform bg-black"
           >
-            {/* Hardcoded thumbnail from Vimeo oEmbed API (vimeo.com/api/oembed.json?url=https://vimeo.com/1187215201); size upscaled from returned 295x166 */}
+            {/* Hardcoded thumbnail from Vimeo oEmbed API */}
             <ImageWithFallback
-              src="https://i.vimeocdn.com/video/2151134813-9932fbd91908e878ff2ec043af3ae3de1bd6011fc37aa75948f2898943496858-d_1280x720?region=us"
+              src="https://i.vimeocdn.com/video/2151136204-ca2ad6fa84eee4a2a11cce9ea80bf287e8b78f732240668df02dc03298babad3-d_1920x1080"
               alt="Showreel Thumbnail"
-              width={1280}
-              height={720}
-              className="w-full h-full object-cover opacity-70"
+              width={1920}
+              height={1080}
+              className="w-full h-full object-cover opacity-100"
             />
 
             {/* Cinematic overlays */}

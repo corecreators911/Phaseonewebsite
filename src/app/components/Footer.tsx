@@ -18,7 +18,7 @@ const NAV_COLS = [
   },
   {
     title: "Studio",
-    links: ["Careers", "Culture", "Connect", "Blog", "Privacy", "Terms"],
+    links: ["Careers", "Culture", "Connect", "Blog", "Privacy", "Terms", "Cookies"],
   },
 ];
 
@@ -141,17 +141,25 @@ export const Footer = () => {
                 </h4>
                 <ul className="flex flex-col gap-2 sm:gap-3">
                   {col.links.map((link) => {
-                    const isPlaceholder = col.title === "Studio";
+                    const isLegalRoute = ["Privacy", "Terms", "Cookies"].includes(link);
+                    const isPlaceholder = col.title === "Studio" && !isLegalRoute;
                     const sectionId = col.title === "Services"
                       ? "services"
                       : link.toLowerCase().replace(/\s+/g, "-");
+
+                    let toPath = "/";
+                    if (link === "Privacy") toPath = "/privacy-policy";
+                    if (link === "Terms") toPath = "/terms-of-service";
+                    if (link === "Cookies") toPath = "/cookies-policy";
+
                     return (
                       <li key={link}>
                         <Link
-                          to="/"
+                          to={toPath}
                           onClick={(e) => {
-                            handleLinkClick(e, isPlaceholder, link);
-                            if (!isPlaceholder) {
+                            if (isPlaceholder) {
+                              handleLinkClick(e, true, link);
+                            } else if (toPath === "/") {
                               e.preventDefault();
                               navigate("/", { state: { scrollTo: sectionId, _nonce: Date.now() }, replace: false });
                             }
@@ -188,9 +196,6 @@ export const Footer = () => {
 
         {/* Giant text at bottom */}
         <div ref={bigTextRef} className="border-t border-[#8C0B0C]/20 pt-6 sm:pt-8 pb-3 sm:pb-4 relative overflow-hidden">
-          {/* Subtle glow behind the text */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-1/2 bg-[#8C0B0C]/10 blur-[100px] pointer-events-none rounded-full" />
-
           <div className="w-full px-4 md:px-[5%] relative z-10">
             <div className="flex flex-wrap justify-center">
               {"PHASE ONE VFX".split("").map((char, i) => (
@@ -199,11 +204,10 @@ export const Footer = () => {
                   className={`footer-char inline-block text-[8vw] sm:text-[13vw] md:text-[10vw] font-black tracking-tighter uppercase leading-none ${char === " " ? "w-[0.2em]" : ""
                     }`}
                   style={{
-                    backgroundImage: "linear-gradient(180deg, #333333 0%, #050505 100%)",
+                    backgroundImage: "linear-gradient(180deg, #a42121 0%, #050505 100%)",
                     WebkitBackgroundClip: "text",
                     color: "transparent",
-                    WebkitTextStroke: "1px rgba(140, 11, 12, 0.8)",
-                    textShadow: "0 10px 40px rgba(140, 11, 12, 0.4)"
+                    WebkitTextStroke: "1px rgba(117, 70, 70, 0.8)"
                   }}
                 >
                   {char === " " ? "\u00A0" : char}
@@ -220,15 +224,15 @@ export const Footer = () => {
               &copy; {new Date().getFullYear()} Phase One VFX. All rights reserved.
             </p>
             <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
-              <a href="#privacy" onClick={(e) => { e.preventDefault(); setPreviewNotice({ title: "Coming Soon", message: "Legal documentation is being finalized and will be available in the final version." }); }} className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+              <Link to="/privacy-policy" className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
                 Privacy Policy
-              </a>
-              <a href="#terms" onClick={(e) => { e.preventDefault(); setPreviewNotice({ title: "Coming Soon", message: "Legal documentation is being finalized and will be available in the final version." }); }} className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+              </Link>
+              <Link to="/terms-of-service" className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
                 Terms of Service
-              </a>
-              <a href="#cookies" onClick={(e) => { e.preventDefault(); setPreviewNotice({ title: "Coming Soon", message: "Legal documentation is being finalized and will be available in the final version." }); }} className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
+              </Link>
+              <Link to="/cookies-policy" className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-700 hover:text-[#8C0B0C] transition-colors" data-cursor-hover>
                 Cookies
-              </a>
+              </Link>
             </div>
           </div>
         </div>

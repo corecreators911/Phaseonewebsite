@@ -152,7 +152,7 @@ const res = await fetch("/", {
             <div className="flex flex-col gap-6 sm:gap-10">
               {/* Email */}
               <a
-                href="mailto:info@phasonevfx.com"
+                href="mailto:info@phaseonevfx.com"
                 className="group flex items-start gap-3 sm:gap-4"
                 data-cursor-hover
               >
@@ -164,7 +164,7 @@ const res = await fetch("/", {
                     Email
                   </p>
                   <p className="text-base sm:text-lg font-bold tracking-tight text-white group-hover:text-[#8C0B0C] transition-colors break-all sm:break-normal">
-                    info@phasonevfx.com
+                    info@phaseonevfx.com
                   </p>
                 </div>
               </a>

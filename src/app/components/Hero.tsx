@@ -106,7 +106,7 @@ export const Hero = () => {
           loop
           playsInline
           preload="none"
-          poster="/hero-reel/hero-poster.jpg"
+          poster="/hero-reel/hero-poster.webp"
           style={{
             position: 'absolute',
             top: '50%',
@@ -127,21 +127,31 @@ export const Hero = () => {
       {/* Subtle Grain Overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-overlay z-0" style={{ backgroundImage: "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')" }} />
 
-      {/* "Crafting the Unreal" — centered hero heading */}
+      {/* "CRAFTING THE UNREAL." — centered hero heading */}
       <h1
         ref={headingRef}
-        className="absolute z-10 pointer-events-none text-center w-full px-4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-        style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, textTransform: 'uppercase' }}
+        className="absolute z-10 pointer-events-none text-center w-full px-4 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black tracking-widest"
+        style={{ fontFamily: "'Barlow Condensed', sans-serif", textTransform: 'uppercase' }}
       >
-        {"Crafting the Unreal".split("").map((char, i) => (
-          <span
-            key={i}
-            className="char-reveal inline-block text-white"
-            style={{ fontSize: "clamp(1rem, 2vw, 2.5rem)", letterSpacing: "0.2em", opacity: prefersReducedMotion ? 1 : 0 }}
-          >
-            {char === " " ? " " : char}
-          </span>
-        ))}
+        {"CRAFTING THE UNREAL.".split("").map((char, i) => {
+          let style: React.CSSProperties = { fontSize: "clamp(1rem, 2vw, 2.5rem)", opacity: prefersReducedMotion ? 1 : 0 };
+          let className = "char-reveal inline-block ";
+          
+          if (i < 8) { // "CRAFTING"
+            style.color = "transparent";
+            style.WebkitTextStroke = "1.2px rgb(181, 61, 61)";
+          } else if (i === 19) { // "."
+            className += "text-[#8C0B0C] drop-shadow-[0_0_40px_rgba(140,11,12,0.8)]";
+          } else { // " THE UNREAL"
+            className += "text-white";
+          }
+          
+          return (
+            <span key={i} className={className} style={style}>
+              {char === " " ? " " : char}
+            </span>
+          );
+        })}
       </h1>
 
       {/* Floating HUD / Overlay UI */}

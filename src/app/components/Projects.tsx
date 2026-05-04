@@ -4,19 +4,29 @@ import gsap from "gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { cn } from "@/lib/utils";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ArrowLeft, ArrowRight } from "lucide-react";
 import { getFeaturedProjects } from "@/data/projects";
 
 // The preview notice can still be kept if needed for other places, but we remove the modal from here.
 
 export const Projects = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [offsetIndex, setOffsetIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const navigate = useNavigate();
 
   const PROJECTS = getFeaturedProjects();
+  
+  // Calculate max offset to prevent sliding too far
+  // We want to show items without empty space at the end if possible, 
+  // but for simplicity, we'll just bind the offset.
+  // Assuming 6 items visible on desktop, max offset is total - 6.
+  // To avoid negative maxOffset on small lists:
+  const itemsVisible = 6; 
+  const maxOffset = Math.max(0, PROJECTS.length - itemsVisible);
+
   const prefersReducedMotion = useReducedMotion();
 
   useLayoutEffect(() => {
@@ -49,25 +59,27 @@ export const Projects = () => {
       }
 
       // Cards stagger entrance
-      cardsRef.current.forEach((card, i) => {
-        if (!card) return;
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 60 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.2,
-            delay: window.innerWidth < 768 ? 0 : (i % 2) * 0.15,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 95%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      });
+      if (window.innerWidth >= 768) {
+        cardsRef.current.forEach((card, i) => {
+          if (!card) return;
+          gsap.fromTo(
+            card,
+            { opacity: 0, y: 60 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1.2,
+              delay: (i % 2) * 0.15,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 95%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        });
+      }
     }, containerRef);
 
     // Safety: if ScrollTrigger hasn't fired after 3s, force elements visible
@@ -149,93 +161,90 @@ export const Projects = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-          {PROJECTS.map((project, idx) => {
-            const isHovered = hoveredIndex === idx;
-            const isOtherHovered = hoveredIndex !== null && !isHovered;
+        <div className="w-full overflow-hidden pb-8">
+          <div 
+            className="grid grid-cols-3 gap-2 md:flex md:transition-transform md:duration-[800ms] md:ease-[cubic-bezier(0.25,1,0.5,1)] max-md:!transform-none"
+            style={{ 
+              transform: `translateX(calc(-${offsetIndex} * (100% / 6)))`,
+            }}
+          >
+            {PROJECTS.map((project, idx) => {
+              const isHovered = hoveredIndex === idx;
+              const isOtherHovered = hoveredIndex !== null && !isHovered;
 
-            return (
-              <div
-                key={project.id}
-                ref={(el) => (cardsRef.current[idx] = el)}
-                className={cn(
-                  "group relative rounded-xl overflow-hidden bg-neutral-900 cursor-pointer",
-                  "aspect-[2/3]",
-                  "transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]",
-                  isOtherHovered
-                    ? "opacity-40 scale-[0.985]"
-                    : "opacity-100 scale-100"
-                )}
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => navigate(`/projects/${project.projectId}`)}
-                data-cursor-hover
-              >
-                <div className="absolute inset-0 w-full h-full overflow-hidden">
-                  {/* .jpeg originals in /public/projects/ should be converted to .webp — run node convert-images.js */}
-                  <ImageWithFallback
-                    src={project.thumbnailUrl}
-                    alt={project.title}
-                    width={800}
-                    height={1200}
-                    className="w-full h-full object-cover object-center scale-[1.04] group-hover:scale-[1.09] transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)]"
-                  />
-                </div>
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/10 transition-opacity duration-700" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(140,11,12,0.45)_0%,transparent_55%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.05] group-hover:ring-[#8C0B0C]/25 rounded-xl transition-colors duration-700" />
-
-                <div className="absolute top-0 left-0 right-0 px-3 sm:px-5 md:px-7 pt-3 sm:pt-4 md:pt-6 flex items-center justify-between">
-                  <span className="text-[7px] sm:text-[10px] font-mono text-white/40 uppercase tracking-[0.28em] opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1 group-hover:translate-y-0">
-                    {project.id} - {project.year}
-                  </span>
-                  <div className="flex items-center gap-1.5 sm:gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-75 -translate-y-1 group-hover:translate-y-0">
-                    <div className="h-[4px] sm:h-[5px] w-[4px] sm:w-[5px] rounded-full bg-[#8C0B0C]" />
-                    <span className="text-[6px] sm:text-[9px] font-mono text-[#8C0B0C] uppercase tracking-[0.2em] max-w-[50%] truncate sm:max-w-none">
-                      {project.award}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="absolute bottom-0 left-0 right-0 px-3 sm:px-5 md:px-7 pb-4 sm:pb-5 md:pb-7">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-3 gap-2 sm:gap-0">
-                    <span className="text-[8px] sm:text-[10px] font-mono uppercase tracking-[0.22em] text-white/50 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-1 md:translate-y-2 group-hover:translate-y-0">
-                      {project.client}
-                    </span>
-
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/projects/${project.projectId}`);
-                      }}
+              return (
+                <div
+                  key={project.id}
+                  ref={(el) => (cardsRef.current[idx] = el)}
+                  className={cn(
+                    "w-full md:flex-none md:w-1/4 lg:w-1/6 md:px-2 lg:px-2.5",
+                    "group relative cursor-pointer flex flex-col",
+                    "transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]",
+                    isOtherHovered
+                      ? "md:opacity-40 md:scale-[0.985]"
+                      : "opacity-100 scale-100"
+                  )}
+                  onMouseEnter={() => setHoveredIndex(idx)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  onClick={() => navigate(`/projects/${project.projectId}`)}
+                  data-cursor-hover
+                >
+                  <div className="relative w-full aspect-[3/4] rounded-lg md:rounded-xl overflow-hidden bg-neutral-900 mb-2 md:mb-4">
+                  <div className="absolute inset-0 w-full h-full overflow-hidden">
+                    <ImageWithFallback
+                      src={project.thumbnailUrl}
+                      alt={project.title}
+                      width={400}
+                      height={533}
                       className={cn(
-                        "relative flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full overflow-hidden transition-all duration-500 translate-y-2 md:translate-y-4 group-hover:translate-y-0",
-                        "bg-[#8C0B0C] hover:bg-[#a60d0e]",
-                        "opacity-0 group-hover:opacity-100",
-                        "shadow-[0_0_15px_rgba(140,11,12,0.4)]"
+                        "w-full h-full object-cover scale-[1.04] group-hover:scale-[1.09] transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)]",
+                        project.projectId === "project-car-chase"
+                          ? "max-md:object-cover max-md:object-[60%_center] md:object-[63%_center]"
+                          : project.projectId === "leo"
+                          ? "object-[center_5%]"
+                          : "object-center"
                       )}
-                    >
-                      <span className="relative z-10 text-[7px] sm:text-[9px] font-bold text-white uppercase tracking-[0.1em]">
-                        View
-                      </span>
-                      <ArrowUpRight className="relative z-10 w-2.5 sm:w-3 h-2.5 sm:h-3 text-white" />
-                    </button>
+                    />
                   </div>
 
-                  <h3 className="text-base sm:text-lg md:text-2xl font-bold leading-[1.15] tracking-tight line-clamp-2 translate-y-2 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    {project.title}
-                  </h3>
-                  <div className="mt-1 sm:mt-2 overflow-hidden h-0 group-hover:h-auto group-hover:mt-2 sm:group-hover:mt-3 transition-all duration-500 hidden md:block">
-                    <p className="text-xs sm:text-sm text-neutral-400 font-medium tracking-wide">
-                      {project.category}
-                    </p>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(140,11,12,0.45)_0%,transparent_55%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 ring-1 ring-inset ring-white/[0.05] group-hover:ring-[#8C0B0C]/25 rounded-xl transition-colors duration-700" />
                 </div>
               </div>
             );
           })}
+          </div>
         </div>
+
+        {maxOffset > 0 && (
+          <div className="hidden md:flex items-center justify-end gap-3 mt-6">
+            <button
+              onClick={() => setOffsetIndex((prev) => Math.max(0, prev - 2))}
+              disabled={offsetIndex === 0}
+              className={cn(
+                "p-3 sm:p-4 rounded-full border border-white/20 transition-all duration-300",
+                offsetIndex === 0
+                  ? "opacity-0 pointer-events-none"
+                  : "hover:border-[#8C0B0C] hover:bg-[#8C0B0C]/10 cursor-pointer"
+              )}
+            >
+              <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </button>
+            <button
+              onClick={() => setOffsetIndex((prev) => Math.min(maxOffset, prev + 2))}
+              disabled={offsetIndex >= maxOffset}
+              className={cn(
+                "p-3 sm:p-4 rounded-full border border-white/20 transition-all duration-300",
+                offsetIndex >= maxOffset
+                  ? "opacity-0 pointer-events-none"
+                  : "hover:border-[#8C0B0C] hover:bg-[#8C0B0C]/10 cursor-pointer"
+              )}
+            >
+              <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
