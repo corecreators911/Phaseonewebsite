@@ -175,12 +175,17 @@ const res = await fetch("/", {
                   <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neutral-500" />
                 </div>
                 <div>
-                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-600 mb-1">
+                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.15em] sm:tracking-[0.2em] text-neutral-600 mb-2">
                     Phone
                   </p>
-                  <p className="text-base sm:text-lg font-bold tracking-tight text-white">
-                    +91 90590 08547
-                  </p>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-base sm:text-lg font-bold tracking-tight text-white">
+                      +91 90590 08547
+                    </p>
+                    <p className="text-base sm:text-lg font-bold tracking-tight text-white">
+                      +91 98726 27300
+                    </p>
+                  </div>
                 </div>
               </div>
 
